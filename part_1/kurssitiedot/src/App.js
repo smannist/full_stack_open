@@ -11,8 +11,8 @@ const Header = (props) => {
 const Content = ({ parts }) => {
   return (
     <div>
-      {parts.map((part) => (
-        <Part part={part.name} exercises={part.exercises} />
+      {parts.map((part, index) => (
+        <Part key={index} part={part.name} exercises={part.exercises} />
       ))}
     </div>
   );
