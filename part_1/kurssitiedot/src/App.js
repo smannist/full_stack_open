@@ -59,7 +59,11 @@ const App = () => {
   return (
     <>
       <Header course={course} />
-      <Content part1={part1.name} exercises1={part1.exercises} part2={part2.name} exercises2={part2.exercises} part3={part3.name} exercises3={part3.exercises} />
+
+      <Content part1={part1.name} exercises1={part1.exercises}
+        part2={part2.name} exercises2={part2.exercises}
+        part3={part3.name} exercises3={part3.exercises} />
+
       <Total exTtlAmount={part1.exercises + part2.exercises + part3.exercises} />
     </>
   )
