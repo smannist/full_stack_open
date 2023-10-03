@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import Button from '../components/button'
 import Anecdote from '../components/anecdote'
+import MostVotedAnec from '../components/mostvotedanec'
 
 const App = () => {
 
@@ -34,6 +35,7 @@ const App = () => {
   return (
     <div>
       <Anecdote
+        anecdotes={anecdotes}
         selected={selected}
         voted={voted}
       />
