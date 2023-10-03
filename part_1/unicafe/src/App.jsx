@@ -9,7 +9,7 @@ const App = () => {
   const [bad, setBad] = useState(0)
 
   const setGoodFeedback = () => setGood(good + 1)
-  const setNeturalFeedback = () => setNeutral(neutral + 1)
+  const setNeutralFeedback = () => setNeutral(neutral + 1)
   const setBadFeedback = () => setBad(bad + 1)
 
   const total = good + neutral + bad;
@@ -28,7 +28,7 @@ const App = () => {
         text="good :)"
       />
       <Button
-        handleClick={setNeturalFeedback}
+        handleClick={setNeutralFeedback}
         text="neutral :I"
       />
       <Button
