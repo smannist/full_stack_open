@@ -1,26 +1,44 @@
 import React from "react";
+import StatisticsLine from "./statistics_line";
 
-const Statistics = ({ valueText1, valueText2, valueText3, value1, value2, value3 }) => {
-  const total = value1 + value2 + value3;
-  const average = total === 0 ? 0 : (value1 * 1 + value2 * 0 + value3 * -1) / total;
-  const positivePercentage = total === 0 ? 0 : (value1 / total) * 100;
+const Statistics = ({ valueText1, valueText2, valueText3, valueText4, valueText5, valueText6, value1, value2, value3, total, average, positive }) => {
 
-  if (total > 0) {
+  const totalFeedback = value1 + value2 + value3;
+
+  if (totalFeedback > 0) {
     return (
       <div>
-        <p>
-          {valueText1}: {value1}
-          <br />
-          {valueText2}: {value2}
-          <br />
-          {valueText3}: {value3}
-          <br />
-          Total: {total}
-          <br />
-          Average: {average}
-          <br />
-          Positive: {positivePercentage} %
-        </p>
+        <StatisticsLine
+          text={valueText1}
+          value={value1}
+        />
+
+        <StatisticsLine
+          text={valueText2}
+          value={value2}
+        />
+
+        <StatisticsLine
+          text={valueText3}
+          value={value3}
+        />
+
+        <StatisticsLine
+          text={valueText4}
+          value={total}
+        />
+
+        <StatisticsLine
+          text={valueText5}
+          value={average}
+        />
+
+        <StatisticsLine
+          text={valueText6}
+          value={positive}
+          suffix={suffix}
+        />
+
       </div>
     );
   }
