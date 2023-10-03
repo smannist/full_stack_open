@@ -1,7 +1,21 @@
 import React from "react";
 import StatisticsLine from "./statistics_line";
 
-const Statistics = ({ valueText1, valueText2, valueText3, valueText4, valueText5, valueText6, value1, value2, value3, total, average, positive }) => {
+const Statistics = ({
+  valueText1,
+  valueText2,
+  valueText3,
+  valueText4,
+  valueText5,
+  valueText6,
+  value1,
+  value2,
+  value3,
+  total,
+  average,
+  positive,
+  suffix
+}) => {
 
   const totalFeedback = value1 + value2 + value3;
 
