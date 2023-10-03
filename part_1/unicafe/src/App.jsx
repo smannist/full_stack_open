@@ -41,12 +41,12 @@ const App = () => {
       </h2>
 
       <Statistics
-        valueText1="Good:" value1={good}
-        valueText2="Neutral:" value2={neutral}
-        valueText3="Bad:" value3={bad}
-        valueText4="Total:" total={total}
-        valueText5="Average:" average={average}
-        valueText6="Positive:" positive={positivePercentage} suffix={"%"}
+        valueText1="Good" value1={good}
+        valueText2="Neutral" value2={neutral}
+        valueText3="Bad" value3={bad}
+        valueText4="Total" total={total}
+        valueText5="Average" average={average}
+        valueText6="Positive" positive={positivePercentage} suffix={"%"}
       />
 
     </div>

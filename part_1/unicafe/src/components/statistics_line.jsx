@@ -1,10 +1,20 @@
 import React from "react";
 
 const StatisticsLine = ({ text, value, suffix }) => {
+  const roundedValue = Number.isInteger(value) ? value : value.toFixed(1);
+
   return (
-    <p>
-      {text} {value} {suffix}
-    </p>
+    <tr>
+      <td>
+        {text}
+      </td>
+      <td>
+        {roundedValue}
+      </td>
+      <td>
+        {suffix}
+      </td>
+    </tr>
   );
 }
 

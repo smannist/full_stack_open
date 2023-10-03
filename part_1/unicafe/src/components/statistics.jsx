@@ -22,38 +22,34 @@ const Statistics = ({
   if (totalFeedback > 0) {
     return (
       <div>
-        <StatisticsLine
-          text={valueText1}
-          value={value1}
-        />
-
-        <StatisticsLine
-          text={valueText2}
-          value={value2}
-        />
-
-        <StatisticsLine
-          text={valueText3}
-          value={value3}
-        />
-
-        <StatisticsLine
-          text={valueText4}
-          value={total}
-        />
-
-        <StatisticsLine
-          text={valueText5}
-          value={average}
-        />
-
-        <StatisticsLine
-          text={valueText6}
-          value={positive}
-          suffix={suffix}
-        />
-
-      </div>
+        <table>
+          <StatisticsLine
+            text={valueText1}
+            value={value1}
+          />
+          <StatisticsLine
+            text={valueText2}
+            value={value2}
+          />
+          <StatisticsLine
+            text={valueText3}
+            value={value3}
+          />
+          <StatisticsLine
+            text={valueText4}
+            value={total}
+          />
+          <StatisticsLine
+            text={valueText5}
+            value={average}
+          />
+          <StatisticsLine
+            text={valueText6}
+            value={positive}
+            suffix={suffix}
+          />
+        </table>
+      </div >
     );
   }
 
