@@ -33,7 +33,7 @@ const App = () => {
     <div>
       <Course course={course} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

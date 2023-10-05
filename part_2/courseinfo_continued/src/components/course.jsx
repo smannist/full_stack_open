@@ -6,9 +6,9 @@ const Course = ({ course }) => {
   return (
     <>
       <Header name={course.name} />
-      <Content courses={course} />
+      <Content parts={course.parts} />
     </>
-  )
-}
+  );
+};
 
-export default Course
+export default Course;
