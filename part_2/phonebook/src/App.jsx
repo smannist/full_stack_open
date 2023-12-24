@@ -11,7 +11,7 @@ const App = () => {
 
     if (duplicateName) {
       alert(`${newName} is already added to phonebook`);
-      return true;
+      return
     }
 
     const namesObject = {
