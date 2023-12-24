@@ -1,7 +1,5 @@
 import { useState } from "react";
 import Persons from "./components/persons";
-import FilterField from "./components/filter_field";
-import PersonField from "./components/person_field";
 import PhonebookForm from "./components/phonebook_form";
 
 const App = () => {
