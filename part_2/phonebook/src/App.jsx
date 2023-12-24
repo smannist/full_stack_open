@@ -1,12 +1,18 @@
 import { useState } from "react";
 import Person from "./components/person";
 
-const App = (props) => {
+const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
 
   const addName = (event) => {
     event.preventDefault();
+    const duplicateName = persons.some((person) => person.name === newName);
+
+    if (duplicateName) {
+      alert(`${newName} is already added to phonebook`);
+      return true;
+    }
 
     const namesObject = {
       id: persons.length + 1,
@@ -37,7 +43,7 @@ const App = (props) => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map(person => (
+        {persons.map((person) => (
           <Person key={person.id} name={person.name} />
         ))}
       </div>
