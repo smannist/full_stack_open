@@ -1,5 +1,5 @@
 import { useState } from "react";
-import personService from "./services/persons"
+import personService from "./services/persons";
 import Persons from "./components/persons";
 import PhonebookForm from "./components/phonebook_form";
 import defaultPersons from "./hooks/persons";
@@ -10,7 +10,7 @@ const App = () => {
   const [newFilter, setNewFilter] = useState("");
   const [persons, setPersons] = useState([]);
 
-  defaultPersons(setPersons)
+  defaultPersons(setPersons);
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -34,11 +34,25 @@ const App = () => {
 
     personService
     .create(namesObject)
-    .then(returnedPerson => {
-      setPersons(persons.concat(returnedPerson))
-      setNewName("")
-      setNewNumber("")
-    })
+    .then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
+  };
+
+  const removePerson = async (id, name) => {
+    if (window.confirm(`Do you want to remove ${name} from the phonebook?`)) {
+      await personService.remove(id);
+
+      personService
+      .getAll()
+      .then((getPersons) => {
+        setPersons(getPersons);
+      });
+
+      alert(`${name} removed successfully`)
+    }
   };
 
   const handleNameChange = (event) => {
@@ -66,7 +80,7 @@ const App = () => {
         addPerson={addPerson}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={newFilter} />
+      <Persons persons={persons} filter={newFilter} remove={removePerson} />
     </div>
   );
 };
