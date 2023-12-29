@@ -1,8 +1,8 @@
 import { useState } from "react";
+import personService from "./services/persons"
 import Persons from "./components/persons";
 import PhonebookForm from "./components/phonebook_form";
-import getDefaultPersons from "./hooks";
-import axios from "axios";
+import defaultPersons from "./hooks/persons";
 
 const App = () => {
   const [newName, setNewName] = useState("");
@@ -10,7 +10,7 @@ const App = () => {
   const [newFilter, setNewFilter] = useState("");
   const [persons, setPersons] = useState([]);
 
-  getDefaultPersons(setPersons);
+  defaultPersons(setPersons)
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -32,13 +32,13 @@ const App = () => {
       number: newNumber,
     };
 
-    axios
-      .post(import.meta.env.VITE_PERSONS_SERVICE_URL, namesObject)
-      .then((response) => {
-        setPersons(persons.concat(response.data));
-        setNewName("");
-        setNewNumber("");
-      });
+    personService
+    .create(namesObject)
+    .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson))
+      setNewName("")
+      setNewNumber("")
+    })
   };
 
   const handleNameChange = (event) => {
