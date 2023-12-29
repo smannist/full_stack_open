@@ -14,15 +14,28 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const duplicateName = persons.some((person) => person.name === newName);
 
     if (!newName || !newNumber) {
       alert("You must enter both name and a number");
       return;
     }
 
-    if (duplicateName) {
-      alert(`${newName} is already added to phonebook`);
+    const duplicatePersonObject = persons.find(person => person.name === newName)
+
+    if (duplicatePersonObject) {
+      if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+        const updatePersonObject =  {...duplicatePersonObject, number: newNumber }
+
+        personService
+        .update(duplicatePersonObject.id, updatePersonObject)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== duplicatePersonObject.id ? person : returnedPerson))
+          setNewName("");
+          setNewNumber("");
+        })
+
+      }
+      alert(`${newName} updated successfully`)
       return;
     }
 
@@ -39,6 +52,7 @@ const App = () => {
       setNewName("");
       setNewNumber("");
     });
+
   };
 
   const removePerson = async (id, name) => {
