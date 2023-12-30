@@ -24,7 +24,9 @@ const App = () => {
       return;
     }
 
-    const duplicatePersonObject = persons.find(person => person.name === newName)
+    const duplicatePersonObject = persons.find(
+      (person) => person.name === newName
+    );
 
     if (duplicatePersonObject) {
       const confirmation = window.confirm(
@@ -32,39 +34,18 @@ const App = () => {
       );
 
       if (confirmation) {
-        const updatePersonObject =  {...duplicatePersonObject, number: newNumber }
-        personService
-        .update(duplicatePersonObject.id, updatePersonObject)
-        .then(returnedPerson => {
-          setPersons(persons
-            .map(person => person.id !== duplicatePersonObject.id ? person : returnedPerson))
-          resetForms();
-          handleNotification(notificationMessages
-            .update(duplicatePersonObject.name));
-        })
-        .catch((error) => {
-          handleError(errorMessages.alreadyRemoved(duplicatePersonObject.name));
-          personService
-          .getAll()
-          .then((updatedPersons) => {
-            setPersons(updatedPersons);
-          });
-        });
+        updatePerson(duplicatePersonObject);
       }
-
     } else {
       const namesObject = {
         id: persons.length + 1,
         name: newName,
         number: newNumber,
       };
-      personService
-      .create(namesObject)
-      .then((returnedPerson) => {
+      personService.create(namesObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         resetForms();
-        handleNotification(notificationMessages
-          .add(newName));
+        handleNotification(notificationMessages.add(newName));
       });
     }
   };
@@ -72,25 +53,47 @@ const App = () => {
   const removePerson = async (id, name) => {
     const confimation = window.confirm(
       `Do you want to remove ${name} from the phonebook?`
-      )
+    );
 
     if (confimation) {
       await personService.remove(id);
-      personService
-      .getAll()
-      .then((getPersons) => {
+      personService.getAll().then((getPersons) => {
         setPersons(getPersons);
-        handleNotification(notificationMessages
-          .remove(name));
+        handleNotification(notificationMessages.remove(name));
       });
     }
-
   };
 
   const resetForms = () => {
     setNewName("");
     setNewNumber("");
-  }
+  };
+
+  const updatePerson = (duplicatePersonObject) => {
+    const updatePersonObject = {
+      ...duplicatePersonObject,
+      number: newNumber,
+    };
+    personService
+      .update(duplicatePersonObject.id, updatePersonObject)
+      .then((returnedPerson) => {
+        setPersons(
+          persons.map((person) =>
+            person.id !== duplicatePersonObject.id ? person : returnedPerson
+          )
+        );
+        resetForms();
+        handleNotification(
+          notificationMessages.update(duplicatePersonObject.name)
+        );
+      })
+      .catch((error) => {
+        handleError(errorMessages.alreadyRemoved(duplicatePersonObject.name));
+        personService.getAll().then((updatedPersons) => {
+          setPersons(updatedPersons);
+        });
+      });
+  };
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
