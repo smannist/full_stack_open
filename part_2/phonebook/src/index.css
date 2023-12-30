@@ -66,7 +66,7 @@ button:focus-visible {
   }
 }
 
-.notification {
+.success {
   color: green;
   background: lightgrey;
   font-size: 20px;
@@ -76,7 +76,7 @@ button:focus-visible {
   margin-bottom: 10px;
 }
 
-.error {
+.failure {
   color: red;
   background: lightgrey;
   font-size: 20px;

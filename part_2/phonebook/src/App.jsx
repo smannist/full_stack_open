@@ -3,16 +3,15 @@ import personService from "./services/persons";
 import Persons from "./components/persons";
 import PhonebookForm from "./components/phonebook_form";
 import defaultPersons from "./hooks/persons";
-import Notification, { notificationMessages } from "./components/notification";
-import Error, { errorMessages } from "./components/error";
+import Notification, { successMessages, failureMessages } from "./components/notification";
 
 const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
   const [persons, setPersons] = useState([]);
-  const [notification, setNotification] = useState(null);
-  const [error, setError] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [notificationType, setNotificationType] = useState(null);
 
   defaultPersons(setPersons);
 
@@ -51,7 +50,9 @@ const App = () => {
       await personService.remove(id);
       personService.getAll().then((getPersons) => {
         setPersons(getPersons);
-        handleNotification(notificationMessages.remove(name));
+        handleNotification(
+        successMessages.remove(name),
+        "success");
       });
     }
   };
@@ -71,11 +72,14 @@ const App = () => {
         );
         resetForms();
         handleNotification(
-          notificationMessages.update(duplicatePersonObject.name)
+          successMessages.update(duplicatePersonObject.name),
+          "success"
         );
       })
       .catch((error) => {
-        handleError(errorMessages.alreadyRemoved(duplicatePersonObject.name));
+        handleNotification(
+        failureMessages.alreadyRemoved(duplicatePersonObject.name),
+        "failure");
         personService.getAll().then((updatedPersons) => {
           setPersons(updatedPersons);
         });
@@ -91,7 +95,9 @@ const App = () => {
     personService.create(namesObject).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson));
       resetForms();
-      handleNotification(notificationMessages.add(newName));
+      handleNotification(
+      successMessages.add(newName),
+      "success");
     });
   }
 
@@ -112,25 +118,19 @@ const App = () => {
     setNewFilter(event.target.value);
   };
 
-  const handleNotification = (message) => {
-    setNotification(message);
+  const handleNotification = (message, type) => {
+    setNotificationMessage(message)
+    setNotificationType(type);
     setTimeout(() => {
-      setNotification(null);
-    }, 3000);
-  };
-
-  const handleError = (message) => {
-    setError(message);
-    setTimeout(() => {
-      setError(null);
+      setNotificationMessage(null);
+      setNotificationType(null);
     }, 3000);
   };
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={notification} />
-      <Error message={error} />
+      <Notification message={notificationMessage} type={notificationType} />
       <PhonebookForm
         name={newName}
         number={newNumber}

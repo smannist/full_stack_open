@@ -1,18 +1,22 @@
 import React from "react";
 
-const notificationMessages =  {
+const successMessages = {
   add: (newName) => `Added ${newName} to the phonebook`,
   remove: (name) => `Removed ${name} from the phonebook`,
-  update: (name) => `Updated ${name}`
+  update: (name) => `Updated ${name}`,
 };
 
-const Notification = ({ message }) => {
+const failureMessages =  {
+  alreadyRemoved: (name) => `Information of ${name} has already been removed from the server`
+};
+
+const Notification = ({ message, type }) => {
   if (message === null) {
     return null;
   }
 
-  return <div className="notification">{message}</div>;
+  return <div className={type}>{message}</div>;
 };
 
-export { notificationMessages };
+export { successMessages, failureMessages };
 export default Notification;
