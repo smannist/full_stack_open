@@ -51,22 +51,17 @@ const App = () => {
   };
 
   const removePerson = async (id, name) => {
-    const confimation = window.confirm(
+    const confirmation = window.confirm(
       `Do you want to remove ${name} from the phonebook?`
     );
 
-    if (confimation) {
+    if (confirmation) {
       await personService.remove(id);
       personService.getAll().then((getPersons) => {
         setPersons(getPersons);
         handleNotification(notificationMessages.remove(name));
       });
     }
-  };
-
-  const resetForms = () => {
-    setNewName("");
-    setNewNumber("");
   };
 
   const updatePerson = (duplicatePersonObject) => {
@@ -93,6 +88,11 @@ const App = () => {
           setPersons(updatedPersons);
         });
       });
+  };
+
+  const resetForms = () => {
+    setNewName("");
+    setNewNumber("");
   };
 
   const handleNameChange = (event) => {
