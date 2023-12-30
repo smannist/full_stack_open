@@ -111,10 +111,6 @@ const App = () => {
     }, 3000);
   };
 
-  const fetchAll = () => {
-    
-  }
-
   return (
     <div>
       <h1>Phonebook</h1>
