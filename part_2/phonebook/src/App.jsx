@@ -3,12 +3,14 @@ import personService from "./services/persons";
 import Persons from "./components/persons";
 import PhonebookForm from "./components/phonebook_form";
 import defaultPersons from "./hooks/persons";
+import Notification, { notificationMessages } from "./components/notification";
 
 const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
   const [persons, setPersons] = useState([]);
+  const [notification, setNotification] = useState(null);
 
   defaultPersons(setPersons);
 
@@ -29,13 +31,15 @@ const App = () => {
         personService
         .update(duplicatePersonObject.id, updatePersonObject)
         .then(returnedPerson => {
-          setPersons(persons.map(person => person.id !== duplicatePersonObject.id ? person : returnedPerson))
+          setPersons(persons
+            .map(person => person.id !== duplicatePersonObject.id ? person : returnedPerson))
           setNewName("");
           setNewNumber("");
+          handleNotification(notificationMessages
+            .update(duplicatePersonObject.name));
         })
 
       }
-      alert(`${newName} updated successfully`)
       return;
     }
 
@@ -51,6 +55,8 @@ const App = () => {
       setPersons(persons.concat(returnedPerson));
       setNewName("");
       setNewNumber("");
+      handleNotification(notificationMessages
+        .add(newName));
     });
 
   };
@@ -63,9 +69,10 @@ const App = () => {
       .getAll()
       .then((getPersons) => {
         setPersons(getPersons);
+        handleNotification(notificationMessages
+          .remove(name));
       });
 
-      alert(`${name} removed successfully`)
     }
   };
 
@@ -81,9 +88,17 @@ const App = () => {
     setNewFilter(event.target.value);
   };
 
+  const handleNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  };
+
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={notification} />
       <PhonebookForm
         name={newName}
         number={newNumber}
