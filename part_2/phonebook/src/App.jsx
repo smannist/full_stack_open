@@ -4,6 +4,7 @@ import Persons from "./components/persons";
 import PhonebookForm from "./components/phonebook_form";
 import defaultPersons from "./hooks/persons";
 import Notification, { notificationMessages } from "./components/notification";
+import Error, { errorMessages } from "./components/error";
 
 const App = () => {
   const [newName, setNewName] = useState("");
@@ -11,6 +12,7 @@ const App = () => {
   const [newFilter, setNewFilter] = useState("");
   const [persons, setPersons] = useState([]);
   const [notification, setNotification] = useState(null);
+  const [error, setError] = useState(null);
 
   defaultPersons(setPersons);
 
@@ -38,7 +40,14 @@ const App = () => {
           handleNotification(notificationMessages
             .update(duplicatePersonObject.name));
         })
-
+        .catch((error) => {
+          handleError(errorMessages.alreadyRemoved(duplicatePersonObject.name));
+          personService
+          .getAll()
+          .then((updatedPersons) => {
+            setPersons(updatedPersons);
+          });
+        });
       }
       return;
     }
@@ -95,10 +104,22 @@ const App = () => {
     }, 3000);
   };
 
+  const handleError = (message) => {
+    setError(message);
+    setTimeout(() => {
+      setError(null);
+    }, 3000);
+  };
+
+  const fetchAll = () => {
+    
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
       <Notification message={notification} />
+      <Error message={error} />
       <PhonebookForm
         name={newName}
         number={newNumber}
