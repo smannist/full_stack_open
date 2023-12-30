@@ -27,7 +27,9 @@ const App = () => {
     const duplicatePersonObject = persons.find(person => person.name === newName)
 
     if (duplicatePersonObject) {
-      const confirmation = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
+      const confirmation = window.confirm(
+        `${newName} is already added to the phonebook, replace the old number with a new one?`
+      );
 
       if (confirmation) {
         const updatePersonObject =  {...duplicatePersonObject, number: newNumber }
@@ -68,7 +70,9 @@ const App = () => {
   };
 
   const removePerson = async (id, name) => {
-    const confimation = window.confirm(`Do you want to remove ${name} from the phonebook?`)
+    const confimation = window.confirm(
+      `Do you want to remove ${name} from the phonebook?`
+      )
 
     if (confimation) {
       await personService.remove(id);
