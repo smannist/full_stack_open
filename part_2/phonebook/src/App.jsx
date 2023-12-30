@@ -35,8 +35,7 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons
             .map(person => person.id !== duplicatePersonObject.id ? person : returnedPerson))
-          setNewName("");
-          setNewNumber("");
+          resetForms();
           handleNotification(notificationMessages
             .update(duplicatePersonObject.name));
         })
@@ -49,25 +48,23 @@ const App = () => {
           });
         });
       }
-      return;
+
+    } else {
+      const namesObject = {
+        id: persons.length + 1,
+        name: newName,
+        number: newNumber,
+      };
+
+      personService
+      .create(namesObject)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        resetForms();
+        handleNotification(notificationMessages
+          .add(newName));
+      });
     }
-
-    const namesObject = {
-      id: persons.length + 1,
-      name: newName,
-      number: newNumber,
-    };
-
-    personService
-    .create(namesObject)
-    .then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setNewNumber("");
-      handleNotification(notificationMessages
-        .add(newName));
-    });
-
   };
 
   const removePerson = async (id, name) => {
@@ -84,6 +81,11 @@ const App = () => {
 
     }
   };
+
+  const resetForms = () => {
+    setNewName("");
+    setNewNumber("");
+  }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
