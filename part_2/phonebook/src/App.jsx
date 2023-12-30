@@ -27,9 +27,10 @@ const App = () => {
     const duplicatePersonObject = persons.find(person => person.name === newName)
 
     if (duplicatePersonObject) {
-      if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
-        const updatePersonObject =  {...duplicatePersonObject, number: newNumber }
+      const confirmation = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
 
+      if (confirmation) {
+        const updatePersonObject =  {...duplicatePersonObject, number: newNumber }
         personService
         .update(duplicatePersonObject.id, updatePersonObject)
         .then(returnedPerson => {
@@ -55,7 +56,6 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-
       personService
       .create(namesObject)
       .then((returnedPerson) => {
@@ -68,9 +68,10 @@ const App = () => {
   };
 
   const removePerson = async (id, name) => {
-    if (window.confirm(`Do you want to remove ${name} from the phonebook?`)) {
-      await personService.remove(id);
+    const confimation = window.confirm(`Do you want to remove ${name} from the phonebook?`)
 
+    if (confimation) {
+      await personService.remove(id);
       personService
       .getAll()
       .then((getPersons) => {
@@ -78,8 +79,8 @@ const App = () => {
         handleNotification(notificationMessages
           .remove(name));
       });
-
     }
+
   };
 
   const resetForms = () => {
