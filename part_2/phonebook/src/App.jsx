@@ -37,17 +37,9 @@ const App = () => {
         updatePerson(duplicatePersonObject);
       }
     } else {
-      const namesObject = {
-        id: persons.length + 1,
-        name: newName,
-        number: newNumber,
-      };
-      personService.create(namesObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        resetForms();
-        handleNotification(notificationMessages.add(newName));
-      });
+      createPerson();
     }
+
   };
 
   const removePerson = async (id, name) => {
@@ -89,6 +81,19 @@ const App = () => {
         });
       });
   };
+
+  const createPerson = () => {
+    const namesObject = {
+      id: persons.length + 1,
+      name: newName,
+      number: newNumber,
+    };
+    personService.create(namesObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      resetForms();
+      handleNotification(notificationMessages.add(newName));
+    });
+  }
 
   const resetForms = () => {
     setNewName("");
