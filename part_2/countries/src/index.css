@@ -36,8 +36,9 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border: 1px solid;
+  margin-left: 1em;
+  padding: 0.1em 0.1em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -64,4 +65,12 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.countries > div{
+  margin-top: 0.5em;
+}
+
+.country-img {
+  border: 2px solid black;
 }

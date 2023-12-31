@@ -5,7 +5,7 @@ const Country = ({ country }) => {
     <div key={country.name.common}>
       <h2>{country.name.common}</h2>
       <div>
-        <img src={country.flags.png} alt={`Flag of ${country.name.common}`} />
+        <img className="country-img" src={country.flags.png} alt={`Flag of ${country.name.common}`} />
       </div>
       <p>
         <b>Capital:</b> {country.capital}

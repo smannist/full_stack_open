@@ -16,9 +16,9 @@ const App = () => {
     });
   }, []);
 
-  const onSearch = (event) => {
+  const onShow = (event, country) => {
     event.preventDefault();
-    setCountries(value);
+    setValue(country);
   };
 
   const handleChange = (event) => {
@@ -32,7 +32,7 @@ const App = () => {
         value={value}
         handleChange={handleChange}
       />
-      <Countries countries={countries} value={value} onSearch={onSearch}/>
+      <Countries countries={countries} value={value} onShow={onShow}/>
     </div>
   );
 };
