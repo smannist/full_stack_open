@@ -43,6 +43,12 @@ app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
 
 });
 
+app.delete(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter((person) => person.id !== id);
+  response.status(204).end();
+});
+
 app.get(process.env.INFO_API_URL, (request, response) => {
   const date = new Date();
   response.send(
