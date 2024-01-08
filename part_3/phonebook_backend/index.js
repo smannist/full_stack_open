@@ -31,6 +31,14 @@ app.get(process.env.PERSONS_API_URL, (request, response) => {
   response.json(persons);
 });
 
+app.get(process.env.INFO_API_URL, (request, response) => {
+  const date = new Date();
+  response.send(
+    `<p>Phonebook has info for ${persons.length} people.</p>
+     <p>${date}.</p>`
+  );
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
