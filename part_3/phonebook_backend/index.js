@@ -31,14 +31,6 @@ app.get(process.env.PERSONS_API_URL, (request, response) => {
   response.json(persons);
 });
 
-app.get(process.env.INFO_API_URL, (request, response) => {
-  const date = new Date();
-  response.send(
-    `<p>Phonebook has info for ${persons.length} people.</p>
-     <p>${date}.</p>`
-  );
-});
-
 app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
   const id = Number(request.params.id);
   const person = persons.find((person) => person.id === id);
@@ -49,6 +41,14 @@ app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
     response.status(404).end();
   }
 
+});
+
+app.get(process.env.INFO_API_URL, (request, response) => {
+  const date = new Date();
+  response.send(
+    `<p>Phonebook has info for ${persons.length} people.</p>
+     <p>${date}.</p>`
+  );
 });
 
 app.listen(process.env.PORT, () => {
