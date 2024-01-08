@@ -39,6 +39,18 @@ app.get(process.env.INFO_API_URL, (request, response) => {
   );
 });
 
+app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find((person) => person.id === id);
+
+  if (person) {
+    response.json(person);
+  } else {
+    response.status(404).end();
+  }
+
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
