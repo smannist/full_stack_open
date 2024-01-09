@@ -1,27 +1,29 @@
 import axios from "axios";
 
+const baseUrl = "/api/persons";
+
 const getAll = () => {
-  const request = axios.get(import.meta.env.VITE_PERSONS_SERVICE_URL);
+  const request = axios.get(baseUrl)
   return request.then((response) => response.data);
 };
 
 const create = (newObject) => {
   const request = axios.post(
-    import.meta.env.VITE_PERSONS_SERVICE_URL,
+    baseUrl,
     newObject);
   return request.then((response) => response.data);
 };
 
 const update = (id, newObject) => {
   const request = axios.put(
-    `${import.meta.env.VITE_PERSONS_SERVICE_URL}/${id}`,
+    `${baseUrl}/${id}`,
     newObject);
   return request.then((response) => response.data);
 };
 
 const remove = (id) => {
   const request = axios.delete(
-    `${import.meta.env.VITE_PERSONS_SERVICE_URL}/${id}`
+    `${baseUrl}/${id}`
   );
   return request;
 }

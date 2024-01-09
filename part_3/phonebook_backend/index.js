@@ -1,20 +1,16 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cors = require("cors");
 
-dotenv.config();
 morgan.token("body", (request, response) => JSON.stringify(request.body));
 
 const app = express();
 
 app.use(express.json());
-app.use(express.static('dist'))
+app.use(express.static("dist"));
 app.use(cors());
 app.use(
-  morgan(
-    ":method :url :status :res[content-length] - :response-time ms :body"
-  )
+  morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
 
 let persons = [
@@ -40,11 +36,11 @@ let persons = [
   },
 ];
 
-app.get(process.env.PERSONS_API_URL, (request, response) => {
+app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
 
-app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
+app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   const person = persons.find((person) => person.id === id);
 
@@ -55,7 +51,7 @@ app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
   }
 });
 
-app.post(process.env.PERSONS_API_URL, (request, response) => {
+app.post("/api/persons", (request, response) => {
   const body = request.body;
   const duplicateName = persons.find((person) => person.name === body.name);
 
@@ -78,13 +74,13 @@ app.post(process.env.PERSONS_API_URL, (request, response) => {
   response.json(person);
 });
 
-app.delete(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
+app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   persons = persons.filter((person) => person.id !== id);
   response.status(204).end();
 });
 
-app.get(process.env.INFO_API_URL, (request, response) => {
+app.get("/info", (request, response) => {
   const date = new Date();
   response.send(
     `<p>Phonebook has info for ${persons.length} people.</p>
@@ -92,9 +88,10 @@ app.get(process.env.INFO_API_URL, (request, response) => {
   );
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-});
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
 
 const generateId = (min, max) => {
   min = Math.ceil(min);
