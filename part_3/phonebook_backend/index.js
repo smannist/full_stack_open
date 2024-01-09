@@ -51,7 +51,7 @@ app.post(process.env.PERSONS_API_URL, (request, response) => {
   if (!body.name || !body.number || duplicateName) {
     return response.status(400).json({
       error:
-        "Name or number is missing or the person with the same name \
+        "Name or number is missing or person with the same name \
          is already added to the phonebook",
     });
   }
