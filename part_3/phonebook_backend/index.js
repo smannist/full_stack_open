@@ -9,6 +9,7 @@ morgan.token("body", (request, response) => JSON.stringify(request.body));
 const app = express();
 
 app.use(express.json());
+app.use(express.static('dist'))
 app.use(cors());
 app.use(
   morgan(
