@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -40,7 +42,26 @@ app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
   } else {
     response.status(404).end();
   }
+});
 
+app.post(process.env.PERSONS_API_URL, (request, response) => {
+  const body = request.body;
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "name or number is missing!",
+    });
+  }
+
+  const person = {
+    id: generateId(1, Number.MAX_SAFE_INTEGER),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = persons.concat(person);
+
+  response.json(person);
 });
 
 app.delete(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
@@ -60,3 +81,9 @@ app.get(process.env.INFO_API_URL, (request, response) => {
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
+
+const generateId = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+};
