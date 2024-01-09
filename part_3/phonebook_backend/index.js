@@ -1,9 +1,12 @@
 const express = require("express");
+const dotenv = require("dotenv");
+const morgan = require("morgan");
+
 const app = express();
 
 app.use(express.json());
+app.use(morgan('tiny'));
 
-const dotenv = require("dotenv");
 dotenv.config();
 
 let persons = [
