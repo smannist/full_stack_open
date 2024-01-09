@@ -46,10 +46,13 @@ app.get(`${process.env.PERSONS_API_URL}/:id`, (request, response) => {
 
 app.post(process.env.PERSONS_API_URL, (request, response) => {
   const body = request.body;
+  const duplicateName = persons.find((person) => person.name === body.name);
 
-  if (!body.name || !body.number) {
+  if (!body.name || !body.number || duplicateName) {
     return response.status(400).json({
-      error: "name or number is missing!",
+      error:
+        "Name or number is missing or the person with the same name \
+         is already added to the phonebook",
     });
   }
 
