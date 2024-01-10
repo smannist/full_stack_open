@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-    .get(import.meta.env.VITE_COUNTRIES_API_URL)
+    .get("https://studies.cs.helsinki.fi/restcountries/api/all")
     .then((response) => {
       setCountries(response.data);
     });
