@@ -22,7 +22,11 @@ const personSchema = new mongoose.Schema({
   },
   number: {
     type: String,
-    minlength: 3,
+    validate: {
+      validator: number => /^(\d{2,3}-|\d{3}-)\d+$/.test(number),
+      message: "The phone number must be in the format XX-XXXXXXX or XXX-XXXXXXX."
+    },
+    minlength: 8,
     required: true
   }
 });
