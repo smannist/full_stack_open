@@ -6,8 +6,10 @@ const successMessages = {
   update: (name) => `Updated ${name}`,
 };
 
-const failureMessages =  {
-  alreadyRemoved: (name) => `Information of ${name} has already been removed from the server`
+const failureMessages = {
+  alreadyRemoved: (name) =>
+    `Information of ${name} has already been removed from the server`,
+  mongoValidator: (error) => `${error.response.data.error}`
 };
 
 const Notification = ({ message, type }) => {

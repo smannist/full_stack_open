@@ -18,11 +18,6 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    if (!newName || !newNumber) {
-      alert("You must enter both name and a number");
-      return;
-    }
-
     const duplicatePersonObject = persons.find(
       (person) => person.name === newName
     );
@@ -48,11 +43,12 @@ const App = () => {
 
     if (confirmation) {
       await personService.remove(id);
-      personService.getAll().then((getPersons) => {
+      personService
+      .getAll()
+      .then((getPersons) => {
         setPersons(getPersons);
         handleNotification(
-        successMessages.remove(name),
-        "success");
+        successMessages.remove(name), "success");
       });
     }
   };
@@ -78,10 +74,11 @@ const App = () => {
       })
       .catch((error) => {
         handleNotification(
-        failureMessages.alreadyRemoved(duplicatePersonObject.name),
-        "failure");
-        personService.getAll().then((updatedPersons) => {
-          setPersons(updatedPersons);
+        failureMessages.alreadyRemoved(duplicatePersonObject.name), "failure");
+        personService
+          .getAll()
+          .then((updatedPersons) => {
+            setPersons(updatedPersons);
         });
       });
   };
@@ -92,13 +89,18 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    personService.create(namesObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      resetForms();
-      handleNotification(
-      successMessages.add(newName),
-      "success");
-    });
+    personService
+      .create(namesObject)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        resetForms();
+        handleNotification(
+        successMessages.add(newName), "success");
+    })
+      .catch(error => {
+        handleNotification(
+          failureMessages.mongoValidator(error), "failure");
+      })
   }
 
   const resetForms = () => {
