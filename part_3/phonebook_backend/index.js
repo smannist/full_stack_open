@@ -67,15 +67,15 @@ app.post("/api/persons", (request, response) => {
     });
   }
 
-  const person = {
-    id: generateId(1, Number.MAX_SAFE_INTEGER),
+  const person = new Person({
     name: body.name,
     number: body.number,
-  };
+  });
 
-  persons = persons.concat(person);
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
 
-  response.json(person);
 });
 
 app.delete("/api/persons/:id", (request, response) => {
@@ -97,9 +97,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-const generateId = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
-};
