@@ -3,9 +3,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/person");
 const { unknownEndpoint, internalServerError, errorHandler } = require("./middleware/person");
+const { PORT } = require("./config"); 
 require("dotenv").config();
-
-const PORT = process.env.PORT || 3001;
 
 morgan.token("body", (request, response) => JSON.stringify(request.body));
 
