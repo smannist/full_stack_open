@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/person");
-const { unknownEndpoint, errorHandler } = require("./middleware/person");
+const { unknownEndpoint, internalServerError, errorHandler } = require("./middleware/person");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
@@ -88,12 +88,20 @@ app.put("/api/persons/:id", (request, response, next) => {
     .catch(error => next(error));
 })
 
-app.get("/info", (request, response) => {
+app.get("/info", async (request, response) => {
   const date = new Date();
-  response.send(
-    `<p>Phonebook has info for ${persons.length} people.</p>
-     <p>${date}.</p>`
-  );
+
+  try {
+    const count = await Person.countDocuments({});
+    response.send(
+      `<p>Phonebook has info for ${count} people.</p>
+       <p>${date}.</p>`
+    );
+  } catch (error) {
+    console.log(error);
+    response.status(500).send("Internal Server Error");
+  }
+
 });
 
 app.listen(PORT, () => {
@@ -101,4 +109,5 @@ app.listen(PORT, () => {
 });
 
 app.use(unknownEndpoint);
+app.use(internalServerError);
 app.use(errorHandler);

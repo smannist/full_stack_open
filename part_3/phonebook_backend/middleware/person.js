@@ -4,6 +4,12 @@ const unknownEndpoint = (request, response) => {
     .send({ error: 'Unknown endpoint' });
 }
 
+const internalServerError = (request, response) => {
+  response
+    .status(500)
+    .send({error: "Internal Server Error"})
+}
+
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
 
@@ -18,5 +24,6 @@ const errorHandler = (error, request, response, next) => {
 
 module.exports = {
   unknownEndpoint,
+  internalServerError,
   errorHandler,
 };
