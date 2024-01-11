@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const Person = require("./models/person");
+require("dotenv").config();
 
 morgan.token("body", (request, response) => JSON.stringify(request.body));
 
@@ -37,7 +39,9 @@ let persons = [
 ];
 
 app.get("/api/persons", (request, response) => {
-  response.json(persons);
+  Person.find({}).then((notes) => {
+    response.json(notes);
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
@@ -88,10 +92,11 @@ app.get("/info", (request, response) => {
   );
 });
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
 
 const generateId = (min, max) => {
   min = Math.ceil(min);
