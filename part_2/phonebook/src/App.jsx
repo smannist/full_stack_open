@@ -73,6 +73,7 @@ const App = () => {
         );
       })
       .catch((error) => {
+        console.log(error);
         handleNotification(
         failureMessages.alreadyRemoved(duplicatePersonObject.name), "failure");
         personService
