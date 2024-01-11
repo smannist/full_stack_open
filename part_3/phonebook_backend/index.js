@@ -39,8 +39,10 @@ let persons = [
 ];
 
 app.get("/api/persons", (request, response) => {
-  Person.find({}).then((notes) => {
-    response.json(notes);
+  Person
+    .find({})
+    .then((notes) => {
+      response.json(notes);
   });
 });
 
@@ -77,9 +79,12 @@ app.post("/api/persons", (request, response) => {
     number: body.number,
   });
 
-  person.save().then((savedPerson) => {
-    response.json(savedPerson);
+  person
+    .save()
+    .then((savedPerson) => {
+      response.json(savedPerson);
   });
+
 });
 
 app.delete("/api/persons/:id", (request, response) => {
