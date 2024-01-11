@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/person");
-const { unknownEndpoint, internalServerError, errorHandler } = require("./middleware/person");
+const { unknownEndpoint, internalServerError, badRequest, errorHandler } = require("./middleware/person");
 const { PORT } = require("./config"); 
 require("dotenv").config();
 
@@ -40,15 +40,6 @@ app.get("/api/persons/:id", (request, response, next) => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
-  const duplicateName = persons.find((person) => person.name === body.name);
-
-  if (!body.name || !body.number || duplicateName) {
-    return response.status(400).json({
-      error:
-        "Name or number is missing or person with the same name \
-         is already added to the phonebook",
-    });
-  }
 
   const person = new Person({
     name: body.name,
@@ -60,6 +51,7 @@ app.post("/api/persons", (request, response) => {
     .then((savedPerson) => {
       response.json(savedPerson);
   });
+
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
@@ -109,4 +101,5 @@ app.listen(PORT, () => {
 
 app.use(unknownEndpoint);
 app.use(internalServerError);
+app.use(badRequest);
 app.use(errorHandler);
