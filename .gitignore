@@ -2,5 +2,4 @@ node_modules
 /part1react
 .env
 requests
-dist
 fly.toml

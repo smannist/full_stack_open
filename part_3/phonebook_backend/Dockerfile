@@ -10,8 +10,6 @@ LABEL fly_launch_runtime="Node.js"
 WORKDIR /app
 
 # Set envs
-ARG MONGO_DB_URI
-
 ENV NODE_ENV="production"
 ENV MONGO_DB_URI=${MONGO_DB_URI}
 

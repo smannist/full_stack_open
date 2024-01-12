@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: phonebookapp:latest
+    env_file:
+      - .env
+    ports:
+      - "3001:3001"
