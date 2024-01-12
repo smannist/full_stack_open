@@ -23,3 +23,20 @@ describe("total likes", () => {
     expect(result).toBe(36);
   });
 });
+
+describe("favorite blog", () => {
+  test("of empty list is null", () => {
+    const result = listHelper.favoriteBlogs([]);
+    expect(result).toEqual(null);
+  });
+
+  test("when list has only one blog favorite equals that", () => {
+    const result = listHelper.favoriteBlogs(mockData.listWithOneBlog);
+    expect(result).toEqual(mockData.listWithOneBlog[0]);
+  });
+
+  test("of a bigger list is found correctly", () => {
+    const result = listHelper.favoriteBlogs(mockData.blogs);
+    expect(result).toEqual(mockData.blogs[2]);
+  });
+});
