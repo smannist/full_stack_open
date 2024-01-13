@@ -13,7 +13,7 @@ describe("total likes", () => {
     expect(result).toBe(0);
   });
 
-  test("when list has only one blog equals the likes of that", () => {
+  test("when the list has only one blog, equals the likes of that", () => {
     const result = listHelper.totalLikes(mockData.listWithOneBlog);
     expect(result).toBe(5);
   });
@@ -25,12 +25,12 @@ describe("total likes", () => {
 });
 
 describe("favorite blog", () => {
-  test("of empty list is null", () => {
+  test("of an empty list is null", () => {
     const result = listHelper.favoriteBlogs([]);
     expect(result).toEqual(null);
   });
 
-  test("when list has only one blog favorite equals that", () => {
+  test("when the list has only one blog, the favorite equals that", () => {
     const result = listHelper.favoriteBlogs(mockData.listWithOneBlog);
     expect(result).toEqual(mockData.listWithOneBlog[0]);
   });
@@ -38,5 +38,30 @@ describe("favorite blog", () => {
   test("of a bigger list is found correctly", () => {
     const result = listHelper.favoriteBlogs(mockData.blogs);
     expect(result).toEqual(mockData.blogs[2]);
+  });
+});
+
+describe("author with most blogs", () => {
+  test("of an empty list is null", () => {
+    const result = listHelper.mostBlogs([]);
+    expect(result).toBe(null);
+  });
+
+  test("when the list has only one blog, most blogs equals that", () => {
+    const expectedData = {
+      author: "Edsger W. Dijkstra",
+      blogs: 1,
+    };
+    const result = listHelper.mostBlogs(mockData.listWithOneBlog);
+    expect(result).toEqual(expectedData);
+  });
+
+  test("of a bigger list is found correctly", () => {
+    const expectedData = {
+      author: "Robert C. Martin",
+      blogs: 3,
+    };
+    const result = listHelper.mostBlogs(mockData.blogs);
+    expect(result).toEqual(expectedData);
   });
 });
