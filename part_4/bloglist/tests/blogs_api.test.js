@@ -11,7 +11,7 @@ beforeEach(async () => {
   await Blog.insertMany(mockData.blogs);
 });
 
-describe("Blogs API rest functionality", () => {
+describe("Blogs API GET", () => {
   test("blogs are returned as correct sized json", async () => {
     const response = await api.get("/api/blogs").expect(200);
 
