@@ -18,6 +18,14 @@ describe("Blogs API GET", () => {
     expect(response.body).toHaveLength(mockData.blogs.length);
     expect(response.header["content-type"]).toMatch(/application\/json/);
   });
+
+  test("each blog can be identified by id", async () => {
+    const response = await api.get("/api/blogs").expect(200);
+
+    response.body.forEach((blog) => {
+      expect(blog.id).toBeDefined();
+    });
+  });
 });
 
 afterAll(async () => {
