@@ -19,7 +19,7 @@ describe("total likes", () => {
   });
 
   test("of a bigger list is calculated right", () => {
-    const result = listHelper.totalLikes(mockData.blogs);
+    const result = listHelper.totalLikes(mockData.listWithMultipleBlogs);
     expect(result).toBe(36);
   });
 });
@@ -36,8 +36,8 @@ describe("favorite blog", () => {
   });
 
   test("of a bigger list is found correctly", () => {
-    const result = listHelper.favoriteBlogs(mockData.blogs);
-    expect(result).toEqual(mockData.blogs[2]);
+    const result = listHelper.favoriteBlogs(mockData.listWithMultipleBlogs);
+    expect(result).toEqual(mockData.listWithMultipleBlogs[2]);
   });
 });
 
@@ -61,7 +61,7 @@ describe("author with most blogs", () => {
       author: "Robert C. Martin",
       blogs: 3,
     };
-    const result = listHelper.mostBlogs(mockData.blogs);
+    const result = listHelper.mostBlogs(mockData.listWithMultipleBlogs);
     expect(result).toEqual(expectedData);
   });
 });
@@ -88,7 +88,7 @@ describe("author with most likes", () => {
       likes: 17
     }
 
-    result = listHelper.mostLikes(mockData.blogs);
+    result = listHelper.mostLikes(mockData.listWithMultipleBlogs);
     expect(result).toEqual(expectedData);
   })
 });

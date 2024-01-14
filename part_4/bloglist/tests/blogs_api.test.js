@@ -8,14 +8,14 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  await Blog.insertMany(mockData.blogs);
+  await Blog.insertMany(mockData.listWithMultipleBlogs);
 });
 
 describe("Blogs API GET", () => {
   test("blogs are returned as correct sized json", async () => {
     const response = await api.get("/api/blogs").expect(200);
 
-    expect(response.body).toHaveLength(mockData.blogs.length);
+    expect(response.body).toHaveLength(mockData.listWithMultipleBlogs.length);
     expect(response.header["content-type"]).toMatch(/application\/json/);
   });
 
@@ -38,7 +38,7 @@ describe("Blogs API POST", () => {
     const response = await api.get("/api/blogs");
     const blogTitles = response.body.map(blog => blog.title);
 
-    expect(response.body).toHaveLength(mockData.blogs.length + 1);
+    expect(response.body).toHaveLength(mockData.listWithMultipleBlogs.length + 1);
     expect(blogTitles).toContain(mockData.mockBlog.title);
   });
 });
