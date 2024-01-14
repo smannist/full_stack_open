@@ -5,6 +5,13 @@ const mockBlog = {
   likes: 2,
 };
 
+const mockBlogNoLikes = {
+  title:
+    "Image recognition accuracy: An unseen challenge confounding today’s AI",
+  author: "Rachel Gordon",
+  url: "https://news.mit.edu/2023/image-recognition-accuracy-minimum-viewing-time-metric-1215",
+};
+
 const listWithOneBlog = [
   {
     _id: "5a422aa71b54a676234d17f8",
@@ -71,4 +78,5 @@ module.exports = {
   listWithOneBlog,
   listWithMultipleBlogs,
   mockBlog,
+  mockBlogNoLikes,
 };

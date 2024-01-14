@@ -31,15 +31,29 @@ describe("Blogs API GET", () => {
 describe("Blogs API POST", () => {
   test("new blog is added correctly", async () => {
     await api
+    .post("/api/blogs")
+    .send(mockData.mockBlog)
+    .expect(201);
+
+    const response = await api.get("/api/blogs");
+    const blogTitles = response.body.map((blog) => blog.title);
+
+    expect(response.body).toHaveLength(
+      mockData.listWithMultipleBlogs.length + 1
+    );
+    expect(blogTitles).toContain(mockData.mockBlog.title);
+  });
+
+  test("if likes are not specified, default to zero", async () => {
+    await api
       .post("/api/blogs")
-      .send(mockData.mockBlog)
+      .send(mockData.mockBlogNoLikes)
       .expect(201);
 
     const response = await api.get("/api/blogs");
-    const blogTitles = response.body.map(blog => blog.title);
+    const lastBlog = response.body.length - 1;
 
-    expect(response.body).toHaveLength(mockData.listWithMultipleBlogs.length + 1);
-    expect(blogTitles).toContain(mockData.mockBlog.title);
+    expect(response.body[lastBlog].likes).toBe(0);
   });
 });
 
