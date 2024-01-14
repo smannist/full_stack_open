@@ -6,6 +6,7 @@ const blogsRouter = require("./controllers/blogs");
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 const dotenv = require("dotenv");
+require("express-async-errors");
 
 dotenv.config();
 morgan.token("body", (request) => JSON.stringify(request.body));
@@ -20,9 +21,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms :body")
-);
+app.use(logger.createMorganMiddleware());
 
 app.use("/api/blogs", blogsRouter);
 
