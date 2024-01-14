@@ -8,8 +8,14 @@ blogsRouter.get("/", async (request, response) => {
 
 blogsRouter.post("/", async (request, response) => {
   const newBlog = new Blog(request.body);
-  const savedBlog = await newBlog.save();
-  response.status(201).json(savedBlog);
+
+  if (!newBlog.title || !newBlog.url) {
+    response.status(400).end();
+  } else {
+    const savedBlog = await newBlog.save();
+    response.status(201).json(savedBlog);
+  }
+
 });
 
 module.exports = blogsRouter;

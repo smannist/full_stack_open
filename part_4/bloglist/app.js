@@ -6,6 +6,7 @@ const blogsRouter = require("./controllers/blogs");
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 const dotenv = require("dotenv");
+const { badRequest } = require("./middleware/status");
 require("express-async-errors");
 
 dotenv.config();
@@ -22,6 +23,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(logger.createMorganMiddleware());
+
+app.use(badRequest);
 
 app.use("/api/blogs", blogsRouter);
 
