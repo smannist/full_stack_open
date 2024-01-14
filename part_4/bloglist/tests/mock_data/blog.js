@@ -1,3 +1,10 @@
+const mockBlog = {
+  title: "AI agents help explain other AI systems",
+  author: "Rachel Gordon",
+  url: "https://news.mit.edu/2024/ai-agents-help-explain-other-ai-systems-0103",
+  likes: 2,
+};
+
 const listWithOneBlog = [
   {
     _id: "5a422aa71b54a676234d17f8",
@@ -63,4 +70,5 @@ const blogs = [
 module.exports = {
   listWithOneBlog,
   blogs,
+  mockBlog,
 };
