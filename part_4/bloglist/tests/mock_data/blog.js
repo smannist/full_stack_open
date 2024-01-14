@@ -12,6 +12,23 @@ const mockBlogNoLikes = {
   url: "https://news.mit.edu/2023/image-recognition-accuracy-minimum-viewing-time-metric-1215",
 };
 
+const mockBlogNoTitle = {
+  author: "Rachel Gordon",
+  url: "https://news.mit.edu/2024/ai-agents-help-explain-other-ai-systems-0103",
+  likes: 2,
+};
+
+const mockBlogNoUrl = {
+  title: "AI agents help explain other AI systems",
+  author: "Rachel Gordon",
+  likes: 2,
+};
+
+const mockBlogNoTitleOrUrl = {
+  author: "Rachel Gordon",
+  likes: 2,
+};
+
 const listWithOneBlog = [
   {
     _id: "5a422aa71b54a676234d17f8",
@@ -79,4 +96,7 @@ module.exports = {
   listWithMultipleBlogs,
   mockBlog,
   mockBlogNoLikes,
+  mockBlogNoTitle,
+  mockBlogNoUrl,
+  mockBlogNoTitleOrUrl,
 };

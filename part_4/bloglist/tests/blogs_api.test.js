@@ -55,6 +55,23 @@ describe("Blogs API POST", () => {
 
     expect(response.body[latestBlog].likes).toBe(0);
   });
+
+  test("if title or url is not specified, respond with 400 bad request", async () => {
+    await api
+    .post("/api/blogs")
+    .send(mockData.mockBlogNoTitle)
+    .expect(400);
+
+    await api
+    .post("/api/blogs")
+    .send(mockData.mockBlogNoUrl)
+    .expect(400);
+
+    await api
+    .post("/api/blogs")
+    .send(mockData.mockBlogNoTitleOrUrl)
+    .expect(400);
+  })
 });
 
 afterAll(async () => {
