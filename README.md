@@ -4,7 +4,7 @@ This repository contains my solutions to the Full Stack open exercises provided 
 
 For more information and to access the course, visit the [Full Stack Open Course website](https://fullstackopen.com/en/).
 
-Parts completed:
+Fully completed parts (all exercises):
 
 - [x] 0 Fundamentals of Web apps
 - [x] 1 Introduction to React
