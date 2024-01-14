@@ -51,9 +51,9 @@ describe("Blogs API POST", () => {
       .expect(201);
 
     const response = await api.get("/api/blogs");
-    const lastBlog = response.body.length - 1;
+    const latestBlog = response.body.length - 1;
 
-    expect(response.body[lastBlog].likes).toBe(0);
+    expect(response.body[latestBlog].likes).toBe(0);
   });
 });
 
