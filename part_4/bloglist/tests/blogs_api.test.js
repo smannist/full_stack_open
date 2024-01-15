@@ -76,6 +76,24 @@ describe("Blogs API DELETE", () => {
   });
 });
 
+describe("Blogs API PUT", () => {
+  test("blog is updated correctly", async () => {
+    const blogs = await api.get("/api/blogs");
+    const blogToUpdate = blogs.body[0];
+
+    blogToUpdate.title = "Updated Blog Title";
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate);
+
+    const updatedBlogs = await api.get("/api/blogs");
+
+    expect(updatedBlogs.status).toBe(200);
+    expect(updatedBlogs.body[0].title).toBe("Updated Blog Title");
+  });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });

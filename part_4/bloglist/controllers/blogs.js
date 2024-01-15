@@ -15,16 +15,34 @@ blogsRouter.post("/", async (request, response) => {
     const savedBlog = await newBlog.save();
     response.status(201).json(savedBlog);
   }
-
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
   try {
     await Blog.findByIdAndDelete(request.params.id);
     response.status(204).end();
-  } catch {
-    next(error);
+  } catch (error) {
+    console.log(error);
   }
-})
+});
+
+blogsRouter.put("/:id", async (request, response) => {
+  const { title, author, url, likes } = request.body;
+
+  try {
+    updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      { title, author, url, likes },
+      {
+        new: true,
+        runValidators: true,
+        context: "query",
+      }
+    );
+    response.json(updatedBlog);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = blogsRouter;
