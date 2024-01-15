@@ -3,6 +3,7 @@ const supertest = require("supertest");
 const app = require("../app");
 const mockData = require("./mock_data/blog");
 const Blog = require("../models/blog");
+const helper = require("./helpers/test_helper");
 
 const api = supertest(app);
 
@@ -32,13 +33,12 @@ describe("Blogs API POST", () => {
   test("new blog is added correctly", async () => {
     await api.post("/api/blogs").send(mockData.mockBlog).expect(201);
 
-    const response = await api.get("/api/blogs");
-    const blogTitles = response.body.map((blog) => blog.title);
+    const blogsAtEnd = await helper.blogsInDb();
 
-    expect(response.body).toHaveLength(
+    expect(blogsAtEnd).toHaveLength(
       mockData.listWithMultipleBlogs.length + 1
     );
-    expect(blogTitles).toContain(mockData.mockBlog.title);
+    expect(blogsAtEnd.map(blog => blog.title)).toContain(mockData.mockBlog.title);
   });
 
   test("if likes are not specified, default to zero", async () => {
@@ -51,9 +51,15 @@ describe("Blogs API POST", () => {
   });
 
   test("if title or url is not specified, respond with 400 bad request", async () => {
-    await api.post("/api/blogs").send(mockData.mockBlogNoTitle).expect(400);
+    await api
+      .post("/api/blogs")
+      .send(mockData.mockBlogNoTitle)
+      .expect(400);
 
-    await api.post("/api/blogs").send(mockData.mockBlogNoUrl).expect(400);
+    await api
+      .post("/api/blogs")
+      .send(mockData.mockBlogNoUrl)
+      .expect(400);
 
     await api
       .post("/api/blogs")
@@ -67,7 +73,9 @@ describe("Blogs API DELETE", () => {
     const blogs = await api.get("/api/blogs");
     const blogToDelete = blogs.body[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204);
 
     const blogsAfterDelete = await api.get("/api/blogs");
 
