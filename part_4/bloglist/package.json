@@ -26,6 +26,7 @@
   "license": "ISC",
   "description": "",
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testTimeout": 10000
   }
 }

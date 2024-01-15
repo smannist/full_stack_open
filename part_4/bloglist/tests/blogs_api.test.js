@@ -30,10 +30,7 @@ describe("Blogs API GET", () => {
 
 describe("Blogs API POST", () => {
   test("new blog is added correctly", async () => {
-    await api
-    .post("/api/blogs")
-    .send(mockData.mockBlog)
-    .expect(201);
+    await api.post("/api/blogs").send(mockData.mockBlog).expect(201);
 
     const response = await api.get("/api/blogs");
     const blogTitles = response.body.map((blog) => blog.title);
@@ -45,10 +42,7 @@ describe("Blogs API POST", () => {
   });
 
   test("if likes are not specified, default to zero", async () => {
-    await api
-      .post("/api/blogs")
-      .send(mockData.mockBlogNoLikes)
-      .expect(201);
+    await api.post("/api/blogs").send(mockData.mockBlogNoLikes).expect(201);
 
     const response = await api.get("/api/blogs");
     const latestBlog = response.body.length - 1;
@@ -57,21 +51,29 @@ describe("Blogs API POST", () => {
   });
 
   test("if title or url is not specified, respond with 400 bad request", async () => {
-    await api
-    .post("/api/blogs")
-    .send(mockData.mockBlogNoTitle)
-    .expect(400);
+    await api.post("/api/blogs").send(mockData.mockBlogNoTitle).expect(400);
+
+    await api.post("/api/blogs").send(mockData.mockBlogNoUrl).expect(400);
 
     await api
-    .post("/api/blogs")
-    .send(mockData.mockBlogNoUrl)
-    .expect(400);
+      .post("/api/blogs")
+      .send(mockData.mockBlogNoTitleOrUrl)
+      .expect(400);
+  });
+});
 
-    await api
-    .post("/api/blogs")
-    .send(mockData.mockBlogNoTitleOrUrl)
-    .expect(400);
-  })
+describe("Blogs API DELETE", () => {
+  test("blog is deleted correctly", async () => {
+    const blogs = await api.get("/api/blogs");
+    const blogToDelete = blogs.body[0];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const blogsAfterDelete = await api.get("/api/blogs");
+
+    expect(blogsAfterDelete).not.toContain(blogToDelete.id);
+    expect(blogsAfterDelete.body).toHaveLength(blogs.body.length - 1);
+  });
 });
 
 afterAll(async () => {
