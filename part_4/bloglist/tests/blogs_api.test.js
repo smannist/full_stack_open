@@ -21,9 +21,9 @@ describe("Blogs API GET", () => {
   });
 
   test("each blog can be identified by id", async () => {
-    const response = await api.get("/api/blogs");
+    const blogs = await helper.blogsInDb();
 
-    response.body.forEach((blog) => {
+    blogs.forEach((blog) => {
       expect(blog.id).toBeDefined();
     });
   });
@@ -31,7 +31,7 @@ describe("Blogs API GET", () => {
 
 describe("Blogs API POST", () => {
   test("new blog is added correctly", async () => {
-    await api.post("/api/blogs").send(mockData.mockBlog).expect(201);
+    await helper.addBlog(api, mockData.mockBlog);
 
     const blogsAtEnd = await helper.blogsInDb();
 
@@ -42,63 +42,49 @@ describe("Blogs API POST", () => {
   });
 
   test("if likes are not specified, default to zero", async () => {
-    await api.post("/api/blogs").send(mockData.mockBlogNoLikes).expect(201);
+    await helper.addBlog(api, mockData.mockBlogNoLikes);
 
-    const response = await api.get("/api/blogs");
-    const latestBlog = response.body.length - 1;
+    const response = await helper.blogsInDb();
 
-    expect(response.body[latestBlog].likes).toBe(0);
+    expect(response[response.length - 1].likes).toBe(0);
   });
 
   test("if title or url is not specified, respond with 400 bad request", async () => {
-    await api
-      .post("/api/blogs")
-      .send(mockData.mockBlogNoTitle)
-      .expect(400);
-
-    await api
-      .post("/api/blogs")
-      .send(mockData.mockBlogNoUrl)
-      .expect(400);
-
-    await api
-      .post("/api/blogs")
-      .send(mockData.mockBlogNoTitleOrUrl)
-      .expect(400);
+    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoTitle, 400);
+    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoUrl, 400);
+    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoTitleOrUrl, 400);
   });
 });
 
 describe("Blogs API DELETE", () => {
   test("blog is deleted correctly", async () => {
-    const blogs = await api.get("/api/blogs");
-    const blogToDelete = blogs.body[0];
+    const blogs = await helper.blogsInDb();
+    const blogToDelete = blogs[0];
 
-    await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204);
+    await helper.deleteBlogById(api, blogToDelete.id);
 
-    const blogsAfterDelete = await api.get("/api/blogs");
+    const blogsAfterDelete = await helper.blogsInDb();
 
     expect(blogsAfterDelete).not.toContain(blogToDelete.id);
-    expect(blogsAfterDelete.body).toHaveLength(blogs.body.length - 1);
+    expect(blogsAfterDelete).toHaveLength(blogs.length - 1);
   });
 });
 
 describe("Blogs API PUT", () => {
   test("blog is updated correctly", async () => {
-    const blogs = await api.get("/api/blogs");
-    const blogToUpdate = blogs.body[0];
+    const blogs = await helper.blogsInDb();
+    const blogToUpdate = blogs[0];
 
     blogToUpdate.title = "Updated Blog Title";
 
-    await api
-      .put(`/api/blogs/${blogToUpdate.id}`)
-      .send(blogToUpdate);
+    await helper
+      .updateBlogById(api,
+                     blogToUpdate.id,
+                     blogToUpdate);
 
-    const updatedBlogs = await api.get("/api/blogs");
+    const updatedBlogs = await helper.blogsInDb();
 
-    expect(updatedBlogs.status).toBe(200);
-    expect(updatedBlogs.body[0].title).toBe("Updated Blog Title");
+    expect(updatedBlogs[0].title).toBe("Updated Blog Title");
   });
 });
 
