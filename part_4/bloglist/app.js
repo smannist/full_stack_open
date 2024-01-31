@@ -2,12 +2,13 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const { errorHandler } = require("./middleware/user");
+require("express-async-errors");
 const blogsRouter = require("./controllers/blogs");
-const usersRouter = require('./controllers/users')
+const usersRouter = require("./controllers/users");
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 const dotenv = require("dotenv");
-require("express-async-errors");
 
 dotenv.config();
 morgan.token("body", (request) => JSON.stringify(request.body));
@@ -25,6 +26,8 @@ app.use(express.json());
 app.use(logger.createMorganMiddleware());
 
 app.use("/api/blogs", blogsRouter);
-app.use('/api/users', usersRouter)
+app.use("/api/users", usersRouter);
+
+app.use(errorHandler);
 
 module.exports = app;
