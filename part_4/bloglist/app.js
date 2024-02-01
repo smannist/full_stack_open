@@ -2,9 +2,10 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+require("express-async-errors");
+
 const { errorHandler } = require("./middleware/user");
 const { authenticateToken } = require("./middleware/auth");
-require("express-async-errors");
 
 const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
