@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { errorHandler } = require("./middleware/user");
+const { authenticateToken } = require("./middleware/auth");
 require("express-async-errors");
 
 const blogsRouter = require("./controllers/blogs");
@@ -28,6 +29,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(logger.createMorganMiddleware());
+
+app.use(authenticateToken);
 
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);

@@ -11,9 +11,7 @@ blogsRouter.get("/", async (request, response) => {
 blogsRouter.post("/", async (request, response) => {
   const body = request.body;
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
-
-  const user = await User.findById(decodedToken.id);
+  const user = await User.findById(request.user.id);
 
   const newBlog = new Blog({
     title: body.title,
@@ -31,7 +29,6 @@ blogsRouter.post("/", async (request, response) => {
     await user.save();
     response.status(201).json(savedBlog);
   }
-
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
@@ -61,13 +58,5 @@ blogsRouter.put("/:id", async (request, response) => {
     console.log(error);
   }
 });
-
-const getTokenFrom = (request) => {
-  const authorization = request.get("authorization");
-  if (authorization && authorization.startsWith("Bearer ")) {
-    return authorization.replace("Bearer ", "");
-  }
-  return null;
-};
 
 module.exports = blogsRouter;
