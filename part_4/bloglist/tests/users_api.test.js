@@ -48,9 +48,9 @@ describe("Users API POST", () => {
   test("posting fails with short password", async () => {
     const response = await helper.addUser(api, mockData.shortPassword);
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      error: "password must be at least 3 characters long",
-    });
+    expect(response.body.error).toEqual(
+      "password must be at least 3 characters long"
+    );
   });
 });
 
