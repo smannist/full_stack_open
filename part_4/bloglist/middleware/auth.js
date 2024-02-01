@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const blogsRouter = require("express").Router();
 
 const authenticateToken = (request, response, next) => {
   if (request.path === "/api/blogs" && request.method === "POST") {
