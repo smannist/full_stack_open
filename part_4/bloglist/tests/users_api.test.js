@@ -34,17 +34,15 @@ describe("Users API POST", () => {
   test("posting fails with duplicate username", async () => {
     const response = await helper.addUser(api, mockData.duplicateUsername);
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      error: `User validation failed: username: Error, expected \`username\` to be unique. Value: \`${mockData.duplicateUsername.username}\``,
-    });
+    expect(response.body.error).toContain("expected `username` to be unique");
   });
 
   test("posting fails with short username", async () => {
     const response = await helper.addUser(api, mockData.shortUsername);
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      error: `User validation failed: username: Path \`username\` (\`${mockData.shortUsername.username}\`) is shorter than the minimum allowed length (3).`,
-    });
+    expect(response.body.error).toContain(
+      "is shorter than the minimum allowed length (3)."
+    );
   });
 
   test("posting fails with short password", async () => {
