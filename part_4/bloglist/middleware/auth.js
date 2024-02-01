@@ -4,7 +4,7 @@ const authenticateToken = (request, response, next) => {
   if (request.path === "/api/blogs" && request.method === "POST") {
     const token = getTokenFrom(request);
     const decodedToken = jwt.verify(token, process.env.SECRET);
-    request.user = decodedToken;
+    request.token = decodedToken;
   }
   next();
 };
