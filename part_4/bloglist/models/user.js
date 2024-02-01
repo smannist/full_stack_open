@@ -12,6 +12,12 @@ const userSchema = mongoose.Schema({
   pwdHash: {
     type: String,
   },
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog",
+    },
+  ],
 });
 
 userSchema.plugin(uniqueValidator);
