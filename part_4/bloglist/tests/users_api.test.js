@@ -15,7 +15,7 @@ beforeEach(async () => {
 
   await Promise.all(
     mockData.mockUsers.map(async (user) => {
-      user.password = await bcrypt.hash(user.password, saltRounds);
+      user.pwdHash = await bcrypt.hash(user.password, saltRounds);
     })
   );
 

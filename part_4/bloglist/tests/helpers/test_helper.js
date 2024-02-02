@@ -1,20 +1,29 @@
 const Blog = require("../../models/blog");
 const User = require("../../models/user");
 
+const loginAndGetToken = async (api, credentials) => {
+  const response = await api
+    .post("/api/login")
+    .send(credentials)
+  return response.body.token;
+};
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map((blog) => blog.toJSON());
 };
 
-const addBlog = async (api, blogData) => {
+const addBlog = async (api, blogData, token) => {
   await api
     .post("/api/blogs")
+    .set("Authorization", `Bearer ${token}`)
     .send(blogData);
 };
 
-const deleteBlogById = async (api, blogId) => {
+const deleteBlogById = async (api, blogId, token) => {
   await api
     .delete(`/api/blogs/${blogId}`)
+    .set("Authorization", `Bearer ${token}`)
     .expect(204);
 };
 
@@ -56,5 +65,6 @@ module.exports = {
   postBlogAndExpectStatus,
   usersInDb,
   addUser,
-  postUserAndExpectStatus
+  postUserAndExpectStatus,
+  loginAndGetToken
 };

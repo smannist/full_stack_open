@@ -1,13 +1,47 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const supertest = require("supertest");
 const app = require("../app");
 const mockData = require("./mock_data/blog");
+const mockUserData = require("./mock_data/user");
 const Blog = require("../models/blog");
+const User = require("../models/user");
 const helper = require("./helpers/test_helper");
 
 const api = supertest(app);
 
+let token;
+
 beforeEach(async () => {
+  await User.deleteMany({});
+
+  const saltRounds = 10;
+
+  await Promise.all(
+    mockUserData.mockUsers.map(async (user) => {
+      user.pwdHash = await bcrypt.hash(user.password, saltRounds);
+    })
+  );
+
+  await User.insertMany(mockUserData.mockUsers);
+
+  // Searching for user_id in database and adding the value to mock_data is probably not the best way
+  // But it was the first that came to my mind
+  const user = await User.findOne({ username: "solarcityfan2024" });
+
+  await Promise.all(
+    mockData.listWithMultipleBlogs.map(async (blog) => {
+      blog.user = user._id;
+    })
+  );
+
+  const credentials = {
+    username: "solarcityfan2024",
+    password: "yetanothersecretpassword",
+  };
+
+  token = await helper.loginAndGetToken(api, credentials);
+
   await Blog.deleteMany({});
   await Blog.insertMany(mockData.listWithMultipleBlogs);
 });
@@ -31,18 +65,18 @@ describe("Blogs API GET", () => {
 
 describe("Blogs API POST", () => {
   test("new blog is added correctly", async () => {
-    await helper.addBlog(api, mockData.mockBlog);
+    await helper.addBlog(api, mockData.mockBlog, token);
 
     const blogsAtEnd = await helper.blogsInDb();
 
-    expect(blogsAtEnd).toHaveLength(
-      mockData.listWithMultipleBlogs.length + 1
+    expect(blogsAtEnd).toHaveLength(mockData.listWithMultipleBlogs.length + 1);
+    expect(blogsAtEnd.map((blog) => blog.title)).toContain(
+      mockData.mockBlog.title
     );
-    expect(blogsAtEnd.map(blog => blog.title)).toContain(mockData.mockBlog.title);
   });
 
   test("if likes are not specified, default to zero", async () => {
-    await helper.addBlog(api, mockData.mockBlogNoLikes);
+    await helper.addBlog(api, mockData.mockBlogNoLikes, token);
 
     const response = await helper.blogsInDb();
 
@@ -52,7 +86,11 @@ describe("Blogs API POST", () => {
   test("if title or url is not specified, respond with 400 bad request", async () => {
     await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoTitle, 400);
     await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoUrl, 400);
-    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoTitleOrUrl, 400);
+    await helper.postBlogAndExpectStatus(
+      api,
+      mockData.mockBlogNoTitleOrUrl,
+      400
+    );
   });
 });
 
@@ -61,7 +99,7 @@ describe("Blogs API DELETE", () => {
     const blogs = await helper.blogsInDb();
     const blogToDelete = blogs[0];
 
-    await helper.deleteBlogById(api, blogToDelete.id);
+    await helper.deleteBlogById(api, blogToDelete.id, token);
 
     const blogsAfterDelete = await helper.blogsInDb();
 
@@ -77,10 +115,7 @@ describe("Blogs API PUT", () => {
 
     blogToUpdate.title = "Updated Blog Title";
 
-    await helper
-      .updateBlogById(api,
-                     blogToUpdate.id,
-                     blogToUpdate);
+    await helper.updateBlogById(api, blogToUpdate.id, blogToUpdate);
 
     const updatedBlogs = await helper.blogsInDb();
 
