@@ -11,6 +11,7 @@ const helper = require("./helpers/test_helper");
 const api = supertest(app);
 
 let token;
+let invalidToken = "thisisnotcorrect";
 
 beforeEach(async () => {
   await User.deleteMany({});
@@ -84,13 +85,23 @@ describe("Blogs API POST", () => {
   });
 
   test("if title or url is not specified, respond with 400 bad request", async () => {
-    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoTitle, 400);
-    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoUrl, 400);
+    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoTitle, token, 400);
+    await helper.postBlogAndExpectStatus(api, mockData.mockBlogNoUrl, token, 400);
     await helper.postBlogAndExpectStatus(
       api,
       mockData.mockBlogNoTitleOrUrl,
+      token,
       400
     );
+  });
+
+  test("if token is incorrect or missing, respond with 401 unauthorized", async () => {
+    const response = await helper.addBlog(
+      api,
+      mockData.mockBlogNoLikes,
+      invalidToken
+    );
+    expect(response.status).toBe(401);
   });
 });
 

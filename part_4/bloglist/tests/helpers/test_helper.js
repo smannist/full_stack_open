@@ -14,10 +14,11 @@ const blogsInDb = async () => {
 };
 
 const addBlog = async (api, blogData, token) => {
-  await api
+  const response = await api
     .post("/api/blogs")
     .set("Authorization", `Bearer ${token}`)
     .send(blogData);
+  return response;
 };
 
 const deleteBlogById = async (api, blogId, token) => {
@@ -33,9 +34,10 @@ const updateBlogById = async (api, blogId, blogToUpdate) => {
     .send(blogToUpdate);
 };
 
-const postBlogAndExpectStatus = async (api, blogData, expectedStatusCode) => {
+const postBlogAndExpectStatus = async (api, blogData, token, expectedStatusCode) => {
   await api.post("/api/blogs")
     .send(blogData)
+    .set("Authorization", `Bearer ${token}`)
     .expect(expectedStatusCode);
 };
 
