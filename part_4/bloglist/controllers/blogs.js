@@ -31,12 +31,16 @@ blogsRouter.post("/", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-  try {
-    await Blog.findByIdAndDelete(request.params.id);
-    response.status(204).end();
-  } catch (error) {
-    console.log(error);
+  const blog = await Blog.findById(request.params.id);
+
+  if (blog.user.toString() !== request.token.id) {
+    const permissionError = new Error("Permission denied");
+    permissionError.name = "PermissionError";
+    throw permissionError;
   }
+
+  await Blog.findByIdAndDelete(request.params.id);
+  response.status(204).end();
 });
 
 blogsRouter.put("/:id", async (request, response) => {
