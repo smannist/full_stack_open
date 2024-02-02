@@ -1,14 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 const authenticateToken = (request, response, next) => {
-  if (
-    (request.path === "/api/blogs" && request.method === "POST") ||
-    request.method === "DELETE"
-  ) {
-    const token = getTokenFrom(request);
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-    request.token = decodedToken;
-  }
+  const token = getTokenFrom(request);
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+  request.token = decodedToken;
   next();
 };
 

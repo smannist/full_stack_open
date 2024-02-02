@@ -1,4 +1,5 @@
 const blogsRouter = require("express").Router();
+const { authenticateToken } = require("../middleware/auth");
 const Blog = require("../models/blog");
 const User = require("../models/user");
 
@@ -7,7 +8,7 @@ blogsRouter.get("/", async (request, response) => {
   response.json(blogs);
 });
 
-blogsRouter.post("/", async (request, response) => {
+blogsRouter.post("/", authenticateToken, async (request, response) => {
   const body = request.body;
 
   const user = await User.findById(request.token.id);
@@ -30,7 +31,7 @@ blogsRouter.post("/", async (request, response) => {
   }
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
+blogsRouter.delete("/:id", authenticateToken, async (request, response) => {
   const blog = await Blog.findById(request.params.id);
 
   if (blog.user.toString() !== request.token.id) {
