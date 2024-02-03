@@ -45,7 +45,7 @@ const calculateExercises = (
   return ExerciseInfo;
 };
 
-const trainingDays = [3, 0, 2, 4.5, 0, 3, 1];
+const hours = [3, 0, 2, 4.5, 0, 3, 1];
 const target = 2;
 
-console.log(calculateExercises(trainingDays, target));
+console.log(calculateExercises(hours, target));
