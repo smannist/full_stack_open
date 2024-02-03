@@ -1,3 +1,5 @@
+import parseArguments from "./utils/exerciseParser";
+
 interface ExerciseInfo {
   periodLength: number;
   trainingDays: number;
@@ -9,8 +11,8 @@ interface ExerciseInfo {
 }
 
 const calculateExercises = (
-  hours: Array<number>,
-  target: number
+  target: number,
+  hours: number[],
 ): ExerciseInfo => {
   let rating;
   let ratingDescription;
@@ -45,7 +47,15 @@ const calculateExercises = (
   return ExerciseInfo;
 };
 
-const hours = [3, 0, 2, 4.5, 0, 3, 1];
-const target = 2;
+try {
+  const { target, hours } = parseArguments(process.argv);
+  console.log(calculateExercises(target, hours));
+} catch (error: unknown) {
+  let errorMsg = "An error happened during parsing.";
 
-console.log(calculateExercises(hours, target));
+  if (error instanceof Error) {
+    errorMsg += " Error: " + error.message + ".";
+  }
+
+  console.log(errorMsg);
+}
