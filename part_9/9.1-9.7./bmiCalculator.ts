@@ -1,7 +1,6 @@
-const calculateBmi = (height: number, weight: number): string => {
-  if (weight <= 0 || height <= 0)
-    throw new Error("Weight and Height cannot be less than or equal to zero");
+import parseArguments from "./utils/bmiParser";
 
+const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / (height / 100) ** 2;
 
   if (bmi < 16) {
@@ -21,7 +20,17 @@ const calculateBmi = (height: number, weight: number): string => {
   } else {
     return "Obese (Class III)";
   }
-
 };
 
-console.log(calculateBmi(180, 70));
+try {
+  const { height, weight } = parseArguments(process.argv);
+  console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+  let errorMsg = "An error happened during parsing.";
+
+  if (error instanceof Error) {
+    errorMsg += " Error: " + error.message + ".";
+  }
+
+  console.log(errorMsg);
+}
