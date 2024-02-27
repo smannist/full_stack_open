@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import Blog from "./components/Blog";
+import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
@@ -9,7 +9,8 @@ import CreateBlogForm from "./components/CreateBlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [notificationType, setNotificationType] = useState(null);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +30,6 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
-
   }, []);
 
   const handleLogin = async (event) => {
@@ -47,12 +47,14 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setErrorMessage("Incorrect credentials!");
+      handleNotification(
+        `Incorrect login credentials`,
+        "notification-failure"
+      );
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
     }
-
   };
 
   const handleLogout = async (event) => {
@@ -67,7 +69,6 @@ const App = () => {
         setErrorMessage(null);
       }, 5000);
     }
-
   };
 
   const handleCreate = async (event) => {
@@ -79,11 +80,26 @@ const App = () => {
       url: url,
     };
 
-    blogService.create(newBlog);
+    const newBlogs = await blogService.create(newBlog);
+
+    setBlogs([...blogs, newBlogs]);
     setTitle("");
     setAuthor("");
     setUrl("");
-    window.location.reload();
+
+    handleNotification(
+      `New blog "${newBlog.title}" added!`,
+      "notification-success"
+    );
+  };
+
+  const handleNotification = (message, type) => {
+    setNotificationMessage(message);
+    setNotificationType(type);
+    setTimeout(() => {
+      setNotificationMessage(null);
+      setNotificationType(null);
+    }, 3000);
   };
 
   const handleUsernameChange = (event) => {
@@ -110,6 +126,7 @@ const App = () => {
     return (
       <div>
         <h1>Login to application</h1>
+        <Notification type={notificationType} message={notificationMessage} />
         <LoginForm
           handleLogin={handleLogin}
           setUsername={handleUsernameChange}
@@ -117,7 +134,6 @@ const App = () => {
           username={username}
           password={password}
         />
-        <Notification message={errorMessage} />
       </div>
     );
   }
@@ -127,9 +143,8 @@ const App = () => {
       <p>Logged in as {user.username}</p>
       <button onClick={handleLogout}>Logout</button>
       <h2>Blogs</h2>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      <Notification type={notificationType} message={notificationMessage} />
+      <Blogs blogs={blogs}/>
       <CreateBlogForm
         handleCreate={handleCreate}
         setTitle={handleTitleChange}
