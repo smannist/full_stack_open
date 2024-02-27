@@ -64,7 +64,10 @@ const App = () => {
       window.localStorage.removeItem("loggedUser");
       window.location.reload();
     } catch (exception) {
-      setErrorMessage(exception);
+      handleNotification(
+        `An error occured: ${exception}`,
+        "notification-failure"
+      );;
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
