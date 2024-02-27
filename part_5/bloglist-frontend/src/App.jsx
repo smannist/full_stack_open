@@ -52,7 +52,6 @@ const App = () => {
         "notification-failure"
       );
       setTimeout(() => {
-        setErrorMessage(null);
       }, 5000);
     }
   };
@@ -69,7 +68,6 @@ const App = () => {
         "notification-failure"
       );;
       setTimeout(() => {
-        setErrorMessage(null);
       }, 5000);
     }
   };
