@@ -30,6 +30,7 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
+  
   }, []);
 
   const handleLogin = async (event) => {
@@ -43,6 +44,8 @@ const App = () => {
 
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
 
+      blogService.setToken(user.token);
+  
       setUser(user);
       setUsername("");
       setPassword("");
@@ -51,9 +54,8 @@ const App = () => {
         `Incorrect login credentials`,
         "notification-failure"
       );
-      setTimeout(() => {
-      }, 5000);
     }
+
   };
 
   const handleLogout = async (event) => {
@@ -66,10 +68,9 @@ const App = () => {
       handleNotification(
         `An error occured: ${exception}`,
         "notification-failure"
-      );;
-      setTimeout(() => {
-      }, 5000);
+      );
     }
+  
   };
 
   const handleCreate = async (event) => {
@@ -100,7 +101,7 @@ const App = () => {
     setTimeout(() => {
       setNotificationMessage(null);
       setNotificationType(null);
-    }, 3000);
+    }, 5000);
   };
 
   const handleUsernameChange = (event) => {
