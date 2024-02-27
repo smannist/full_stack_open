@@ -5,13 +5,17 @@ import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import CreateBlogForm from "./components/CreateBlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -25,6 +29,7 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
+
   }, []);
 
   const handleLogin = async (event) => {
@@ -65,12 +70,40 @@ const App = () => {
 
   };
 
+  const handleCreate = async (event) => {
+    event.preventDefault();
+
+    const newBlog = {
+      title: title,
+      author: author,
+      url: url,
+    };
+
+    blogService.create(newBlog);
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+    window.location.reload();
+  };
+
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+  };
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleAuthorChange = (event) => {
+    setAuthor(event.target.value);
+  };
+
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value);
   };
 
   if (user === null) {
@@ -97,6 +130,15 @@ const App = () => {
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
+      <CreateBlogForm
+        handleCreate={handleCreate}
+        setTitle={handleTitleChange}
+        setUrl={handleUrlChange}
+        setAuthor={handleAuthorChange}
+        title={title}
+        author={author}
+        url={url}
+      />
     </div>
   );
 };
