@@ -19,7 +19,9 @@ const App = () => {
   const [url, setUrl] = useState("");
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
@@ -42,7 +44,9 @@ const App = () => {
         password,
       });
 
-      window.localStorage.setItem("loggedUser", JSON.stringify(user));
+      window.localStorage.setItem(
+        "loggedUser", JSON.stringify(user)
+      );
 
       blogService.setToken(user.token);
   
@@ -128,7 +132,10 @@ const App = () => {
     return (
       <div>
         <h1>Login to application</h1>
-        <Notification type={notificationType} message={notificationMessage} />
+        <Notification
+          type={notificationType}
+          message={notificationMessage}
+        />
         <LoginForm
           handleLogin={handleLogin}
           setUsername={handleUsernameChange}
@@ -145,7 +152,10 @@ const App = () => {
       <p>Logged in as {user.username}</p>
       <button onClick={handleLogout}>Logout</button>
       <h2>Blogs</h2>
-      <Notification type={notificationType} message={notificationMessage} />
+      <Notification
+        type={notificationType}
+        message={notificationMessage}
+      />
       <Blogs blogs={blogs}/>
       <CreateBlogForm
         handleCreate={handleCreate}
