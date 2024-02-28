@@ -13,8 +13,6 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [notificationType, setNotificationType] = useState(null);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   const createBlogRef = useRef();
 
@@ -32,29 +30,7 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      window.localStorage.setItem("loggedUser", JSON.stringify(user));
-
-      blogService.setToken(user.token);
-
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      handleNotification(`Incorrect login credentials`, "notification-failure");
-    }
-  
-  };
-
-  const handleLogout = async (event) => {
+  const logout = async (event) => {
     event.preventDefault();
 
     try {
@@ -67,6 +43,21 @@ const App = () => {
       );
     }
 
+  };
+
+  const login = async (username, password) => {
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      });
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
+      blogService.setToken(user.token);
+      setUser(user);
+    } catch (exception) {
+      console.log(exception)
+      handleNotification(`Incorrect login credentials`, "notification-failure");
+    }
   };
 
   const createBlog = async (blogObject) => {
@@ -91,14 +82,6 @@ const App = () => {
     }, 5000);
   };
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
   if (user === null) {
     return (
       <div>
@@ -107,13 +90,7 @@ const App = () => {
           type={notificationType}
           message={notificationMessage}
         />
-        <LoginForm
-          handleLogin={handleLogin}
-          setUsername={handleUsernameChange}
-          setPassword={handlePasswordChange}
-          username={username}
-          password={password}
-        />
+        <LoginForm login={login} />
       </div>
     );
   }
@@ -121,7 +98,7 @@ const App = () => {
   return (
     <div>
       <p>Logged in as {user.username}</p>
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={logout}>Logout</button>
       <h2>Blogs</h2>
       <Notification
         type={notificationType}
