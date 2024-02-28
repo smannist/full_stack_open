@@ -66,15 +66,11 @@ const App = () => {
   const createBlog = async (blogObject) => {
     createBlogRef.current.toggleVisibility();
 
-    await blogService
-            .create(blogObject)
-            .then((returnedBlog) => {
-              setBlogs(blogs.concat(returnedBlog));
-    });
+    const newBlog = await blogService.create(blogObject);
+    setBlogs(blogs.concat(newBlog));
 
-    await blogService
-            .getAll()
-            .then((blogs) => setBlogs(blogs));
+    const updatedBlogs = await blogService.getAll();
+    setBlogs(updatedBlogs);
 
     handleNotification(
       `New blog "${blogObject.title}" added!`,
