@@ -1,7 +1,7 @@
 import "../App.css";
 import React, { useState } from "react";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike }) => {
   const [visible, setVisible] = useState(false);
 
   const handleVisibilityChange = () => {
@@ -16,7 +16,7 @@ const Blog = ({ blog }) => {
         <br></br>
         <strong>Url:</strong> {blog.url}
         <br></br>
-        <strong>Likes:</strong> {blog.likes} <button>Like</button>
+        <strong>Likes:</strong> {blog.likes} <button onClick={() => addLike(blog)}>Like</button>
         <br></br>
         <strong>Added by:</strong> {blog.user.username}
       </div>

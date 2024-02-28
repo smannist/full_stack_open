@@ -30,7 +30,6 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
-
   }, []);
 
   const logout = async (event) => {
@@ -45,7 +44,7 @@ const App = () => {
         "notification-failure"
       );
     }
-
+  
   };
 
   const login = async (username, password) => {
@@ -58,7 +57,6 @@ const App = () => {
       blogService.setToken(user.token);
       setUser(user);
     } catch (exception) {
-      console.log(exception)
       handleNotification(`Incorrect login credentials`, "notification-failure");
     }
   };
@@ -76,6 +74,19 @@ const App = () => {
       `New blog "${blogObject.title}" added!`,
       "notification-success"
     );
+  };
+
+  const addLike = async (blog) => {
+    try {
+      const updatedBlog = { ...blog, likes: blog.likes + 1 };
+      await blogService.update(blog.id, updatedBlog);
+      const updatedBlogs = blogs.map((blogItem) =>
+        blogItem.id === blog.id ? updatedBlog : blogItem
+      );
+      setBlogs(updatedBlogs);
+    } catch (exception) {
+      console.log(exception);
+    }
   };
 
   const handleNotification = (message, type) => {
@@ -109,7 +120,10 @@ const App = () => {
         type={notificationType}
         message={notificationMessage}
       />
-      <Blogs blogs={blogs} />
+      <Blogs
+        blogs={blogs}
+        addLike={addLike}
+      />
       <Togglable buttonLabel="new blog" ref={createBlogRef}>
         <CreateBlogForm createBlog={createBlog} />
       </Togglable>
