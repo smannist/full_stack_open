@@ -121,7 +121,7 @@ const App = () => {
         message={notificationMessage}
       />
       <Blogs
-        blogs={blogs}
+        blogs={blogs.sort((a, b) => b.likes - a.likes)}
         addLike={addLike}
       />
       <Togglable buttonLabel="new blog" ref={createBlogRef}>
