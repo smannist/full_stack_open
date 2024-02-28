@@ -1,11 +1,12 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, createElement } from "react";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import CreateBlogForm from "./components/CreateBlogForm";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,14 +15,11 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+
+  const createBlogRef = useRef();
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
@@ -32,7 +30,6 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
-  
   }, []);
 
   const handleLogin = async (event) => {
@@ -44,22 +41,17 @@ const App = () => {
         password,
       });
 
-      window.localStorage.setItem(
-        "loggedUser", JSON.stringify(user)
-      );
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
 
       blogService.setToken(user.token);
-  
+
       setUser(user);
       setUsername("");
       setPassword("");
     } catch (exception) {
-      handleNotification(
-        `Incorrect login credentials`,
-        "notification-failure"
-      );
+      handleNotification(`Incorrect login credentials`, "notification-failure");
     }
-
+  
   };
 
   const handleLogout = async (event) => {
@@ -74,27 +66,18 @@ const App = () => {
         "notification-failure"
       );
     }
-  
+
   };
 
-  const handleCreate = async (event) => {
-    event.preventDefault();
+  const createBlog = async (blogObject) => {
+    createBlogRef.current.toggleVisibility();
 
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url,
-    };
-
-    const newBlogs = await blogService.create(newBlog);
-
-    setBlogs([...blogs, newBlogs]);
-    setTitle("");
-    setAuthor("");
-    setUrl("");
+    await blogService.create(blogObject).then((returnedBlog) => {
+      setBlogs(blogs.concat(returnedBlog));
+    });
 
     handleNotification(
-      `New blog "${newBlog.title}" added!`,
+      `New blog "${blogObject.title}" added!`,
       "notification-success"
     );
   };
@@ -114,18 +97,6 @@ const App = () => {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-  };
-
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value);
-  };
-
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value);
   };
 
   if (user === null) {
@@ -156,16 +127,10 @@ const App = () => {
         type={notificationType}
         message={notificationMessage}
       />
-      <Blogs blogs={blogs}/>
-      <CreateBlogForm
-        handleCreate={handleCreate}
-        setTitle={handleTitleChange}
-        setUrl={handleUrlChange}
-        setAuthor={handleAuthorChange}
-        title={title}
-        author={author}
-        url={url}
-      />
+      <Blogs blogs={blogs} />
+      <Togglable buttonLabel="new blog" ref={createBlogRef}>
+        <CreateBlogForm createBlog={createBlog} />
+      </Togglable>
     </div>
   );
 };

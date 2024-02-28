@@ -1,5 +1,9 @@
 .login-form {
-  margin-top: 5px;
+  margin-top: 15px;
+}
+
+.togglable {
+  margin-top: 15px;
 }
 
 .error-text {
