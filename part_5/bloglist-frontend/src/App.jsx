@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useRef, createElement } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
@@ -71,6 +71,10 @@ const App = () => {
             .then((returnedBlog) => {
               setBlogs(blogs.concat(returnedBlog));
     });
+
+    await blogService
+            .getAll()
+            .then((blogs) => setBlogs(blogs));
 
     handleNotification(
       `New blog "${blogObject.title}" added!`,
