@@ -17,7 +17,9 @@ const App = () => {
   const createBlogRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
+
   }, []);
 
   const logout = async (event) => {
@@ -63,8 +66,10 @@ const App = () => {
   const createBlog = async (blogObject) => {
     createBlogRef.current.toggleVisibility();
 
-    await blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog));
+    await blogService
+            .create(blogObject)
+            .then((returnedBlog) => {
+              setBlogs(blogs.concat(returnedBlog));
     });
 
     handleNotification(
