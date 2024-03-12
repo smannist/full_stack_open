@@ -30,6 +30,7 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
+
   }, []);
 
   const logout = async (event) => {
@@ -44,7 +45,7 @@ const App = () => {
         "notification-failure"
       );
     }
-  
+
   };
 
   const login = async (username, password) => {
@@ -57,7 +58,7 @@ const App = () => {
       blogService.setToken(user.token);
       setUser(user);
     } catch (exception) {
-      handleNotification(`Incorrect login credentials`, "notification-failure");
+      handleNotification("Incorrect login credentials", "notification-failure");
     }
   };
 
@@ -78,22 +79,28 @@ const App = () => {
 
   const removeBlog = async (blogObject) => {
     try {
-      const confirmation = window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}?`)
+      const confirmation = window.confirm(
+        `Remove blog ${blogObject.title} by ${blogObject.author}?`
+      );
+
       if (confirmation) {
-        await blogService.remove(blogObject.id)
-        setBlogs(blogs.filter(removedBlog => removedBlog.id !== blogObject.id))
+        await blogService.remove(blogObject.id);
+        setBlogs(
+          blogs.filter((removedBlog) => removedBlog.id !== blogObject.id)
+        );
         handleNotification(
           `Blog "${blogObject.title}" removed!`,
           "notification-success"
         );
       }
+
     } catch (exception) {
       handleNotification(
         `An error occured during deletion: ${exception}`,
         "notification-failure"
       );
     }
-  }
+  };
 
   const addLike = async (blog) => {
     try {

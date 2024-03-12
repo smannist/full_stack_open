@@ -11,8 +11,8 @@ const CreateBlogForm = ({ createBlog }) => {
     const blogObject = {
       title: title,
       author: author,
-      url: url
-    }
+      url: url,
+    };
 
     createBlog(blogObject);
 
@@ -22,16 +22,16 @@ const CreateBlogForm = ({ createBlog }) => {
   };
 
   const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
+    setTitle(event.target.value);
+  };
 
   const handleAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
+    setAuthor(event.target.value);
+  };
 
   const handleUrlChange = (event) => {
-    setUrl(event.target.value)
-  }
+    setUrl(event.target.value);
+  };
 
   return (
     <div>
