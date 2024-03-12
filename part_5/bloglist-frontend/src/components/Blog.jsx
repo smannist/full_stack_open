@@ -1,12 +1,14 @@
 import "../App.css";
 import React, { useState } from "react";
 
-const Blog = ({ blog, addLike }) => {
+const Blog = ({ blog, addLike, removeBlog, user }) => {
   const [visible, setVisible] = useState(false);
 
   const handleVisibilityChange = () => {
     setVisible(!visible);
   };
+
+  const isOwner = user.username === blog.user.username;
 
   if (visible) {
     return (
@@ -19,6 +21,8 @@ const Blog = ({ blog, addLike }) => {
         <strong>Likes:</strong> {blog.likes} <button onClick={() => addLike(blog)}>Like</button>
         <br></br>
         <strong>Added by:</strong> {blog.user.username}
+        <br></br>
+        {isOwner && <button onClick={removeBlog}>Remove</button>}
       </div>
     );
   }

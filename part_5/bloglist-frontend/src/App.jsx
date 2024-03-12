@@ -76,6 +76,25 @@ const App = () => {
     );
   };
 
+  const removeBlog = async (blogObject) => {
+    try {
+      const confirmation = window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}?`)
+      if (confirmation) {
+        await blogService.remove(blogObject.id)
+        setBlogs(blogs.filter(removedBlog => removedBlog.id !== blogObject.id))
+        handleNotification(
+          `Blog "${blogObject.title}" removed!`,
+          "notification-success"
+        );
+      }
+    } catch (exception) {
+      handleNotification(
+        `An error occured during deletion: ${exception}`,
+        "notification-failure"
+      );
+    }
+  }
+
   const addLike = async (blog) => {
     try {
       const updatedBlog = { ...blog, likes: blog.likes + 1 };
@@ -123,6 +142,8 @@ const App = () => {
       <Blogs
         blogs={blogs.sort((a, b) => b.likes - a.likes)}
         addLike={addLike}
+        removeBlog={removeBlog}
+        user={user}
       />
       <Togglable buttonLabel="new blog" ref={createBlogRef}>
         <CreateBlogForm createBlog={createBlog} />
