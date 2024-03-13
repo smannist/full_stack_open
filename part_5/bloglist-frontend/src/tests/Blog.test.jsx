@@ -38,7 +38,7 @@ describe("Blog component", () => {
     expect(div).toHaveTextContent(mockBlog.user.username);
   });
 
-  test("clicking 'like' twice calls the event handler by the same amount", async () => {
+  test("clicking 'Like' twice calls the event handler by the same amount", async () => {
     const viewBtn = screen.getByText("View");
 
     await user.click(viewBtn);
