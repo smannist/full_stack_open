@@ -1,20 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Blog from "./Blog";
-
-const mockBlog = {
-  title: "AI agents help explain other AI systems",
-  author: "Rachel Gordon",
-  url: "https://news.mit.edu/2024/ai-agents-help-explain-other-ai-systems-0103",
-  likes: 2,
-  user: {
-    username: "potato",
-  },
-};
-
-const mockUser = {
-  username: "potato",
-};
+import Blog from "../components/Blog";
+import { mockBlog, mockUser } from "./mock_data/blog";
 
 describe("Blog component", () => {
   test("by default only title and author is shown", () => {
