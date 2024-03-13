@@ -5,15 +5,15 @@ import { mockBlog, mockUser } from "./mock_data/blog";
 
 let div;
 let user;
-let mockHandler;
+let mockAddLike;
 
 describe("Blog component", () => {
   beforeEach(async () => {
     user = userEvent.setup();
-    mockHandler = vi.fn();
+    mockAddLike = vi.fn();
 
     const { container } = render(
-      <Blog blog={mockBlog} user={mockUser.username} addLike={mockHandler} />
+      <Blog blog={mockBlog} user={mockUser.username} addLike={mockAddLike} />
     );
 
     div = container.querySelector(".blog");
@@ -48,6 +48,6 @@ describe("Blog component", () => {
     await user.click(likeBtn);
     await user.click(likeBtn);
 
-    expect(mockHandler.mock.calls).toHaveLength(2);
+    expect(mockAddLike.mock.calls).toHaveLength(2);
   });
 });
