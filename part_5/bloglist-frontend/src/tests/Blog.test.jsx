@@ -29,9 +29,9 @@ describe("Blog component", () => {
   });
 
   test("clicking the 'View' button reveals additional information", async () => {
-    const button = screen.getByText("View");
+    const viewBtn = screen.getByText("View");
 
-    await user.click(button);
+    await user.click(viewBtn);
 
     expect(div).toHaveTextContent(mockBlog.url);
     expect(div).toHaveTextContent(mockBlog.likes);
