@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { test, expect, beforeEach, describe } = require("@playwright/test");
 
 describe("Blog app", () => {
@@ -5,9 +6,9 @@ describe("Blog app", () => {
     await request.post("http:localhost:3003/api/testing/reset");
     await request.post("http://localhost:3003/api/users", {
       data: {
-        name: "Test Mc Tester",
-        username: "mctester",
-        password: "das2!dkcoR",
+        name: process.env.TEST_NAME,
+        username: process.env.TEST_USERNAME,
+        password: process.env.TEST_PASSWORD
       },
     });
     await page.goto("http://localhost:5173");
