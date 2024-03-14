@@ -22,7 +22,7 @@ const LoginForm = ({ login }) => {
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={loginUser}>
+      <form data-testid="login-form" onSubmit={loginUser}>
         <div className="login-form">
           Username
           <input
