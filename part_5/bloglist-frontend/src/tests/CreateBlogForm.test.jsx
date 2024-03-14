@@ -21,7 +21,7 @@ describe("CreateBlogForm component", () => {
     await user.type(inputs[1], mockBlog.author);
     await user.type(inputs[2], mockBlog.url);
 
-    await userEvent.click(createBtn);
+    await user.click(createBtn);
 
     expect(createBlogMock.mock.calls).toHaveLength(1);
     expect(createBlogMock.mock.calls[0][0].title).toBe(mockBlog.title);
