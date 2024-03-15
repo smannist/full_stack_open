@@ -6,3 +6,7 @@ gnome-terminal -- npm run start:test
 
 cd ../../part_5/bloglist-frontend/
 gnome-terminal -- npm run dev
+
+cd ../bloglist-e2e
+sleep 3
+npm run test:graph
