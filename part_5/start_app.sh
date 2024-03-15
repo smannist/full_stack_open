@@ -5,4 +5,4 @@ cd ../part_4/bloglist/
 gnome-terminal -- npm run dev
 
 cd ../../part_5/bloglist-frontend/
-gnome-terminal -- npm run dev &
+gnome-terminal -- npm run dev
