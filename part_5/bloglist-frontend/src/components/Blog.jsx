@@ -25,7 +25,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
         <br></br>
         <strong>Added by:</strong> {blog.user.username}
         <br></br>
-        {isOwner && <button onClick={removeBlog}>Remove</button>}
+        {isOwner && <button data-testid="remove-button" onClick={removeBlog}>Remove</button>}
       </div>
     );
   }

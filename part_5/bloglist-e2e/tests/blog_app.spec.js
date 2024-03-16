@@ -17,6 +17,13 @@ describe("Blog app", () => {
         password: "Testing",
       },
     });
+    await request.post("http://localhost:3003/api/users", {
+      data: {
+        name: "Test user",
+        username: "TestUser",
+        password: "Tester",
+      },
+    });
     await page.goto("http://localhost:5173");
   });
 
@@ -58,6 +65,19 @@ describe("Blog app", () => {
         await expect(
           page.getByText(`${mockBlog.title} ${mockBlog.author}`)
         ).not.toBeVisible();
+      });
+
+      test("remove button is visible if owner", async ({ page }) => {
+        expect(page.getByTestId("remove-button")).not.toBe(null);
+      });
+
+      test("remove button is not visible if not owner", async ({ page }) => {
+        await page.getByRole("button", { name: "Logout" }).click();
+        await page.getByTestId("username").fill("TestUser");
+        await page.getByTestId("password").fill("Tester");
+        await page.getByRole("button", { name: "login" }).click();
+
+        expect(page.getByTestId("remove-button")).not.toBeVisible();
       });
 
       describe("When a new blog has been created", () => {
