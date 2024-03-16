@@ -1,11 +1,11 @@
-require("dotenv").config();
 const { test, expect, beforeEach, describe } = require("@playwright/test");
 
 const mockBlog = {
   title: "test blog",
   author: "test author",
-  url: "test url"
-}
+  url: "test url",
+  likes: 0,
+};
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
@@ -62,6 +62,24 @@ describe("Blog app", () => {
         await expect(
           page.getByText(mockBlog.title + " " + mockBlog.author)
         ).toBeVisible();
+      });
+
+      describe("When a new blog has been created", () => {
+        beforeEach(async ({ page }) => {
+          await page.getByRole("button", { name: "new blog" }).click();
+          await page.getByTestId("title").fill(mockBlog.title);
+          await page.getByTestId("author").fill(mockBlog.author);
+          await page.getByTestId("url").fill(mockBlog.url);
+          await page.getByRole("button", { name: "Create" }).click();
+        });
+
+        test("blog can be liked", async ({ page }) => {
+          await page.getByRole("button", { name: "View" }).click();
+          await expect(page.getByText("Likes: 0")).toBeVisible();
+
+          await page.getByRole("button", { name: "Like" }).click();
+          await expect(page.getByText("Likes: 1")).toBeVisible();
+        });
       });
     });
   });
