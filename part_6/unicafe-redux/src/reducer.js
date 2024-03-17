@@ -9,7 +9,7 @@ const counterReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GOOD":
       return {
-         ...state,
+        ...state,
         good: state.good + action.payload
       };
 
@@ -21,7 +21,7 @@ const counterReducer = (state = initialState, action) => {
 
     case "BAD":
       return {
-         ...state,
+        ...state,
         bad: state.bad + action.payload
       };
 
