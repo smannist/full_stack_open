@@ -11,14 +11,20 @@ const AnecdoteForm = () => {
     dispatch(createAnecdote(content));
   };
 
+  const style = {
+    marginBottom: 10,
+  };
+
   return (
-    <form onSubmit={addAnecdote}>
-      <h2>create new</h2>
-      <div>
-        <input name="anecdote" />
-      </div>
-      <button type="submit">create</button>
-    </form>
+    <div style={style}>
+      <form onSubmit={addAnecdote}>
+        <h2>create new</h2>
+        <div>
+          <input name="anecdote" />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </div>
   );
 };
 
