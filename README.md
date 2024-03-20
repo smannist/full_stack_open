@@ -12,5 +12,5 @@ Fully completed parts (all exercises):
 - [x] 3 Programming a server with NodeJS and Express
 - [x] 4 Testing Express servers, user administration
 - [x] 5 Testing React apps
-- [ ] 6 Advanced state management
+- [x] 6 Advanced state management
 - [ ] 7 React router, custom hooks, styling app with CSS and webpack
