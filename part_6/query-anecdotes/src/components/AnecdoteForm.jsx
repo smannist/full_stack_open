@@ -1,13 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAnecdote } from "../requests";
+import { useNotificationDispatch } from "../NotificationContext";
 
 const AnecdoteForm = () => {
   const useQL = useQueryClient();
+  const notificationDispatch = useNotificationDispatch();
 
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
     onSuccess: () => {
       useQL.invalidateQueries({ queryKey: ["anecdotes"] });
+    },
+    onError: (error) => {
+      notificationDispatch({
+        type: "SHOW",
+        payload: `too short anecdote, must have length 5 or more`,
+      });
     },
   });
 
