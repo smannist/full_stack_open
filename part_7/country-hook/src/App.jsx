@@ -23,7 +23,16 @@ const useCountry = (name) => {
       axios
         .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
         .then((response) => {
-          setCountry({ ...response.data, found: true });
+          const foundCountry = {
+            data: {
+              name: response.data.name.common,
+              capital: response.data.capital,
+              population: response.data.population,
+              flag: response.data.flags.png,
+            },
+            found: true,
+          };
+          setCountry(foundCountry);
         })
         .catch((error) => {
           console.log("Error fetching country data:", error);
@@ -46,13 +55,13 @@ const Country = ({ country }) => {
 
   return (
     <div>
-      <h3>{country.name.common} </h3>
-      <div>capital {country.capital} </div>
-      <div>population {country.population}</div>
+      <h3>{country.data.name} </h3>
+      <div>capital {country.data.capital} </div>
+      <div>population {country.data.population}</div>
       <img
-        src={country.flags.png}
+        src={country.data.flag}
         height="100"
-        alt={`flag of ${country.name}`}
+        alt={`flag of ${country.data.name}`}
       />
     </div>
   );
