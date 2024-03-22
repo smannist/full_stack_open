@@ -26,7 +26,7 @@ const useCountry = (name) => {
           setCountry({ ...response.data, found: true });
         })
         .catch((error) => {
-          console.error("Error fetching country data:", error);
+          console.log("Error fetching country data:", error);
           setCountry({ found: false });
         });
     }
