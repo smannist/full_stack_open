@@ -1,18 +1,26 @@
 import { useField } from "../hooks";
 
-const AnecdoteForm = (props) => {
+const AnecdoteForm = ({ addNew }) => {
   const content = useField("content");
   const author = useField("author");
   const info = useField("info");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.addNew({
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    addNew({
       content: content.value,
       author: author.value,
       info: info.value,
       votes: 0,
     });
+
+  };
+
+  const handleReset = () => {
+    content.onReset();
+    author.onReset();
+    info.onReset();
   };
 
   return (
@@ -31,7 +39,10 @@ const AnecdoteForm = (props) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button type="reset" onClick={handleReset}>
+          reset
+        </button>
       </form>
     </div>
   );
