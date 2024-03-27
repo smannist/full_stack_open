@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import loginService from "../services/login";
 import blogService from "../services/blogs";
-import UserContext from "../context/UserContext";
+import { useUserDispatch } from "../context/UserContext";
 import {
   handleNotification,
   useNotificationDispatch,
@@ -10,7 +10,7 @@ import {
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, userDispatch] = useContext(UserContext);
+  const userDispatch = useUserDispatch();
   const notificationDispatch = useNotificationDispatch();
 
   const loginUser = (event) => {

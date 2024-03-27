@@ -12,6 +12,11 @@ const userReducer = (state = null, action) => {
 
 const UserContext = createContext();
 
+export const useUserDispatch = () => {
+  const userAndDispatch = useContext(UserContext);
+  return userAndDispatch[1];
+};
+
 export const UserContextProvider = (props) => {
   const [user, userDispatch] = useReducer(userReducer, null);
 
