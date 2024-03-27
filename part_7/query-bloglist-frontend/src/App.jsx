@@ -38,6 +38,20 @@ const App = () => {
     },
   });
 
+  const likeMutation = useMutation({
+    mutationFn: blogService.update,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: blogService.remove,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+  });
+
   const logout = async (event) => {
     event.preventDefault();
 
@@ -82,12 +96,13 @@ const App = () => {
       );
 
       if (confirmation) {
-        await blogService.remove(blogObject.id);
+        removeMutation.mutate(blogObject.id);
         handleNotification(
           `Blog "${blogObject.title}" removed!`,
           "notification-success"
         );
       }
+
     } catch (exception) {
       handleNotification(
         `An error occured during deletion: ${exception}`,
@@ -97,15 +112,7 @@ const App = () => {
   };
 
   const addLike = async (blog) => {
-    try {
-      const updatedBlog = { ...blog, likes: blog.likes + 1 };
-      await blogService.update(blog.id, updatedBlog);
-      const updatedBlogs = blogs.data.map((blogItem) =>
-        blogItem.id === blog.id ? updatedBlog : blogItem
-      );
-    } catch (exception) {
-      console.log(exception);
-    }
+    likeMutation.mutate(blog);
   };
 
   const handleNotification = (message, className) => {
