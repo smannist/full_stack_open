@@ -24,7 +24,7 @@ const App = () => {
     }
   }, []);
 
-  const result = useQuery({
+  const blogs = useQuery({
     queryKey: ["blogs"],
     queryFn: blogService.getAll,
     retry: false,
@@ -100,7 +100,7 @@ const App = () => {
     try {
       const updatedBlog = { ...blog, likes: blog.likes + 1 };
       await blogService.update(blog.id, updatedBlog);
-      const updatedBlogs = result.data.map((blogItem) =>
+      const updatedBlogs = blogs.data.map((blogItem) =>
         blogItem.id === blog.id ? updatedBlog : blogItem
       );
     } catch (exception) {
@@ -121,7 +121,7 @@ const App = () => {
     }, 5000);
   };
 
-  if (result.isLoading) {
+  if (blogs.isLoading) {
     return <div>Loading data...</div>;
   }
 
@@ -142,7 +142,7 @@ const App = () => {
       <h2>Blogs</h2>
       <Notification />
       <Blogs
-        blogs={result.data.sort((a, b) => b.likes - a.likes)}
+        blogs={blogs.data.sort((a, b) => b.likes - a.likes)}
         addLike={addLike}
         removeBlog={removeBlog}
         user={user}
