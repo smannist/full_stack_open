@@ -1,14 +1,41 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import loginService from "../services/login";
+import blogService from "../services/blogs";
+import UserContext from "../context/UserContext";
+import {
+  handleNotification,
+  useNotificationDispatch,
+} from "../context/NotificationContext";
 
-const LoginForm = ({ login }) => {
+const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [user, userDispatch] = useContext(UserContext);
+  const notificationDispatch = useNotificationDispatch();
 
   const loginUser = (event) => {
     event.preventDefault();
     login(username, password);
     setUsername("");
     setPassword("");
+  };
+
+  const login = async (username, password) => {
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      });
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
+      blogService.setToken(user.token);
+      userDispatch({ type: "LOGIN", payload: user });
+    } catch (exception) {
+      handleNotification(
+        notificationDispatch,
+        "Incorrect login credentials",
+        "notification-failure"
+      );
+    }
   };
 
   const handleUsernameChange = (event) => {
