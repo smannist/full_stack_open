@@ -1,5 +1,12 @@
+import React from "react";
+
 const User = ({ user }) => {
-  return <div> {user.username} </div>;
+  return (
+    <>
+      <td>{user.username}</td>
+      <td>{user.blogs.length}</td>
+    </>
+  );
 };
 
 export default User;

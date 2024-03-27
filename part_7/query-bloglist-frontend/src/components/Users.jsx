@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import userService from "../services/users";
+import User from "./User";
 
 const Users = () => {
   const users = useQuery({
@@ -30,8 +31,7 @@ const Users = () => {
       <tbody>
         {users.data.map((user) => (
           <tr key={user.id}>
-            <td>{user.username}</td>
-            <td>{user.blogs.length}</td>
+            <User user={user} />
           </tr>
         ))}
       </tbody>
