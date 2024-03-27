@@ -14,6 +14,7 @@ const notificationReducer = (state, action) => {
       return state;
   }
 };
+
 const NotificationContext = createContext();
 
 export const useNotificationMessage = () => {
@@ -36,8 +37,7 @@ export const NotificationContextProvider = (props) => {
 
   return (
     <NotificationContext.Provider value={[notification, notificationDispatch]}>
-      {" "}
-      {props.children}{" "}
+      {props.children}
     </NotificationContext.Provider>
   );
 };

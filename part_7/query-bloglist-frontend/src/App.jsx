@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNotificationDispatch } from "./context/NotificationContext";
+import UserContext from "./context/UserContext";
 import queryClient from "./queryClient";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
@@ -11,7 +12,7 @@ import CreateBlogForm from "./components/CreateBlogForm";
 import Togglable from "./components/Togglable";
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, userDispatch] = useContext(UserContext);
   const notificationDispatch = useNotificationDispatch();
   const createBlogRef = useRef();
 
@@ -19,7 +20,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      userDispatch({ type: "LOGIN", payload: user });
       blogService.setToken(user.token);
     }
   }, []);
@@ -54,7 +55,6 @@ const App = () => {
 
   const logout = async (event) => {
     event.preventDefault();
-
     try {
       window.localStorage.removeItem("loggedUser");
       window.location.reload();
@@ -74,7 +74,7 @@ const App = () => {
       });
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
       blogService.setToken(user.token);
-      setUser(user);
+      userDispatch({ type: "LOGIN", payload: user });
     } catch (exception) {
       handleNotification("Incorrect login credentials", "notification-failure");
     }
@@ -94,7 +94,6 @@ const App = () => {
       const confirmation = window.confirm(
         `Remove blog ${blogObject.title} by ${blogObject.author}?`
       );
-
       if (confirmation) {
         removeMutation.mutate(blogObject.id);
         handleNotification(
@@ -102,7 +101,6 @@ const App = () => {
           "notification-success"
         );
       }
-
     } catch (exception) {
       handleNotification(
         `An error occured during deletion: ${exception}`,
