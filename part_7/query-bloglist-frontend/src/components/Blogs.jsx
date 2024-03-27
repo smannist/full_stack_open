@@ -1,15 +1,17 @@
-import {
-  useNotificationDispatch,
-  handleNotification,
-} from "../context/NotificationContext";
 import { useMutation } from "@tanstack/react-query";
+import {
+  handleNotification,
+  useNotificationDispatch,
+} from "../context/NotificationContext";
 import Blog from "./Blog";
 import Togglable from "./Togglable";
 import CreateBlogForm from "./CreateBlogForm";
 import queryClient from "../queryClient";
 import blogService from "../services/blogs";
 
-const Blogs = ({ blogs, removeBlog, user, createBlogRef }) => {
+const Blogs = ({ blogs, user, createBlogRef }) => {
+  const notificationDispatch = useNotificationDispatch();
+
   const newBlogMutation = useMutation({
     mutationFn: blogService.create,
     onSuccess: () => {
@@ -24,13 +26,43 @@ const Blogs = ({ blogs, removeBlog, user, createBlogRef }) => {
     },
   });
 
+  const removeMutation = useMutation({
+    mutationFn: blogService.remove,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+  });
+
   const createBlog = async (blogObject) => {
     createBlogRef.current.toggleVisibility();
     newBlogMutation.mutate(blogObject);
     handleNotification(
+      notificationDispatch,
       `New blog "${blogObject.title}" added!`,
       "notification-success"
     );
+  };
+
+  const removeBlog = async (blogObject) => {
+    try {
+      const confirmation = window.confirm(
+        `Remove blog ${blogObject.title} by ${blogObject.author}?`
+      );
+      if (confirmation) {
+        removeMutation.mutate(blogObject.id);
+        handleNotification(
+          notificationDispatch,
+          `Blog "${blogObject.title}" removed!`,
+          "notification-success"
+        );
+      }
+    } catch (exception) {
+      handleNotification(
+        notificationDispatch,
+        `An error occured during deletion: ${exception}`,
+        "notification-failure"
+      );
+    }
   };
 
   const addLike = async (blog) => {

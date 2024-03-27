@@ -14,7 +14,6 @@ import loginService from "./services/login";
 
 const App = () => {
   const [user, userDispatch] = useContext(UserContext);
-  const notificationDispatch = useNotificationDispatch();
   const createBlogRef = useRef();
 
   useEffect(() => {
@@ -31,13 +30,6 @@ const App = () => {
     queryFn: blogService.getAll,
     retry: false,
     refetchOnWindowFocus: false,
-  });
-
-  const removeMutation = useMutation({
-    mutationFn: blogService.remove,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogs"]);
-    },
   });
 
   const logout = async (event) => {
@@ -67,39 +59,6 @@ const App = () => {
     }
   };
 
-  const removeBlog = async (blogObject) => {
-    try {
-      const confirmation = window.confirm(
-        `Remove blog ${blogObject.title} by ${blogObject.author}?`
-      );
-      if (confirmation) {
-        removeMutation.mutate(blogObject.id);
-        handleNotification(
-          `Blog "${blogObject.title}" removed!`,
-          "notification-success"
-        );
-      }
-    } catch (exception) {
-      handleNotification(
-        `An error occured during deletion: ${exception}`,
-        "notification-failure"
-      );
-    }
-  };
-
-  const handleNotification = (message, className) => {
-    notificationDispatch({
-      type: "SHOW",
-      payload: {
-        message: message,
-        className: className,
-      },
-    });
-    setTimeout(() => {
-      notificationDispatch({ type: "HIDE" });
-    }, 5000);
-  };
-
   if (blogs.isLoading) {
     return <div>Loading data...</div>;
   }
@@ -125,7 +84,6 @@ const App = () => {
             <Blogs
               user={user}
               blogs={blogs.data}
-              removeBlog={removeBlog}
               logout={logout}
               createBlogRef={createBlogRef}
             />
