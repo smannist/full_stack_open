@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
+import { useNotificationDispatch } from "./context/NotificationContext";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
@@ -10,10 +11,8 @@ import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [notificationMessage, setNotificationMessage] = useState(null);
-  const [notificationType, setNotificationType] = useState(null);
   const [user, setUser] = useState(null);
-
+  const notificationDispatch = useNotificationDispatch();
   const createBlogRef = useRef();
 
   useEffect(() => {
@@ -115,12 +114,16 @@ const App = () => {
     }
   };
 
-  const handleNotification = (message, type) => {
-    setNotificationMessage(message);
-    setNotificationType(type);
+  const handleNotification = (message, className) => {
+    notificationDispatch({
+      type: "SHOW",
+      payload: {
+        message: message,
+        className: className
+      }
+    });
     setTimeout(() => {
-      setNotificationMessage(null);
-      setNotificationType(null);
+      notificationDispatch({ type: "HIDE" });
     }, 5000);
   };
 
@@ -128,10 +131,7 @@ const App = () => {
     return (
       <div>
         <h1>Login to application</h1>
-        <Notification
-          type={notificationType}
-          message={notificationMessage}
-        />
+        <Notification/>
         <LoginForm login={login} />
       </div>
     );
@@ -142,10 +142,7 @@ const App = () => {
       <p>Logged in as {user.username}</p>
       <button onClick={logout}>Logout</button>
       <h2>Blogs</h2>
-      <Notification
-        type={notificationType}
-        message={notificationMessage}
-      />
+      <Notification/>
       <Blogs
         blogs={blogs.sort((a, b) => b.likes - a.likes)}
         addLike={addLike}
