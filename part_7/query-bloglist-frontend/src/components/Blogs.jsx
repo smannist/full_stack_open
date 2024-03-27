@@ -1,15 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
 import {
   handleNotification,
   useNotificationDispatch,
 } from "../context/NotificationContext";
+import { useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
 import Blog from "./Blog";
 import Togglable from "./Togglable";
 import CreateBlogForm from "./CreateBlogForm";
 import queryClient from "../queryClient";
 import blogService from "../services/blogs";
 
-const Blogs = ({ blogs, user, createBlogRef }) => {
+const Blogs = ({ blogs, user }) => {
+  const createBlogRef = useRef();
   const notificationDispatch = useNotificationDispatch();
 
   const newBlogMutation = useMutation({

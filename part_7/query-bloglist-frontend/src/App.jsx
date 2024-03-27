@@ -1,5 +1,5 @@
 import { Routes, Route, Link } from "react-router-dom";
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "./context/UserContext";
 import Blogs from "./components/Blogs";
@@ -11,7 +11,6 @@ import blogService from "./services/blogs";
 
 const App = () => {
   const [user, userDispatch] = useContext(UserContext);
-  const createBlogRef = useRef();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
@@ -54,7 +53,6 @@ const App = () => {
             <Blogs
               user={user}
               blogs={blogs.data}
-              createBlogRef={createBlogRef}
             />
           }
         />
