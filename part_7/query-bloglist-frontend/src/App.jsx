@@ -33,13 +33,6 @@ const App = () => {
     refetchOnWindowFocus: false,
   });
 
-  const newBlogMutation = useMutation({
-    mutationFn: blogService.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogs"]);
-    },
-  });
-
   const likeMutation = useMutation({
     mutationFn: blogService.update,
     onSuccess: () => {
@@ -79,15 +72,6 @@ const App = () => {
     } catch (exception) {
       handleNotification("Incorrect login credentials", "notification-failure");
     }
-  };
-
-  const createBlog = async (blogObject) => {
-    createBlogRef.current.toggleVisibility();
-    newBlogMutation.mutate(blogObject);
-    handleNotification(
-      `New blog "${blogObject.title}" added!`,
-      "notification-success"
-    );
   };
 
   const removeBlog = async (blogObject) => {
@@ -156,7 +140,6 @@ const App = () => {
               removeBlog={removeBlog}
               logout={logout}
               createBlogRef={createBlogRef}
-              createBlog={createBlog}
             />
           }
         />
