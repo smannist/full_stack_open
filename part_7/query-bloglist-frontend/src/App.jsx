@@ -1,3 +1,4 @@
+import { Routes, Route, Link } from "react-router-dom";
 import { useEffect, useRef, useContext } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNotificationDispatch } from "./context/NotificationContext";
@@ -6,10 +7,10 @@ import queryClient from "./queryClient";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
+import Users from "./components/Users";
+import Header from "./components/Header";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import CreateBlogForm from "./components/CreateBlogForm";
-import Togglable from "./components/Togglable";
 
 const App = () => {
   const [user, userDispatch] = useContext(UserContext);
@@ -142,19 +143,25 @@ const App = () => {
 
   return (
     <div>
-      <p>Logged in as {user.username}</p>
-      <button onClick={logout}>Logout</button>
-      <h2>Blogs</h2>
       <Notification />
-      <Blogs
-        blogs={blogs.data.sort((a, b) => b.likes - a.likes)}
-        addLike={addLike}
-        removeBlog={removeBlog}
-        user={user}
-      />
-      <Togglable buttonLabel="new blog" ref={createBlogRef}>
-        <CreateBlogForm createBlog={createBlog} />
-      </Togglable>
+      <Header user={user} logout={logout} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Blogs
+              user={user}
+              blogs={blogs.data}
+              addLike={addLike}
+              removeBlog={removeBlog}
+              logout={logout}
+              createBlogRef={createBlogRef}
+              createBlog={createBlog}
+            />
+          }
+        />
+        <Route path="/users" element={<Users />} />
+      </Routes>
     </div>
   );
 };
