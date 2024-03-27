@@ -1,6 +1,7 @@
-import "./App.css";
 import { useState, useEffect, useRef } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNotificationDispatch } from "./context/NotificationContext";
+import queryClient from "./queryClient";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
@@ -10,27 +11,32 @@ import CreateBlogForm from "./components/CreateBlogForm";
 import Togglable from "./components/Togglable";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const notificationDispatch = useNotificationDispatch();
   const createBlogRef = useRef();
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs));
-  }, []);
-
-  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedUser");
-
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       blogService.setToken(user.token);
     }
-
   }, []);
+
+  const result = useQuery({
+    queryKey: ["blogs"],
+    queryFn: blogService.getAll,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const newBlogMutation = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+  });
 
   const logout = async (event) => {
     event.preventDefault();
@@ -44,7 +50,6 @@ const App = () => {
         "notification-failure"
       );
     }
-
   };
 
   const login = async (username, password) => {
@@ -63,13 +68,7 @@ const App = () => {
 
   const createBlog = async (blogObject) => {
     createBlogRef.current.toggleVisibility();
-
-    const newBlog = await blogService.create(blogObject);
-    setBlogs(blogs.concat(newBlog));
-
-    const updatedBlogs = await blogService.getAll();
-    setBlogs(updatedBlogs);
-
+    newBlogMutation.mutate(blogObject);
     handleNotification(
       `New blog "${blogObject.title}" added!`,
       "notification-success"
@@ -84,15 +83,11 @@ const App = () => {
 
       if (confirmation) {
         await blogService.remove(blogObject.id);
-        setBlogs(
-          blogs.filter((removedBlog) => removedBlog.id !== blogObject.id)
-        );
         handleNotification(
           `Blog "${blogObject.title}" removed!`,
           "notification-success"
         );
       }
-
     } catch (exception) {
       handleNotification(
         `An error occured during deletion: ${exception}`,
@@ -105,10 +100,9 @@ const App = () => {
     try {
       const updatedBlog = { ...blog, likes: blog.likes + 1 };
       await blogService.update(blog.id, updatedBlog);
-      const updatedBlogs = blogs.map((blogItem) =>
+      const updatedBlogs = result.data.map((blogItem) =>
         blogItem.id === blog.id ? updatedBlog : blogItem
       );
-      setBlogs(updatedBlogs);
     } catch (exception) {
       console.log(exception);
     }
@@ -119,19 +113,23 @@ const App = () => {
       type: "SHOW",
       payload: {
         message: message,
-        className: className
-      }
+        className: className,
+      },
     });
     setTimeout(() => {
       notificationDispatch({ type: "HIDE" });
     }, 5000);
   };
 
+  if (result.isLoading) {
+    return <div>Loading data...</div>;
+  }
+
   if (user === null) {
     return (
       <div>
         <h1>Login to application</h1>
-        <Notification/>
+        <Notification />
         <LoginForm login={login} />
       </div>
     );
@@ -142,9 +140,9 @@ const App = () => {
       <p>Logged in as {user.username}</p>
       <button onClick={logout}>Logout</button>
       <h2>Blogs</h2>
-      <Notification/>
+      <Notification />
       <Blogs
-        blogs={blogs.sort((a, b) => b.likes - a.likes)}
+        blogs={result.data.sort((a, b) => b.likes - a.likes)}
         addLike={addLike}
         removeBlog={removeBlog}
         user={user}
