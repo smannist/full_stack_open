@@ -3,14 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import userService from "../services/users";
 
 const Users = () => {
-  const usersQuery = useQuery({
+  const users = useQuery({
     queryKey: ["users"],
     queryFn: userService.getAll,
     retry: false,
     refetchOnWindowFocus: false,
   });
 
-  if (usersQuery.isLoading) {
+  if (users.isLoading) {
     return <div>Loading data...</div>;
   }
 
@@ -28,7 +28,7 @@ const Users = () => {
         </tr>
       </thead>
       <tbody>
-        {usersQuery.data.map((user) => (
+        {users.data.map((user) => (
           <tr key={user.id}>
             <td>{user.username}</td>
             <td>{user.blogs.length}</td>
