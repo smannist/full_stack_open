@@ -9,11 +9,16 @@ import CreateBlogForm from "./CreateBlogForm";
 import queryClient from "../queryClient";
 import blogService from "../services/blogs";
 
-const Blogs = ({ blogs, addLike, removeBlog, user, createBlogRef }) => {
-  const notificationDispatch = useNotificationDispatch();
-
+const Blogs = ({ blogs, removeBlog, user, createBlogRef }) => {
   const newBlogMutation = useMutation({
     mutationFn: blogService.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+  });
+
+  const likeMutation = useMutation({
+    mutationFn: blogService.update,
     onSuccess: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
@@ -26,6 +31,10 @@ const Blogs = ({ blogs, addLike, removeBlog, user, createBlogRef }) => {
       `New blog "${blogObject.title}" added!`,
       "notification-success"
     );
+  };
+
+  const addLike = async (blog) => {
+    likeMutation.mutate(blog);
   };
 
   return (

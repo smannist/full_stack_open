@@ -33,13 +33,6 @@ const App = () => {
     refetchOnWindowFocus: false,
   });
 
-  const likeMutation = useMutation({
-    mutationFn: blogService.update,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogs"]);
-    },
-  });
-
   const removeMutation = useMutation({
     mutationFn: blogService.remove,
     onSuccess: () => {
@@ -94,10 +87,6 @@ const App = () => {
     }
   };
 
-  const addLike = async (blog) => {
-    likeMutation.mutate(blog);
-  };
-
   const handleNotification = (message, className) => {
     notificationDispatch({
       type: "SHOW",
@@ -136,7 +125,6 @@ const App = () => {
             <Blogs
               user={user}
               blogs={blogs.data}
-              addLike={addLike}
               removeBlog={removeBlog}
               logout={logout}
               createBlogRef={createBlogRef}
