@@ -5,6 +5,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "../queryClient";
 import blogService from "../services/blogs";
+import CommentBox from "./CommentBox";
 
 const BlogDetailed = ({ blog, user }) => {
   const notificationDispatch = useNotificationDispatch();
@@ -73,6 +74,7 @@ const BlogDetailed = ({ blog, user }) => {
           Remove
         </button>
       )}
+      <CommentBox blog={blog}/>
     </div>
   );
 };
