@@ -49,11 +49,7 @@ const BlogDetailed = ({ blog, user }) => {
     likeMutation.mutate(blog);
   };
 
-  if (!blog) {
-    return null;
-  }
-
-  if (!user) {
+  if (!blog || !user) {
     return null;
   }
 
