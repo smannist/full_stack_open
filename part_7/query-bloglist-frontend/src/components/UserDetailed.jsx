@@ -1,5 +1,5 @@
 const UserDetailed = ({ user }) => {
-  if (!user || !user.blogs) {
+  if (!user) {
     return null;
   }
 
