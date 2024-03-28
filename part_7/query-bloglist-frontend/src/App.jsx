@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, useMatch } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "./context/UserContext";
@@ -7,7 +7,9 @@ import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import Users from "./components/Users";
 import Header from "./components/Header";
+import UserDetailed from "./components/UserDetailed";
 import blogService from "./services/blogs";
+import userService from "./services/users";
 
 const App = () => {
   const [user, userDispatch] = useContext(UserContext);
@@ -28,7 +30,20 @@ const App = () => {
     refetchOnWindowFocus: false,
   });
 
-  if (blogs.isLoading) {
+  const users = useQuery({
+    queryKey: ["users"],
+    queryFn: userService.getAll,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const userMatch = useMatch("/users/:id");
+  const detailedUser =
+    userMatch && users.data
+      ? users.data.find((foundUser) => foundUser.id === userMatch.params.id)
+      : null;
+
+  if (blogs.isLoading || users.isLoading) {
     return <div>Loading data...</div>;
   }
 
@@ -47,16 +62,12 @@ const App = () => {
       <Notification />
       <Header user={user} />
       <Routes>
+        <Route path="/" element={<Blogs user={user} blogs={blogs.data} />} />
+        <Route path="/users" element={<Users users={users} />} />
         <Route
-          path="/"
-          element={
-            <Blogs
-              user={user}
-              blogs={blogs.data}
-            />
-          }
+          path="/users/:id"
+          element={<UserDetailed user={detailedUser} />}
         />
-        <Route path="/users" element={<Users />} />
       </Routes>
     </div>
   );
