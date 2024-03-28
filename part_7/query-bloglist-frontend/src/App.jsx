@@ -2,6 +2,7 @@ import { Routes, Route, useMatch } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "./context/UserContext";
+import logo from "./static/blogs.png";
 import Blogs from "./components/Blogs";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
@@ -58,9 +59,10 @@ const App = () => {
   if (user === null) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
+        <img src={logo} alt="Blogs Logo" className="h-20" />
         <h1 className="text-3xl font-bold mb-4">Login to Application</h1>
-        <Notification />
         <LoginForm />
+        <Notification />
       </div>
     );
   }
