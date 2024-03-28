@@ -71,7 +71,7 @@ const BlogDetailed = ({ blog, user }) => {
       <p>
         <strong>Likes:</strong> {blog.likes}
         <button
-          className="ml-5 bg-yellow-500 hover:bg-yellow-600 text-black py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+          className="ml-5 border border-black bg-yellow-500 hover:bg-yellow-600 text-black py-1 px-2 rounded focus:outline-none focus:shadow-outline"
           onClick={() => addLike(blog)}
         >
           Like
@@ -82,7 +82,7 @@ const BlogDetailed = ({ blog, user }) => {
       </p>
       {isOwner && (
         <button
-          className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="mt-4 border border-black bg-yellow-500 hover:bg-yellow-600 text-black py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           data-testid="remove-button"
           onClick={removeBlog}
         >

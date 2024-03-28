@@ -1,7 +1,10 @@
+import React from "react";
+import logo from "../static/blogs.png";
+
 const Header = () => {
   return (
-    <div className="text-black py-4 px-6 flex justify-center">
-      <h1 className="text-4xl font-semibold">Blogs</h1>
+    <div className="py-4 px-6 flex justify-center">
+      <img src={logo} alt="Blogs Logo" className="h-20" />
     </div>
   );
 };

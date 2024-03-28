@@ -37,7 +37,7 @@ const CommentBox = ({ blog }) => {
           ></input>
           <button
             type="submit"
-            className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="mt-2 border border-black bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Add comment
           </button>

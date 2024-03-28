@@ -18,7 +18,7 @@ const Togglable = forwardRef((props, ref) => {
     <div className="flex flex-col items-center">
       <div className={visible ? "hidden" : "block"}>
         <button
-          className="my-2 mt-6 px-4 py-2 bg-yellow-400 text-black rounded-md"
+          className="my-2 mt-6 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded-md"
           onClick={toggleVisibility}
         >
           {props.buttonLabel}
@@ -27,7 +27,7 @@ const Togglable = forwardRef((props, ref) => {
       <div className={visible ? "block" : "hidden"}>
         {props.children}
         <button
-          className="my-2 px-4 py-2 bg-yellow-400 text-black rounded-md"
+          className="my-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded-md"
           onClick={toggleVisibility}
         >
           Cancel
