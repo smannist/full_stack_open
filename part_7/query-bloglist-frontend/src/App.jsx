@@ -7,6 +7,7 @@ import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import Users from "./components/Users";
 import Header from "./components/Header";
+import NavBar from "./components/NavBar";
 import UserDetailed from "./components/UserDetailed";
 import BlogDetailed from "./components/BlogDetailed";
 import blogService from "./services/blogs";
@@ -67,12 +68,16 @@ const App = () => {
   return (
     <div>
       <Notification />
-      <Header user={user} />
+      <NavBar user={user} />
+      <Header />
       <Routes>
         <Route path="/" element={<Blogs user={user} blogs={blogs.data} />} />
         <Route path="/users" element={<Users users={users} />} />
         <Route path="/users/:id" element={<UserDetailed user={singleUser} />} />
-        <Route path="/blogs/:id" element={<BlogDetailed blog={singleBlog} user={user} />} />
+        <Route
+          path="/blogs/:id"
+          element={<BlogDetailed blog={singleBlog} user={user} />}
+        />
       </Routes>
     </div>
   );

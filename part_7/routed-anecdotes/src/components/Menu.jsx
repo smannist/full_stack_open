@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Menu = () => {
+const Menu = ({ user }) => {
   const padding = {
     paddingRight: 5,
   };
@@ -16,6 +16,7 @@ const Menu = () => {
       <Link style={padding} to="/about">
         about
       </Link>
+      <p>Logged in as {user.username}</p>
     </div>
   );
 };
