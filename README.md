@@ -13,4 +13,4 @@ Fully completed parts (all exercises):
 - [x] 4 Testing Express servers, user administration
 - [x] 5 Testing React apps
 - [x] 6 Advanced state management
-- [ ] 7 React router, custom hooks, styling app with CSS and webpack
+- [x] 7 React router, custom hooks, styling app with CSS and webpack
