@@ -8,6 +8,7 @@ import Notification from "./components/Notification";
 import Users from "./components/Users";
 import Header from "./components/Header";
 import UserDetailed from "./components/UserDetailed";
+import BlogDetailed from "./components/BlogDetailed";
 import blogService from "./services/blogs";
 import userService from "./services/users";
 
@@ -38,9 +39,15 @@ const App = () => {
   });
 
   const userMatch = useMatch("/users/:id");
-  const detailedUser =
+  const singleUser =
     userMatch && users.data
       ? users.data.find((foundUser) => foundUser.id === userMatch.params.id)
+      : null;
+
+  const blogMatch = useMatch("/blogs/:id");
+  const singleBlog =
+    blogMatch && blogs.data
+      ? blogs.data.find((foundBlog) => foundBlog.id === blogMatch.params.id)
       : null;
 
   if (blogs.isLoading || users.isLoading) {
@@ -64,10 +71,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Blogs user={user} blogs={blogs.data} />} />
         <Route path="/users" element={<Users users={users} />} />
-        <Route
-          path="/users/:id"
-          element={<UserDetailed user={detailedUser} />}
-        />
+        <Route path="/users/:id" element={<UserDetailed user={singleUser} />} />
+        <Route path="/blogs/:id" element={<BlogDetailed blog={singleBlog} user={user} />} />
       </Routes>
     </div>
   );

@@ -1,39 +1,14 @@
 import "../App.css";
-import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-const Blog = ({ blog, addLike, removeBlog, user }) => {
-  const [visible, setVisible] = useState(false);
-
-  const handleVisibilityChange = () => {
-    setVisible(!visible);
+const Blog = ({ blog }) => {
+  const style = {
+    marginTop: "5px",
   };
 
-  const isOwner = user.username === blog.user.username;
-
-  if (visible) {
-    return (
-      <div className="blog">
-        {blog.title} {blog.author}
-        <button onClick={handleVisibilityChange}>Hide</button>
-        <br></br>
-        <strong>Url:</strong> {blog.url}
-        <br></br>
-        <strong>Likes:</strong> {blog.likes}{" "}
-        <button className="like-button" onClick={() => addLike(blog)}>
-          Like
-        </button>
-        <br></br>
-        <strong>Added by:</strong> {blog.user.username}
-        <br></br>
-        {isOwner && <button data-testid="remove-button" onClick={removeBlog}>Remove</button>}
-      </div>
-    );
-  }
-
   return (
-    <div className="blog">
-      {blog.title} {blog.author}
-      <button onClick={handleVisibilityChange}>View</button>
+    <div style={style} className="blog">
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
     </div>
   );
 };
