@@ -7,13 +7,15 @@ import queryClient from "./queryClient";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Router>
-    <QueryClientProvider client={queryClient}>
-      <NotificationContextProvider>
-        <UserContextProvider>
-          <App />
-        </UserContextProvider>
-      </NotificationContextProvider>
-    </QueryClientProvider>
-  </Router>
+  <div className="bg-blue-200 min-h-screen">
+    <Router>
+      <QueryClientProvider client={queryClient}>
+        <NotificationContextProvider>
+          <UserContextProvider>
+            <App />
+          </UserContextProvider>
+        </NotificationContextProvider>
+      </QueryClientProvider>
+    </Router>
+  </div>
 );

@@ -4,9 +4,6 @@ import PropTypes from "prop-types";
 const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
 
-  const hideWhenVisible = { display: visible ? "none" : "" };
-  const showWhenVisible = { display: visible ? "" : "none" };
-
   const toggleVisibility = () => {
     setVisible(!visible);
   };
@@ -18,13 +15,23 @@ const Togglable = forwardRef((props, ref) => {
   });
 
   return (
-    <div>
-      <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+    <div className="flex flex-col items-center">
+      <div className={visible ? "hidden" : "block"}>
+        <button
+          className="my-2 mt-6 px-4 py-2 bg-yellow-400 text-black rounded-md"
+          onClick={toggleVisibility}
+        >
+          {props.buttonLabel}
+        </button>
       </div>
-      <div style={showWhenVisible}>
+      <div className={visible ? "block" : "hidden"}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <button
+          className="my-2 px-4 py-2 bg-yellow-400 text-black rounded-md"
+          onClick={toggleVisibility}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );

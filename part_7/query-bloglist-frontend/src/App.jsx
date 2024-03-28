@@ -57,8 +57,8 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
-        <h1>Login to application</h1>
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-3xl font-bold mb-4">Login to Application</h1>
         <Notification />
         <LoginForm />
       </div>
@@ -67,9 +67,9 @@ const App = () => {
 
   return (
     <div>
-      <Notification />
       <NavBar user={user} />
       <Header />
+      <Notification />
       <Routes>
         <Route path="/" element={<Blogs user={user} blogs={blogs.data} />} />
         <Route path="/users" element={<Users users={users} />} />

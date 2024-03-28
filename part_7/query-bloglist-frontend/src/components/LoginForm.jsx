@@ -47,32 +47,49 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className=" bg-yellow-400 p-4 rounded-lg shadow-md max-w-md">
       <form data-testid="login-form" onSubmit={loginUser}>
-        <div className="login-form">
-          Username
+        <div className="mb-4">
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-black"
+          >
+            Username
+          </label>
           <input
             data-testid="username"
             type="text"
             value={username}
+            id="username"
             name="Username"
             onChange={handleUsernameChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
           />
         </div>
-        <div className="login-form">
-          Password
+        <div className="mb-4">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-black"
+          >
+            Password
+          </label>
           <input
             data-testid="password"
             type="password"
             value={password}
+            id="password"
             name="Password"
             autoComplete="on"
             onChange={handlePasswordChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
           />
         </div>
-        <br></br>
-        <button type="submit">login</button>
+        <button
+          type="submit"
+          className="bg-yellow-500 border border-black hover:bg-yellow-600 text-black py-2 px-4 rounded-md"
+        >
+          Login
+        </button>
       </form>
     </div>
   );

@@ -2,13 +2,13 @@ import "../App.css";
 import { Link } from "react-router-dom";
 
 const Blog = ({ blog }) => {
-  const style = {
-    marginTop: "5px",
-  };
-
   return (
-    <div style={style} className="blog">
-      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+    <div className="flex justify-center mt-5">
+      <div className="container mx-auto max-w-lg bg-yellow-400 p-4 rounded-lg shadow-lg text-center">
+        <div className="blog">
+          <Link to={`/blogs/${blog.id}`} className="text-black">{blog.title}</Link>
+        </div>
+      </div>
     </div>
   );
 };

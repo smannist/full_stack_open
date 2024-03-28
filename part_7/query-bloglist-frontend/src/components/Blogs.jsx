@@ -40,7 +40,7 @@ const Blogs = ({ blogs, user }) => {
           user={user}
         />
       ))}
-      <Togglable buttonLabel="new blog" ref={createBlogRef}>
+      <Togglable buttonLabel="New blog" ref={createBlogRef}>
         <CreateBlogForm createBlog={createBlog} />
       </Togglable>
     </>

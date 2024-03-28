@@ -7,17 +7,6 @@ import {
 const NavBar = ({ user }) => {
   const notificationDispatch = useNotificationDispatch();
 
-  const containerStyle = {
-    backgroundColor: "lightblue",
-    width: "100%",
-    padding: "5px",
-  };
-
-  const padding = {
-    paddingRight: "5px",
-    display: "inline-block",
-  };
-
   const logout = async (event) => {
     event.preventDefault();
     try {
@@ -33,15 +22,30 @@ const NavBar = ({ user }) => {
   };
 
   return (
-    <div style={containerStyle}>
-      <Link style={padding} to="/">
-        Blogs
-      </Link>
-      <Link style={padding} to="/users">
-        Users
-      </Link>
-      <p style={padding}>Logged in as {user.username}</p>
-      <button onClick={logout}>Logout</button>
+    <div className="flex justify-between items-center bg-blue-300 w-full p-2">
+      <div>
+        <Link
+          className="border border-black bg-yellow-500 hover:bg-yellow-600 rounded px-4 py-2 mr-5 inline-block"
+          to="/"
+        >
+          Blogs
+        </Link>
+        <Link
+          className="border border-black bg-yellow-500 hover:bg-yellow-600 rounded px-4 py-2 mr-5 inline-block"
+          to="/users"
+        >
+          Users
+        </Link>
+      </div>
+      <div>
+        <p className="mr-5 inline-block">Logged in as {user.username}</p>
+        <button
+          className="border border-black bg-yellow-500 hover:bg-yellow-600 text-black py-2 px-4 rounded"
+          onClick={logout}
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };
