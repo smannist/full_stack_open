@@ -1,0 +1,1 @@
+Please refer to following [repository](https://github.com/smannist/full-stack-open-pokedex)
