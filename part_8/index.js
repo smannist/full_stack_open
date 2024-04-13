@@ -125,12 +125,8 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: (_, args) => {
-      if (!args.author) {
-        return books;
-      }
-      return books.filter((book) => book.author === args.author);
-    },
+    allBooks: (_, args) =>
+      args.author ? books.filter((book) => book.author === args.author) : books,
     allAuthors: () => authors,
   },
   Author: {
