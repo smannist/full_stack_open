@@ -18,6 +18,6 @@ Fully completed parts:
 - [ ] 9 TypeScript
 - [ ] 10 React Native
 - [x] 11 CI/CD
-- [ ] 12 Containers
+- [x] 12 Containers
 - [ ] 13 Using relational databases
 
