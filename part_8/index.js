@@ -98,7 +98,7 @@ let books = [
 */
 
 const typeDefs = `
-  type book {
+  type Book {
     title: String!
     published: Int!
     author: String!
@@ -109,7 +109,7 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [book!]!
+    allBooks: [Book!]!
   }
 `;
 
