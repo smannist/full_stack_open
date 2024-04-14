@@ -123,6 +123,13 @@ const typeDefs = `
     ) : Book
   }
 
+  type Mutation {
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ) : Author
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int!
@@ -164,6 +171,16 @@ const resolvers = {
       books = books.concat(book);
 
       return book;
+    },
+    editAuthor: (_, { name, setBornTo }) => {
+      const author = authors.find((a) => a.name === name);
+      return author
+        ? (() => {
+            const updatedAuthor = { ...author, born: setBornTo };
+            authors = authors.map((a) => (a.name === name ? updatedAuthor : a));
+            return updatedAuthor;
+          })()
+        : null;
     },
   },
 };
