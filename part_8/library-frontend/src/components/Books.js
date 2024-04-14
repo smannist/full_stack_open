@@ -1,10 +1,9 @@
 const Books = () => {
-  const books = []
+  const books = [];
 
   return (
     <div>
       <h2>books</h2>
-
       <table>
         <tbody>
           <tr>
@@ -22,7 +21,7 @@ const Books = () => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default Books
+export default Books;
