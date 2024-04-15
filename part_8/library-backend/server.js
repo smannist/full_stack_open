@@ -1,6 +1,11 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { GraphQLError } = require("graphql");
 const { v1: uuid } = require("uuid");
+const mongoose = require("./db");
+
+const Book = require("./models/book");
+const Author = require("./models/author");
 
 let authors = [
   {
@@ -19,28 +24,14 @@ let authors = [
     born: 1821,
   },
   {
-    name: "Joshua Kerievsky", // birthyear not known
+    name: "Joshua Kerievsky",
     id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
   },
   {
-    name: "Sandi Metz", // birthyear not known
+    name: "Sandi Metz",
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
 ];
-
-/*
- * Suomi:
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
- *
- * English:
- * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
- * However, for simplicity, we will store the author's name in connection with the book
- *
- * Spanish:
- * Podría tener más sentido asociar un libro con su autor almacenando la id del autor en el contexto del libro en lugar del nombre del autor
- * Sin embargo, por simplicidad, almacenaremos el nombre del autor en conexión con el libro
- */
 
 let books = [
   {
@@ -102,16 +93,16 @@ const typeDefs = `
   type Book {
     title: String!
     published: Int!
-    author: String!
-    id: ID!
+    author: Author!
     genres: [String!]!
+    id: ID!
   }
 
   type Author {
     name: String!
-    id: ID!
     born: Int
     bookCount: Int!
+    id: ID!
   }
 
   type Mutation {
@@ -158,17 +149,27 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBook: (_, args) => {
-      const duplicateAuthor = authors.find(
-        (author) => author.name === args.author
-      );
+    addBook: async (_, args) => {
+      let authorObj = await Author.findOne({ name: args.author });
 
-      duplicateAuthor
-        ? null
-        : (authors = authors.concat({ name: args.author, id: uuid() }));
+      if (!authorObj) {
+        authorObj = new Author({ name: args.author });
+        await authorObj.save();
+      }
 
-      const book = { ...args, id: uuid() };
-      books = books.concat(book);
+      const book = new Book({ ...args, author: authorObj });
+
+      try {
+        await book.save();
+      } catch (error) {
+        throw new GraphQLError("Saving book failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+            error,
+          },
+        });
+      }
 
       return book;
     },
