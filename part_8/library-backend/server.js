@@ -1,7 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { GraphQLError } = require("graphql");
-const { v1: uuid } = require("uuid");
 const mongoose = require("./db");
 
 const Book = require("./models/book");
@@ -85,10 +84,6 @@ let books = [
   },
 ];
 
-/*
-  you can remove the placeholder query once your first one has been implemented 
-*/
-
 const typeDefs = `
   type Book {
     title: String!
@@ -132,20 +127,24 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
-    allBooks: (_, { author, genre }) => {
-      return (
-        author ? books.filter((book) => book.author === author) : books
-      ).filter((book) => !genre || book.genres.includes(genre));
+    bookCount: async () => {
+      return await Book.countDocuments({})
     },
-    allAuthors: () => authors,
+    authorCount: async () => {
+      return await Author.countDocuments({})
+    },
+    allBooks: async (_, { genre }) => {
+      return await Book
+                    .find(genre ? { genres: genre } : {})
+                    .populate("author");
+    },
+    allAuthors: async () => {
+      return Author.find({});
+    },
   },
   Author: {
-    bookCount: (root) => {
-      return root.name
-        ? books.filter((book) => book.author === root.name).length
-        : 0;
+    bookCount: async (root) => {
+      return await Book.countDocuments({ author: root._id });
     },
   },
   Mutation: {
@@ -173,15 +172,16 @@ const resolvers = {
 
       return book;
     },
-    editAuthor: (_, { name, setBornTo }) => {
-      const author = authors.find((a) => a.name === name);
-      return author
-        ? (() => {
-            const updatedAuthor = { ...author, born: setBornTo };
-            authors = authors.map((a) => (a.name === name ? updatedAuthor : a));
-            return updatedAuthor;
-          })()
-        : null;
+    editAuthor: async (_, { name, setBornTo }) => {
+      const author = await Author.findOne({ name: name });
+  
+      if (!author) {
+        return null;
+      }
+  
+      author.born = setBornTo;
+      await author.save();
+      return author;
     },
   },
 };
