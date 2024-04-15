@@ -5,7 +5,7 @@ import { ALL_AUTHORS, UPDATE_AUTHOR } from "../queries";
 import Loading from "./Loading";
 
 const Authors = () => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Robert Martin");
   const [born, setBorn] = useState("");
 
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
@@ -20,10 +20,7 @@ const Authors = () => {
 
   const submit = async (event) => {
     event.preventDefault();
-
     updateAuthor({ variables: { name, born } });
-
-    setName("");
     setBorn("");
   };
 
@@ -50,14 +47,18 @@ const Authors = () => {
       <form onSubmit={submit}>
         <div>
           name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          <select onChange={({ target }) => setName(target.value)}>
+            {data.allAuthors.map((a) => (
+              <option key={a.name} value={a.name}>
+                {a.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           born
           <input
+            type="number"
             value={born}
             onChange={({ target }) => setBorn(Number(target.value))}
           />
