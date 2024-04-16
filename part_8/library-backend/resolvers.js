@@ -1,9 +1,15 @@
 const mongoose = require("./db");
+const jwt = require("jsonwebtoken");
 
-const saveError = require("./errorHandler");
+const {
+  saveError,
+  userError,
+  invalidCredentialsError,
+} = require("./errorHandler");
 
 const Book = require("./models/book");
 const Author = require("./models/author");
+const User = require("./models/user");
 
 const resolvers = {
   Query: {
@@ -14,12 +20,13 @@ const resolvers = {
       return await Author.countDocuments({});
     },
     allBooks: async (_, { genre }) => {
-      return await Book
-                   .find(genre ? { genres: genre } : {})
-                   .populate("author");
+      return await Book.find(genre ? { genres: genre } : {}).populate("author");
     },
     allAuthors: async () => {
       return Author.find({});
+    },
+    me: (_, __, context) => {
+      return context.currentUser;
     },
   },
   Author: {
@@ -28,7 +35,11 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBook: async (_, args) => {
+    addBook: async (_, args, context) => {
+      if (!context.currentUser) {
+        invalidCredentialsError();
+      }
+
       let authorObj = await Author.findOne({ name: args.author });
 
       if (!authorObj) {
@@ -50,7 +61,11 @@ const resolvers = {
 
       return book;
     },
-    editAuthor: async (_, { name, setBornTo }) => {
+    editAuthor: async (_, { name, setBornTo }, context) => {
+      if (!context.currentUser) {
+        invalidCredentialsError();
+      }
+
       const author = await Author.findOne({ name: name });
 
       if (!author) {
@@ -66,6 +81,30 @@ const resolvers = {
       }
 
       return author;
+    },
+    createUser: async (_, args) => {
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      });
+
+      return user.save().catch((error) => {
+        userError(error, args);
+      });
+    },
+    login: async (_, args) => {
+      const user = await User.findOne({ username: args.username });
+
+      if (!user || args.password !== "secret") {
+        invalidCredentialsError();
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      };
+
+      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
     },
   },
 };
