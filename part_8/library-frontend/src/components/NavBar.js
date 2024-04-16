@@ -19,6 +19,7 @@ const NavBar = ({ token, setToken }) => {
       {token ? (
         <>
           <button onClick={() => navigate("/add")}>Add Book</button>
+          <button onClick={() => navigate("/recommend")}>Recommend</button>
           <button onClick={logout}>Logout</button>
         </>
       ) : (
