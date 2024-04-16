@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 
+const User = require("./models/user");
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -20,9 +22,7 @@ startStandaloneServer(server, {
         auth.substring(7),
         process.env.JWT_SECRET
       );
-      const currentUser = await User.findById(decodedToken.id).populate(
-        "favoriteGenre"
-      );
+      const currentUser = await User.findById(decodedToken.id);
       return { currentUser };
     }
   },
