@@ -1,3 +1,5 @@
+const { PubSub } = require("graphql-subscriptions");
+const pubsub = new PubSub();
 const mongoose = require("./db");
 const jwt = require("jsonwebtoken");
 
@@ -59,6 +61,8 @@ const resolvers = {
         saveError(error);
       }
 
+      pubsub.publish("BOOK_ADDED", { bookAdded: book });
+
       return book;
     },
     editAuthor: async (_, { name, setBornTo }, context) => {
@@ -105,6 +109,11 @@ const resolvers = {
       };
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator("BOOK_ADDED"),
     },
   },
 };
