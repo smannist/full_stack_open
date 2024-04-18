@@ -10,7 +10,7 @@ const parseArguments = (args: string[]): ExercisePlan => {
     throw new Error(`Found invalid target value: ${args[2]}`);
   }
 
-  const target = Number(args[2])
+  const target = Number(args[2]);
 
   const hours = args.slice(3).map((arg) => {
     if (isNaN(Number(arg))) {
