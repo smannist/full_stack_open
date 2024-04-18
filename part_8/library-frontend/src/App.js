@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+
+import { useSubscription } from "@apollo/client";
+
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
@@ -7,8 +10,20 @@ import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Recommendations from "./components/Recommendations";
 
+import { BOOK_ADDED } from "./queries";
+
 const App = () => {
   const [token, setToken] = useState(null);
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      if (!data.loading) {
+        window.alert(
+          `A new book, ${data.data.bookAdded.title} by ${data.data.bookAdded.author.name}, was just added!`
+        );
+      }
+    },
+  });
 
   return (
     <div>
