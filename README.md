@@ -14,7 +14,7 @@ Fully completed parts:
 - [x] 5 Testing React apps
 - [x] 6 Advanced state management
 - [x] 7 React router, custom hooks, styling app with CSS and webpack
-- [ ] 8 GraphQL
+- [x] 8 GraphQL
 - [ ] 9 TypeScript
 - [ ] 10 React Native
 - [x] 11 CI/CD
