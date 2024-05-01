@@ -3,7 +3,9 @@ import { TotalProps } from "../types";
 const Total = ({ total }: TotalProps) => {
   return (
     <div>
-      <p>Number of exercises {total}</p>
+      <p>
+        <mark>Number of exercises {total}</mark>
+      </p>
     </div>
   );
 };
