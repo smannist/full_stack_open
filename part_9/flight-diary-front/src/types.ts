@@ -6,6 +6,11 @@ export interface DiaryEntry {
   comment?: string;
 }
 
+export interface ValidationError {
+  message: string;
+  errors: Record<string, string[]>;
+}
+
 export interface DiaryEntryListProps {
   diaryEntries: DiaryEntry[];
 }
@@ -16,6 +21,11 @@ export interface DiaryEntryProps {
 
 export interface DiaryFormProps {
   setDiaryEntries: (entries: DiaryEntry[]) => void;
+  setNotificationMessage: (message: ValidationError | null) => void;
+}
+
+export interface NotificationProps {
+  message: ValidationError | null;
 }
 
 export enum Weather {

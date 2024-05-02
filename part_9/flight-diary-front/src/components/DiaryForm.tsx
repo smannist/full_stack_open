@@ -1,11 +1,22 @@
+import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { DiaryFormProps, DiaryEntry } from "../types";
+import { DiaryFormProps, DiaryEntry, ValidationError } from "../types";
 
 import diaryService from "../services/diary";
 
-const DiaryForm: React.FC<DiaryFormProps> = ({ setDiaryEntries }) => {
+const DiaryForm: React.FC<DiaryFormProps> = ({
+  setDiaryEntries,
+  setNotificationMessage,
+}) => {
   const { register, handleSubmit, reset } = useForm<DiaryEntry>();
+
+  const handleNotification = (message: ValidationError) => {
+    setNotificationMessage(message);
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000);
+  };
 
   const onSubmit: SubmitHandler<DiaryEntry> = async (data) => {
     try {
@@ -14,7 +25,12 @@ const DiaryForm: React.FC<DiaryFormProps> = ({ setDiaryEntries }) => {
       setDiaryEntries(updateDiary);
       reset();
     } catch (error) {
-      console.log("Failed to add diary entry", error);
+      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error) && error.response) {
+        const errorMessage = error.response.data;
+        handleNotification(errorMessage);
+      } else {
+        console.error(error);
+      }
     }
   };
 

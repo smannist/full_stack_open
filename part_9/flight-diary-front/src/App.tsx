@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 
-import { DiaryEntry } from "./types";
+import { DiaryEntry, ValidationError } from "./types";
 
 import diaryService from "./services/diary";
 
 import DiaryEntryList from "./components/DiaryEntryList";
 import DiaryForm from "./components/DiaryForm";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
+  const [notificationMessage, setNotificationMessage] = useState<ValidationError | null>(
+    null
+  );
 
   useEffect(() => {
     diaryService
@@ -23,7 +27,11 @@ const App = () => {
 
   return (
     <div>
-      <DiaryForm setDiaryEntries={setDiaryEntries}/>
+      <Notification message={notificationMessage} />
+      <DiaryForm
+        setDiaryEntries={setDiaryEntries}
+        setNotificationMessage={setNotificationMessage}
+      />
       <DiaryEntryList diaryEntries={diaryEntries} />
     </div>
   );
