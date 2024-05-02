@@ -14,6 +14,10 @@ export interface DiaryEntryProps {
   diary: DiaryEntry;
 }
 
+export interface DiaryFormProps {
+  setDiaryEntries: (entries: DiaryEntry[]) => void;
+}
+
 export enum Weather {
   Sunny = "sunny",
   Rainy = "rainy",
@@ -28,3 +32,5 @@ export enum Visibility {
   Ok = "ok",
   Poor = "poor",
 }
+
+export type NewDiaryEntry = Omit<DiaryEntry, "id">;

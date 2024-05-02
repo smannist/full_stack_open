@@ -1,25 +1,29 @@
 import { useEffect, useState } from "react";
+
 import { DiaryEntry } from "./types";
-import getAll from "./services/diary";
-import Header from "./components/Header";
+
+import diaryService from "./services/diary";
+
 import DiaryEntryList from "./components/DiaryEntryList";
+import DiaryForm from "./components/DiaryForm";
 
 const App = () => {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
 
   useEffect(() => {
-    getAll()
-      .then(data => {
+    diaryService
+      .getAll()
+      .then((data) => {
         setDiaryEntries(data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Failed to fetch diary entries:", error);
       });
   }, []);
 
   return (
     <div>
-      <Header />
+      <DiaryForm setDiaryEntries={setDiaryEntries}/>
       <DiaryEntryList diaryEntries={diaryEntries} />
     </div>
   );
