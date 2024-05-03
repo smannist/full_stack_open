@@ -54,10 +54,10 @@ const PatientDetailed = () => {
         </Typography>
         <Typography variant="subtitle1">
           Born: {patient.dateOfBirth}
-          </Typography>
+        </Typography>
         <Typography variant="subtitle1">
           SSN: {patient.ssn}
-          </Typography>
+        </Typography>
         <Typography variant="subtitle1">
           Occupation: {patient.occupation}
         </Typography>
@@ -65,7 +65,12 @@ const PatientDetailed = () => {
     );
   }
 
-  return <div>Patient not found.</div>;
+  return (
+    <div>
+      <br></br>
+      <Typography variant="h4">Patient not found.</Typography>
+    </div>
+  );
 };
 
 export default PatientDetailed;
