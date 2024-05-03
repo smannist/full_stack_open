@@ -1,4 +1,12 @@
-import { NewPatientEntry, Gender, Entry } from "./types";
+import {
+  NewPatientEntry,
+  Gender,
+  Entry,
+  HospitalEntry,
+  OccupationalHealthcareEntry,
+  HealthCheckEntry,
+  HealthCheckRating,
+} from "./types";
 
 export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
   if (!object || typeof object !== "object") {
@@ -69,7 +77,7 @@ const parseGender = (gender: unknown): Gender => {
 };
 
 const parseEntries = (entries: unknown): Entry[] => {
-  if (!Array.isArray(entries)) {
+  if (!Array.isArray(entries) || !isCorrectEntryType(entries)) {
     throw new Error("Incorrect or missing entries");
   }
 
@@ -94,4 +102,57 @@ const isGender = (param: string): param is Gender => {
   return Object.values(Gender)
     .map((v) => v.toString())
     .includes(param);
+};
+
+const isCorrectEntryType = (param: Entry[]): param is Entry[] => {
+  return param.every((entry) => {
+    switch (entry.type) {
+      case "Hospital":
+        return hasValidHospitalEntryFields(entry as HospitalEntry);
+      case "OccupationalHealthcare":
+        return hasValidOccupationalHealthcareEntryFields(
+          entry as OccupationalHealthcareEntry
+        );
+      case "HealthCheck":
+        return hasValidHealthCheckEntryFields(entry as HealthCheckEntry);
+      default:
+        return false;
+    }
+  });
+};
+
+const hasValidHospitalEntryFields = (entry: HospitalEntry): boolean => {
+  return (
+    entry.type === "Hospital" &&
+    "discharge" in entry &&
+    typeof entry.discharge === "object" &&
+    "date" in entry.discharge &&
+    typeof entry.discharge.date === "string" &&
+    "criteria" in entry.discharge &&
+    typeof entry.discharge.criteria === "string"
+  );
+};
+
+const hasValidOccupationalHealthcareEntryFields = (
+  entry: OccupationalHealthcareEntry
+): boolean => {
+  return (
+    entry.type === "OccupationalHealthcare" &&
+    "employerName" in entry &&
+    typeof entry.employerName === "string" &&
+    (!entry.sickLeave ||
+      ("startDate" in entry.sickLeave &&
+        typeof entry.sickLeave.startDate === "string" &&
+        "endDate" in entry.sickLeave &&
+        typeof entry.sickLeave.endDate === "string"))
+  );
+};
+
+const hasValidHealthCheckEntryFields = (entry: HealthCheckEntry): boolean => {
+  return (
+    entry.type === "HealthCheck" &&
+    "healthCheckRating" in entry &&
+    typeof entry.healthCheckRating === "number" &&
+    Object.values(HealthCheckRating).includes(entry.healthCheckRating)
+  );
 };
