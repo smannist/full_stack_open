@@ -66,8 +66,12 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
-export interface PatientDetailedProps extends Record<string, string> {
+export interface PatientDetailedParams extends Record<string, string> {
   id: string;
+}
+
+export interface PatientDetailedProps {
+  diagnoses: Diagnosis[];
 }
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;

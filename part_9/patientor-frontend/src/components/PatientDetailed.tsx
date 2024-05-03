@@ -7,14 +7,14 @@ import TransgenderIcon from "@mui/icons-material/Transgender";
 
 import { Typography } from "@mui/material";
 
-import { PatientDetailedProps, Patient } from "../types";
+import { PatientDetailedParams, Patient, PatientDetailedProps } from "../types";
 
 import patientService from "../services/patients";
 
-const PatientDetailed = () => {
+const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
   const [patient, setPatient] = useState<Patient | null>(null);
 
-  const { id } = useParams<PatientDetailedProps>();
+  const { id } = useParams<PatientDetailedParams>();
 
   useEffect(() => {
     if (id) {
@@ -41,6 +41,11 @@ const PatientDetailed = () => {
       default:
         return null;
     }
+  };
+
+  const getDiagnosisName = (code: string): string => {
+    const diagnosis = diagnoses.find(d => d.code === code);
+    return diagnosis ? diagnosis.name : code;
   };
 
   if (patient) {
@@ -75,7 +80,7 @@ const PatientDetailed = () => {
                 <Typography variant="subtitle1">
                 <ul>
                   {entry.diagnosisCodes.map((diagnosisCode, index) => (
-                    <li key={index}>{diagnosisCode}</li>
+                    <li key={index}>{diagnosisCode} {getDiagnosisName(diagnosisCode)}</li>
                   ))}
                 </ul>
                 </Typography>
@@ -86,13 +91,6 @@ const PatientDetailed = () => {
       </div>
     );
   }
-
-  return (
-    <div>
-      <br></br>
-      <Typography variant="h4">Patient not found.</Typography>
-    </div>
-  );
 };
 
 export default PatientDetailed;
