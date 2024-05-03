@@ -1,11 +1,18 @@
 import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { DiaryFormProps, DiaryEntry, ValidationError } from "../types";
+import {
+  DiaryFormProps,
+  DiaryEntry,
+  ValidationError,
+  Weather,
+  Visibility,
+} from "../types";
 
 import diaryService from "../services/diary";
 
 const DiaryForm: React.FC<DiaryFormProps> = ({
+  diaryEntries,
   setDiaryEntries,
   setNotificationMessage,
 }) => {
@@ -20,16 +27,19 @@ const DiaryForm: React.FC<DiaryFormProps> = ({
 
   const onSubmit: SubmitHandler<DiaryEntry> = async (data) => {
     try {
-      await diaryService.add(data);
-      const updateDiary = await diaryService.getAll();
-      setDiaryEntries(updateDiary);
+      const newEntry = await diaryService.add(data);
+      const updatedEntries = diaryEntries.concat(newEntry);
+      setDiaryEntries(updatedEntries);
       reset();
     } catch (error) {
-      if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error) && error.response) {
+      if (
+        axios.isAxiosError<ValidationError, Record<string, unknown>>(error) &&
+        error.response
+      ) {
         const errorMessage = error.response.data;
         handleNotification(errorMessage);
       } else {
-        console.error(error);
+        console.log(error);
       }
     }
   };
@@ -39,16 +49,30 @@ const DiaryForm: React.FC<DiaryFormProps> = ({
       <h1>Add new entry</h1>
       <form onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
         <div>
-          Date: <input {...register("date")} />
+          Date:
+          <input type="date" {...register("date")} />
         </div>
         <div>
-          Visibility: <input {...register("visibility")} />
+          Visibility:
+          {Object.values(Visibility).map((value) => (
+            <label key={value}>
+              <input type="radio" value={value} {...register("visibility")} />
+              {value}
+            </label>
+          ))}
         </div>
         <div>
-          Weather: <input {...register("weather")} />
+          Weather:
+          {Object.values(Weather).map((value) => (
+            <label key={value}>
+              <input type="radio" value={value} {...register("weather")} />
+              {value}
+            </label>
+          ))}
         </div>
         <div>
-          Comment: <input {...register("comment")} />
+          Comment:
+          <input {...register("comment")} />
         </div>
         <button type="submit">Add</button>
       </form>

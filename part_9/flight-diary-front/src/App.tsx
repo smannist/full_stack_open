@@ -29,6 +29,7 @@ const App = () => {
     <div>
       <Notification message={notificationMessage} />
       <DiaryForm
+        diaryEntries={diaryEntries}
         setDiaryEntries={setDiaryEntries}
         setNotificationMessage={setNotificationMessage}
       />

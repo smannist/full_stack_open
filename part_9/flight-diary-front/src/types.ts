@@ -20,6 +20,7 @@ export interface DiaryEntryProps {
 }
 
 export interface DiaryFormProps {
+  diaryEntries: DiaryEntry[];
   setDiaryEntries: (entries: DiaryEntry[]) => void;
   setNotificationMessage: (message: ValidationError | null) => void;
 }
