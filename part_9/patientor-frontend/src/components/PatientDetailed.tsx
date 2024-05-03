@@ -61,6 +61,28 @@ const PatientDetailed = () => {
         <Typography variant="subtitle1">
           Occupation: {patient.occupation}
         </Typography>
+        <br></br>
+        <Typography variant="h6">
+          Entries
+        </Typography>
+        {patient.entries.map((entry) => (
+          <div key={entry.id}>
+            <Typography variant="subtitle1">
+              {entry.date} -- <i>{entry.description}</i>
+            </Typography>
+            {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
+              <div>
+                <Typography variant="subtitle1">
+                <ul>
+                  {entry.diagnosisCodes.map((diagnosisCode, index) => (
+                    <li key={index}>{diagnosisCode}</li>
+                  ))}
+                </ul>
+                </Typography>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     );
   }
