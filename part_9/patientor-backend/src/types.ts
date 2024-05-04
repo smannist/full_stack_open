@@ -69,3 +69,9 @@ export type Entry =
 export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;
 
 export type NewPatientEntry = Omit<Patient, "id">;
+
+export type BaseWithoutID = Omit<BaseEntry, "id">;
+
+type UnionOmit<T, K extends keyof T> = T extends unknown ? Omit<T, K> : never;
+type EntryWithoutId = UnionOmit<Entry, "id">;
+export type NewEntries = EntryWithoutId;
