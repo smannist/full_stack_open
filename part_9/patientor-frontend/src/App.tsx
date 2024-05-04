@@ -12,7 +12,7 @@ import patientService from "./services/patients";
 import diagnosisService from "./services/diagnoses";
 
 import PatientListPage from "./components/PatientListPage";
-import PatientDetailed from "./components/PatientDetailed";
+import PatientDetailed from "./components/PatientPage/index";
 
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);

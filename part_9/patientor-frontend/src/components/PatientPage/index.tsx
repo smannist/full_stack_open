@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import FemaleIcon from "@mui/icons-material/Female";
@@ -7,13 +7,21 @@ import TransgenderIcon from "@mui/icons-material/Transgender";
 
 import { Typography } from "@mui/material";
 
-import { PatientDetailedParams, Patient, PatientDetailedProps } from "../types";
+import {
+  PatientDetailedParams,
+  Patient,
+  PatientDetailedProps,
+  Entry,
+} from "../../types";
 
-import patientService from "../services/patients";
+import patientService from "../../services/patients";
+
+import HealthCheckEntry from "./HealthCheckEntry";
+import OccupationalHealthcareEntry from "./OccupationalHealthcareEntry";
+import HospitalEntry from "./HospitalEntry";
 
 const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
   const [patient, setPatient] = useState<Patient | null>(null);
-
   const { id } = useParams<PatientDetailedParams>();
 
   useEffect(() => {
@@ -23,7 +31,7 @@ const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
           const patientData = await patientService.getOne(id);
           setPatient(patientData);
         } catch (error) {
-          console.log("An error occured while fetching patient:", error);
+          console.log("An error occurred while fetching patient:", error);
         }
       };
       fetchPatient();
@@ -43,9 +51,17 @@ const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
     }
   };
 
-  const getDiagnosisName = (code: string): string => {
-    const diagnosis = diagnoses.find(d => d.code === code);
-    return diagnosis ? diagnosis.name : code;
+  const entryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+    switch (entry.type) {
+      case "HealthCheck":
+        return <HealthCheckEntry entry={entry} />;
+      case "OccupationalHealthcare":
+        return <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses} />;
+      case "Hospital":
+        return <HospitalEntry entry={entry} diagnoses={diagnoses}/>;
+      default:
+        return null;
+    }
   };
 
   if (patient) {
@@ -53,44 +69,25 @@ const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
 
     return (
       <div>
-        <br></br>
-        <Typography variant="h4">
+        <Typography variant="h4" style={{ marginTop: 20 }}>
           <strong>{patient.name}</strong> {genderIcon}
         </Typography>
-        <Typography variant="subtitle1">
-          Born: {patient.dateOfBirth}
-        </Typography>
-        <Typography variant="subtitle1">
-          SSN: {patient.ssn}
-        </Typography>
+        <Typography variant="subtitle1">Born: {patient.dateOfBirth}</Typography>
+        <Typography variant="subtitle1">SSN: {patient.ssn}</Typography>
         <Typography variant="subtitle1">
           Occupation: {patient.occupation}
         </Typography>
-        <br></br>
-        <Typography variant="h6">
+        <Typography variant="h6" style={{ marginTop: 20 }}>
           Entries
         </Typography>
         {patient.entries.map((entry) => (
-          <div key={entry.id}>
-            <Typography variant="subtitle1">
-              {entry.date} -- <i>{entry.description}</i>
-            </Typography>
-            {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
-              <div>
-                <Typography variant="subtitle1">
-                <ul>
-                  {entry.diagnosisCodes.map((diagnosisCode, index) => (
-                    <li key={index}>{diagnosisCode} {getDiagnosisName(diagnosisCode)}</li>
-                  ))}
-                </ul>
-                </Typography>
-              </div>
-            )}
-          </div>
+          <div key={entry.id}>{entryDetails({ entry })}</div>
         ))}
       </div>
     );
   }
+
+  return null;
 };
 
 export default PatientDetailed;

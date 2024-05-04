@@ -74,4 +74,14 @@ export interface PatientDetailedProps {
   diagnoses: Diagnosis[];
 }
 
+export interface OccupationalHealthcareEntryProps {
+  entry: OccupationalHealthcareEntry;
+  diagnoses: Diagnosis[];
+}
+
+export interface HospitalEntryProps {
+  entry: HospitalEntry;
+  diagnoses: Diagnosis[];
+}
+
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
