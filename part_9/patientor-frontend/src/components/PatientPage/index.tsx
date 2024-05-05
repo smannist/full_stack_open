@@ -60,7 +60,7 @@ const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
   const entryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
     switch (entry.type) {
       case "HealthCheck":
-        return <HealthCheckEntry entry={entry} />;
+        return <HealthCheckEntry entry={entry} diagnoses={diagnoses} />;
       case "OccupationalHealthcare":
         return (
           <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses} />

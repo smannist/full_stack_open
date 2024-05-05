@@ -1,15 +1,23 @@
 import "../../entry.css";
 
 import {
-  HealthCheckEntry as HealthCheckEntryType,
+  Diagnosis,
   HealthCheckRating,
+  HealthCheckEntry as HealthCheckEntryType,
 } from "../../types";
 
 import { Typography } from "@mui/material";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const HealthCheckEntry = ({ entry }: { entry: HealthCheckEntryType }) => {
+import { getDiagnosisName } from "../../utils";
+
+interface Props {
+  entry: HealthCheckEntryType;
+  diagnoses: Diagnosis[];
+}
+
+const HealthCheckEntry = ({ entry, diagnoses }: Props) => {
   const healthIconSelector = (
     healthCheckRating: HealthCheckRating
   ): JSX.Element | null => {
@@ -34,6 +42,17 @@ const HealthCheckEntry = ({ entry }: { entry: HealthCheckEntryType }) => {
       </Typography>
       <Typography>
         <i>{entry.description}</i>
+      </Typography>
+      <Typography component="div">
+        {entry.diagnosisCodes && (
+          <ul>
+            {entry.diagnosisCodes.map((code) => (
+              <li key={code}>
+                {code} - {getDiagnosisName(code, diagnoses)}
+              </li>
+            ))}
+          </ul>
+        )}
       </Typography>
       <Typography variant="subtitle1">
         {healthIconSelector(entry.healthCheckRating)}
