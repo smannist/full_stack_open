@@ -5,7 +5,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 
 import {
   PatientDetailedParams,
@@ -19,8 +19,10 @@ import patientService from "../../services/patients";
 import HealthCheckEntry from "./HealthCheckEntry";
 import OccupationalHealthcareEntry from "./OccupationalHealthcareEntry";
 import HospitalEntry from "./HospitalEntry";
+import AddPatientEntryForm from "./AddPatientEntryForm";
 
 const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
+  const [visible, setVisible] = useState(true);
   const [patient, setPatient] = useState<Patient | null>(null);
   const { id } = useParams<PatientDetailedParams>();
 
@@ -37,6 +39,10 @@ const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
       fetchPatient();
     }
   }, [id]);
+
+  const isVisible = () => {
+    setVisible(!visible);
+  };
 
   const genderIconSelector = (gender: string) => {
     switch (gender) {
@@ -56,9 +62,11 @@ const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
       case "HealthCheck":
         return <HealthCheckEntry entry={entry} />;
       case "OccupationalHealthcare":
-        return <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses} />;
+        return (
+          <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses} />
+        );
       case "Hospital":
-        return <HospitalEntry entry={entry} diagnoses={diagnoses}/>;
+        return <HospitalEntry entry={entry} diagnoses={diagnoses} />;
       default:
         return null;
     }
@@ -77,6 +85,18 @@ const PatientDetailed = ({ diagnoses }: PatientDetailedProps) => {
         <Typography variant="subtitle1">
           Occupation: {patient.occupation}
         </Typography>
+        {visible && (
+          <Button onClick={isVisible} variant="contained">
+            Add entry
+          </Button>
+        )}
+        {!visible && (
+          <AddPatientEntryForm
+            isVisible={isVisible}
+            patient={patient}
+            setPatient={setPatient}
+          />
+        )}
         <Typography variant="h6" style={{ marginTop: 20 }}>
           Entries
         </Typography>

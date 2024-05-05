@@ -8,3 +8,23 @@
   padding-top: 15px;
   padding-bottom: 15px;
 }
+
+.patientEntryForm {
+  margin-top: 15px;
+  border-radius: 10px;
+  border-width: 1px;
+  border-style: dashed;
+  border-color: black;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.patientEntryFormButtonAdd {
+  float: right;
+}
+
+.hidden {
+  display: none;
+}

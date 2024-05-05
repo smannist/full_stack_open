@@ -19,7 +19,7 @@ const OccupationalHealthcareEntry = ({
       <Typography>
         <i>{entry.description}</i>
       </Typography>
-      <Typography>
+      <Typography component="div">
         {entry.diagnosisCodes && (
           <ul>
             {entry.diagnosisCodes.map((code) => (
