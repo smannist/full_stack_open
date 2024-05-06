@@ -15,7 +15,7 @@ Fully completed parts:
 - [x] 6 Advanced state management
 - [x] 7 React router, custom hooks, styling app with CSS and webpack
 - [x] 8 GraphQL
-- [ ] 9 TypeScript
+- [x] 9 TypeScript
 - [ ] 10 React Native
 - [x] 11 CI/CD
 - [x] 12 Containers
