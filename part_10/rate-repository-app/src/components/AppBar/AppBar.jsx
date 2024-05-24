@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import Constants from "expo-constants";
 import theme from "../../theme";
 
@@ -12,7 +12,9 @@ const AppBar = () => {
         backgroundColor: theme.colors.textPrimary,
       }}
     >
-      <AppBarTab />
+      <ScrollView horizontal>
+        <AppBarTab />
+      </ScrollView>
     </View>
   );
 };
