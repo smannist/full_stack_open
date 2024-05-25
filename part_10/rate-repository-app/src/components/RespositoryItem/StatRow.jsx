@@ -1,5 +1,6 @@
 import { View, StyleSheet } from "react-native";
-import { formatStatValue } from "../../utils";
+
+import { formatStatValue } from "../../utils/format";
 
 import Text from "../Text";
 
