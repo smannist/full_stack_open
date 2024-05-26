@@ -1,9 +1,9 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { graphQLUrl } from "../constants";
+import Constants from "expo-constants";
 
 const createApolloClient = () => {
   return new ApolloClient({
-    uri: graphQLUrl,
+    uri: Constants.expoConfig.extra.APOLLO_URI,
     cache: new InMemoryCache(),
   });
 };
