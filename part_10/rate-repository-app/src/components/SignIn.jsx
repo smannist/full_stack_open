@@ -1,9 +1,12 @@
 import { TextInput, Pressable, View, StyleSheet } from "react-native";
+import { useNavigate } from "react-router-dom";
+
 import { useFormik } from "formik";
+import { validationSchema } from "../schema/validation";
 
 import theme from "../theme";
+
 import useSignIn from "../hooks/useSignIn";
-import { validationSchema } from "../schema/validation";
 
 import Text from "./Text";
 
@@ -37,6 +40,7 @@ const styles = StyleSheet.create({
 
 const SignIn = () => {
   const [signIn] = useSignIn();
+  const navigate = useNavigate();
 
   const initialValues = {
     username: "",
@@ -47,12 +51,13 @@ const SignIn = () => {
     const { username, password } = values;
 
     try {
-      const { data } = await signIn({ username, password });
-      console.log(data);
+      await signIn({ username, password });
       resetForm();
+      navigate("/");
     } catch (e) {
       console.log("An error occured during sign in:", e);
     }
+
   };
 
   const formik = useFormik({
