@@ -3,6 +3,7 @@ import { TextInput, Pressable, View, StyleSheet } from "react-native";
 import { useFormik } from "formik";
 
 import theme from "../theme";
+import useSignIn from "../hooks/useSignIn";
 
 import Text from "./Text";
 
@@ -35,6 +36,8 @@ const styles = StyleSheet.create({
 });
 
 const SignIn = () => {
+  const [signIn] = useSignIn();
+
   const initialValues = {
     username: "",
     password: "",
@@ -51,9 +54,17 @@ const SignIn = () => {
       .required("Password is required"),
   });
 
-  const onSubmit = (values, { resetForm }) => {
-    console.log(values);
-    resetForm();
+  const onSubmit = async (values, { resetForm }) => {
+    const { username, password } = values;
+
+    try {
+      const { data } = await signIn({ username, password });
+      console.log(data);
+      resetForm();
+    } catch (e) {
+      console.log("An error occured during sign in:", e);
+    }
+
   };
 
   const formik = useFormik({
