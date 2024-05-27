@@ -1,9 +1,9 @@
-import * as yup from "yup";
 import { TextInput, Pressable, View, StyleSheet } from "react-native";
 import { useFormik } from "formik";
 
 import theme from "../theme";
 import useSignIn from "../hooks/useSignIn";
+import { validationSchema } from "../schema/validation";
 
 import Text from "./Text";
 
@@ -43,17 +43,6 @@ const SignIn = () => {
     password: "",
   };
 
-  const validationSchema = yup.object().shape({
-    username: yup
-      .string()
-      .min(4, "Username must contain at least 4 characters")
-      .required("Username is required"),
-    password: yup
-      .string()
-      .min(4, "Password must contain at least 4 characters")
-      .required("Password is required"),
-  });
-
   const onSubmit = async (values, { resetForm }) => {
     const { username, password } = values;
 
@@ -64,7 +53,6 @@ const SignIn = () => {
     } catch (e) {
       console.log("An error occured during sign in:", e);
     }
-
   };
 
   const formik = useFormik({
