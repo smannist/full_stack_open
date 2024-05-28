@@ -26,7 +26,7 @@ const RepositoryItem = ({
   },
 }) => {
   return (
-    <View key={id} style={styles.container}>
+    <View testID="repositoryItem" key={id} style={styles.container}>
       <InfoBox
         fullName={fullName}
         description={description}
