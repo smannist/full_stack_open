@@ -1,4 +1,5 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Pressable } from "react-native";
+import { useNavigate, useLocation } from "react-router-native";
 
 import TextRow from "./TextRow";
 import LangRow from "./LangRow";
@@ -25,12 +26,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const InfoBox = ({ fullName, description, language, ownerAvatarUrl }) => {
+const InfoBox = ({ id, fullName, description, language, ownerAvatarUrl }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isMainPage = location.pathname === "/";
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: ownerAvatarUrl }} style={styles.smallLogo} />
       <View style={styles.textContainer}>
-        <TextRow value={fullName} fontWeight="bold" />
+        {isMainPage ? (
+          <Pressable onPress={() => navigate(`/repositories/${id}`)}>
+            <TextRow value={fullName} fontWeight="bold" />
+          </Pressable>
+        ) : (
+          <TextRow value={fullName} fontWeight="bold" />
+        )}
         <TextRow value={description} />
         <View style={styles.langContainer}>
           <LangRow value={language} />

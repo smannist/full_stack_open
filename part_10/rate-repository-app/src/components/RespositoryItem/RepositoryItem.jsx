@@ -28,6 +28,7 @@ const RepositoryItem = ({
   return (
     <View testID="repositoryItem" key={id} style={styles.container}>
       <InfoBox
+        id={id}
         fullName={fullName}
         description={description}
         ownerAvatarUrl={ownerAvatarUrl}
