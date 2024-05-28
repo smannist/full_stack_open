@@ -1,13 +1,10 @@
 import { TextInput, Pressable, View, StyleSheet } from "react-native";
 import { useNavigate } from "react-router-dom";
-
 import { useFormik } from "formik";
 import { validationSchema } from "../schema/validation";
 
 import theme from "../theme";
-
 import useSignIn from "../hooks/useSignIn";
-
 import Text from "./Text";
 
 const styles = StyleSheet.create({
@@ -38,37 +35,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignIn = () => {
-  const [signIn] = useSignIn();
-  const navigate = useNavigate();
-
-  const initialValues = {
-    username: "",
-    password: "",
-  };
-
-  const onSubmit = async (values, { resetForm }) => {
-    const { username, password } = values;
-
-    try {
-      await signIn({ username, password });
-      resetForm();
-      navigate("/");
-    } catch (e) {
-      console.log("An error occured during sign in:", e);
-    }
-
-  };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit,
-  });
-
-  const isInvalidUsername = formik.touched.username && formik.errors.username;
-  const isInvalidPassword = formik.touched.password && formik.errors.password;
-
+export const SignInContainer = ({
+  formik,
+  isInvalidUsername,
+  isInvalidPassword,
+}) => {
   return (
     <View
       style={{
@@ -113,6 +84,45 @@ const SignIn = () => {
         </Pressable>
       </View>
     </View>
+  );
+};
+
+const SignIn = () => {
+  const [signIn] = useSignIn();
+  const navigate = useNavigate();
+
+  const initialValues = {
+    username: "",
+    password: "",
+  };
+
+  const onSubmit = async (values, { resetForm }) => {
+    const { username, password } = values;
+
+    try {
+      await signIn({ username, password });
+      resetForm();
+      navigate("/");
+    } catch (e) {
+      console.log("An error occured during sign in:", e);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
+
+  const isInvalidUsername = formik.touched.username && formik.errors.username;
+  const isInvalidPassword = formik.touched.password && formik.errors.password;
+
+  return (
+    <SignInContainer
+      formik={formik}
+      isInvalidUsername={isInvalidUsername}
+      isInvalidPassword={isInvalidPassword}
+    />
   );
 };
 
