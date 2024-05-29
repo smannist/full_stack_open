@@ -2,9 +2,9 @@ import { View } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
 
 import RepositoryList from "./RepositoryList";
+import SingleRepository from "./RespositoryItem/SingleRepository";
 import AppBar from "./AppBar/AppBar";
 import SignIn from "./SignIn";
-import Detailed from "./RespositoryItem/Detailed";
 
 const Main = () => {
   return (
@@ -14,7 +14,7 @@ const Main = () => {
         <Route path="/" element={<RepositoryList />} />
         <Route path="/sign" element={<SignIn />} />
         <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path="/repositories/:id" element={<Detailed />} />
+        <Route path="/repositories/:id" element={<SingleRepository />} />
       </Routes>
     </View>
   );

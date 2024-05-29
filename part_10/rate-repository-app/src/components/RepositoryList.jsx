@@ -12,7 +12,7 @@ export const RepositoryListContainer = ({ repositories }) => {
 
   return (
     <FlatList
-      style={{ marginLeft: 5 }}
+      style={{ marginLeft: 5, marginRight: 5 }}
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => <RepositoryItem item={item} />}

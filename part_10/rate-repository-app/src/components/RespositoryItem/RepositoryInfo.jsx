@@ -1,13 +1,16 @@
-import React from "react";
 import { Linking, View, Pressable, StyleSheet } from "react-native";
-import { useParams } from "react-router-native";
-
-import useRepository from "../../hooks/useRepository";
 
 import Text from "../Text";
 import RepositoryItem from "./RepositoryItem";
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    padding: 10,
+    backgroundColor: "#ffffff",
+    marginTop: 5,
+    marginBottom: 5,
+  },
   buttonContainer: {
     margin: 12,
     width: 200,
@@ -20,14 +23,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Detailed = () => {
-  const { id } = useParams();
-  const { repository, loading } = useRepository(id);
-
-  if (loading) {
-    return null;
-  }
-
+const RepositoryInfo = ({ repository }) => {
   const item = {
     fullName: repository.fullName,
     description: repository.description,
@@ -40,13 +36,7 @@ const Detailed = () => {
   };
 
   return (
-    <View
-      style={{
-        flexDirection: "column",
-        marginTop: 10,
-        backgroundColor: "#ffffff",
-      }}
-    >
+    <View style={styles.container}>
       <RepositoryItem item={item} />
       <View style={styles.buttonContainer}>
         <Pressable
@@ -62,4 +52,4 @@ const Detailed = () => {
   );
 };
 
-export default Detailed;
+export default RepositoryInfo;

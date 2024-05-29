@@ -10,10 +10,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const TextRow = ({ value, fontWeight }) => {
+const TextRow = ({ value, fontWeight, fontSize, color }) => {
   return (
     <View style={styles.container}>
-      <Text fontWeight={fontWeight}>{value}</Text>
+      <Text fontWeight={fontWeight} fontSize={fontSize} color={color}>
+        {value}
+      </Text>
     </View>
   );
 };

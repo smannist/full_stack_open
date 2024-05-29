@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     padding: 10,
     backgroundColor: "#ffffff",
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 5,
   },
 });
 
