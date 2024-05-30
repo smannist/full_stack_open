@@ -1,39 +1,11 @@
-import { TextInput, Pressable, View, StyleSheet } from "react-native";
+import { TextInput, Pressable, View } from "react-native";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { validationSchema } from "../schema/validation";
+import { signInSchema as validationSchema } from "../schema/validation";
 
-import theme from "../theme";
+import { formStyle } from "../styles";
 import useSignIn from "../hooks/useSignIn";
 import Text from "./Text";
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    maxWidth: 200,
-    borderColor: "#888888",
-  },
-  buttonContainer: {
-    margin: 12,
-    width: 200,
-  },
-  button: {
-    backgroundColor: "#426FBD",
-    padding: 10,
-    alignItems: "center",
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "#FFFFFFF",
-    fontSize: 16,
-  },
-  validationError: {
-    borderColor: theme.colors.error,
-  },
-});
 
 export const SignInContainer = ({
   formik,
@@ -50,7 +22,7 @@ export const SignInContainer = ({
       role="form"
     >
       <TextInput
-        style={[styles.input, isInvalidUsername && styles.validationError]}
+        style={[formStyle.input, isInvalidUsername && formStyle.validationError]}
         placeholder="Username"
         placeholderTextColor="#888888"
         name="Username"
@@ -63,7 +35,7 @@ export const SignInContainer = ({
         </Text>
       )}
       <TextInput
-        style={[styles.input, isInvalidPassword && styles.validationError]}
+        style={[formStyle.input, isInvalidPassword && formStyle.validationError]}
         placeholder="Password"
         placeholderTextColor="#888888"
         name="Password"
@@ -76,8 +48,8 @@ export const SignInContainer = ({
           {formik.errors.password}
         </Text>
       )}
-      <View style={styles.buttonContainer}>
-        <Pressable style={styles.button} onPress={formik.handleSubmit}>
+      <View style={formStyle.buttonContainer}>
+        <Pressable style={formStyle.button} onPress={formik.handleSubmit}>
           <Text color="textSecondary" fontWeight="bold">
             Sign in
           </Text>
@@ -106,6 +78,7 @@ const SignIn = () => {
     } catch (e) {
       console.log("An error occured during sign in:", e);
     }
+
   };
 
   const formik = useFormik({

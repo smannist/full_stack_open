@@ -34,16 +34,28 @@ const AppBarTab = () => {
         </Text>
       </Link>
       {data && data.me ? (
-        <Pressable onPress={signOut}>
-          <Text
-            fontWeight="bold"
-            color="textSecondary"
-            textLeftPadding="medium"
-            textBottomPadding="medium"
-          >
-            Sign out
-          </Text>
-        </Pressable>
+        <>
+          <Link to="/review" component={Pressable} style={{ marginRight: 10 }}>
+            <Text
+              fontWeight="bold"
+              color="textSecondary"
+              textLeftPadding="medium"
+              textBottomPadding="medium"
+            >
+              Create a review
+            </Text>
+          </Link>
+          <Pressable onPress={signOut}>
+            <Text
+              fontWeight="bold"
+              color="textSecondary"
+              textLeftPadding="medium"
+              textBottomPadding="medium"
+            >
+              Sign out
+            </Text>
+          </Pressable>
+        </>
       ) : (
         <Link to="/sign" component={Pressable}>
           <Text
