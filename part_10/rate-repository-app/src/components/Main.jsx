@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
 
-import RepositoryList from "./RepositoryList";
+import RepositoryList from "./RespositoryList/RepositoryList";
 import SingleRepository from "./RespositoryItem/SingleRepository";
 import CreateReview from "./RespositoryItem/CreateReview";
 import AppBar from "./AppBar/AppBar";

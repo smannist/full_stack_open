@@ -2,8 +2,6 @@ import { View, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 
-import theme from "../theme";
-
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
@@ -41,7 +39,6 @@ const SortBar = ({ setOrderBy, setOrderDirection }) => {
       default:
         break;
     }
-
   };
 
   return (
@@ -51,7 +48,6 @@ const SortBar = ({ setOrderBy, setOrderDirection }) => {
           selectedValue={selectedOrdering}
           onValueChange={sortRepositories}
           style={styles.picker}
-          selectionColor={theme.colors.primary}
         >
           <Picker.Item label="Latest repositories" value="latest" />
           <Picker.Item label="Highest rated repositories" value="highest" />
