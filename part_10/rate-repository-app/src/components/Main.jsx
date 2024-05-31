@@ -3,9 +3,10 @@ import { Route, Routes, Navigate } from "react-router-native";
 
 import RepositoryList from "./RepositoryList";
 import SingleRepository from "./RespositoryItem/SingleRepository";
+import CreateReview from "./RespositoryItem/CreateReview";
 import AppBar from "./AppBar/AppBar";
 import SignIn from "./SignIn";
-import CreateReview from "./RespositoryItem/CreateReview";
+import SignUp from "./SignUp";
 
 const Main = () => {
   return (
@@ -13,7 +14,8 @@ const Main = () => {
       <AppBar />
       <Routes>
         <Route path="/" element={<RepositoryList />} />
-        <Route path="/sign" element={<SignIn />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/repositories/:id" element={<SingleRepository />} />
         <Route path="/review" element={<CreateReview />} />

@@ -57,16 +57,28 @@ const AppBarTab = () => {
           </Pressable>
         </>
       ) : (
-        <Link to="/sign" component={Pressable}>
-          <Text
-            fontWeight="bold"
-            color="textSecondary"
-            textLeftPadding="medium"
-            textBottomPadding="medium"
-          >
-            Sign in
-          </Text>
-        </Link>
+        <>
+          <Link to="/signin" component={Pressable} style={{ marginRight: 10 }}>
+            <Text
+              fontWeight="bold"
+              color="textSecondary"
+              textLeftPadding="medium"
+              textBottomPadding="medium"
+            >
+              Sign in
+            </Text>
+          </Link>
+          <Link to="/signup" component={Pressable}>
+            <Text
+              fontWeight="bold"
+              color="textSecondary"
+              textLeftPadding="medium"
+              textBottomPadding="medium"
+            >
+              Sign up
+            </Text>
+          </Link>
+        </>
       )}
     </View>
   );
