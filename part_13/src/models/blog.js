@@ -18,14 +18,14 @@ Blog.init(
       autoIncrement: true,
     },
     author: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     url: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     likes: {
