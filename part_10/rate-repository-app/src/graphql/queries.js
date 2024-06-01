@@ -27,7 +27,6 @@ export const GET_REPOSITORY = gql`
   query Repository($id: ID!) {
     repository(id: $id) {
       ...RepositoryDetails
-      url
       reviews {
         edges {
           node {
@@ -46,10 +45,23 @@ export const GET_REPOSITORY = gql`
 `;
 
 export const USER = gql`
-  query {
+  query getCurrentUser(
+    $includeReviews: Boolean = false
+  ) {
     me {
-      id
-      username
+      ...UserDetails
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            ...ReviewDetails
+            repository {
+              fullName
+            }
+          }
+        }
+      }
     }
   }
+  ${REVIEW_DETAILS}
+  ${USER_DETAILS}
 `;

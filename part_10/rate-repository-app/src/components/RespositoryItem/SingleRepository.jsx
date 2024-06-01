@@ -15,13 +15,15 @@ const SingleRepository = () => {
     return null;
   }
 
+  const reviewNode = repository.reviews.edges.map((edge) => edge.node);
+
   return (
     <FlatList
       style={{ marginLeft: 5, marginRight: 5 }}
-      data={repository.reviews.edges}
+      data={reviewNode}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => <ReviewItem review={item} />}
-      keyExtractor={(item) => item.node.id}
+      keyExtractor={(item) => item.id}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
     />
   );

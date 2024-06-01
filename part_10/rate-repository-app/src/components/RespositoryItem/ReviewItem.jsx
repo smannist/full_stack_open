@@ -1,7 +1,8 @@
 import { View, StyleSheet } from "react-native";
+import { formatDateValue } from "../../utils/format";
+import { useLocation } from "react-router-native";
 import theme from "../../theme";
 import TextRow from "./TextRow";
-import { formatDateValue } from "../../utils/format";
 
 const styles = StyleSheet.create({
   container: {
@@ -27,15 +28,17 @@ const styles = StyleSheet.create({
 });
 
 const ReviewItem = ({ review }) => {
-  const reviewRating = review.node.rating;
+  const location = useLocation();
+
+  const isMyReviews = location.pathname === "/myreviews";
 
   let ratingColor = "";
 
   switch (true) {
-    case reviewRating >= 71:
+    case review.rating >= 71:
       ratingColor = "primary";
       break;
-    case reviewRating >= 40:
+    case review.rating >= 40:
       ratingColor = "yellow";
       break;
     default:
@@ -55,16 +58,17 @@ const ReviewItem = ({ review }) => {
           fontWeight={"bold"}
           fontSize={"subheading"}
           color={ratingColor}
-          value={review.node.rating}
+          value={review.rating}
         />
       </View>
       <View style={styles.textContainer}>
-        <TextRow fontWeight="bold" value={review.node.user.username} />
-        <TextRow
-          value={formatDateValue(review.node.createdAt)}
-          color="dimmed"
-        />
-        <TextRow value={review.node.text} />
+        {isMyReviews ? (
+          <TextRow fontWeight="bold" value={review.repository.fullName} />
+        ) : (
+          <TextRow fontWeight="bold" value={review.user.username} />
+        )}
+        <TextRow value={formatDateValue(review.createdAt)} color="dimmed" />
+        <TextRow value={review.text} />
       </View>
     </View>
   );

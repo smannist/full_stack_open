@@ -45,6 +45,16 @@ const AppBarTab = () => {
               Create a review
             </Text>
           </Link>
+          <Link to="/myreviews" component={Pressable}>
+            <Text
+              fontWeight="bold"
+              color="textSecondary"
+              textLeftPadding="medium"
+              textBottomPadding="medium"
+            >
+              My reviews
+            </Text>
+          </Link>
           <Pressable onPress={signOut}>
             <Text
               fontWeight="bold"
