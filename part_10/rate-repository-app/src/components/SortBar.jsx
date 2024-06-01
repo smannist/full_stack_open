@@ -8,12 +8,11 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     height: 50,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
   },
   picker: {
     height: 50,
+    borderWidth: 0,
+    backgroundColor: "#e1e4e8",
   },
 });
 
