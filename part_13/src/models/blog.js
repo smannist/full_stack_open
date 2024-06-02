@@ -1,14 +1,8 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
+
+const { sequelize } = require("../utils/db");
 
 class Blog extends Model {}
-
-const sequelize = new Sequelize({
-  dialect: "postgres",
-  host: "localhost",
-  username: "postgres",
-  password: "supersecretpassword",
-  database: "blogapp",
-});
 
 Blog.init(
   {
