@@ -20,7 +20,7 @@ or
 sudo docker compose up
 ```
 
-depending on Docker version
+depending on Docker version and operating system
 
 4. Start the app
 
