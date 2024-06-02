@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const { Blog } = require("../models");
 
+const fieldChecker = require("../middleware/fieldchecker");
+
 router.get("/", async (_, res) => {
   const blogs = await Blog.findAll();
   res.json(blogs);
@@ -8,9 +10,10 @@ router.get("/", async (_, res) => {
 
 router.post("/", async (req, res) => {
   const blog = await Blog.create(req.body);
+  return res.json(blog)
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", fieldChecker, async (req, res) => {
   const blog = await Blog.findByPk(req.params.id);
 
   if (blog) {
@@ -35,6 +38,7 @@ router.delete("/:id", async (req, res) => {
   } else {
     res.status(404).end();
   }
+
 });
 
 module.exports = router;
