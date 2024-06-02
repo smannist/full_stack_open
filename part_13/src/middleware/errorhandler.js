@@ -18,6 +18,15 @@ const errorHandler = (error, request, response, next) => {
         .send({ error: `${capitalize(notNullError.path)} is required.` });
     }
 
+    const isEmailError = error.errors.find(
+      (err) => err.type === "Validation error" && err.validatorKey === "isEmail"
+    );
+
+    if (isEmailError) {
+      return response
+        .status(400)
+        .send({ error: "Validation isEmail on username failed" });
+    }
   }
 
   next(error);
