@@ -11,16 +11,16 @@ npm install
 3. Start postgres in a container
 
 ```bash
-sudo docker-compose up
+docker-compose up
 ```
 
 or
 
 ```bash
-sudo docker compose up
+docker compose up
 ```
 
-depending on Docker version and operating system
+depending on Docker version
 
 4. Start the app
 
