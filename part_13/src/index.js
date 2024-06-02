@@ -1,38 +1,23 @@
-const express = require("express");
 const cors = require("cors");
-const Blog = require("./models/blog");
+const express = require("express");
+
+const { PORT } = require("./utils/config");
+const { connectToDatabase } = require("./utils/db");
+
+const blogsRouter = require("./controllers/blogs");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/api/blogs", async (_, res) => {
-  const blogs = await Blog.findAll();
-  res.json(blogs);
-});
+app.use("/api/blogs", blogsRouter);
 
-app.delete("/api/blogs/:id", async (req, res) => {
-  const blog = await Blog.destroy({
-    where: {
-      id: req.params.id,
-    },
+const start = async () => {
+  await connectToDatabase();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
   });
+};
 
-  if (blog) {
-    res.json(blog);
-  } else {
-    res.status(404).end();
-  }
-
-});
-
-app.post("/api/blogs", async (req, res) => {
-  const blog = await Blog.create(req.body);
-});
-
-const PORT = 3001;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+start();
