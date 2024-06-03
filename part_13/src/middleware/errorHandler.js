@@ -8,24 +8,24 @@ const errorHandler = (error, request, response, next) => {
   }
 
   if (error.name === "SequelizeValidationError") {
-    const notNullError = error.errors.find(
-      (err) => err.type === "notNull Violation"
+    const errorMessages = {
+      "notNull Violation": (err) => `${capitalize(err.path)} is required.`,
+      isEmail: () => "Validation isEmail on username failed",
+      max: () => "The year can't be greater than the current year",
+      min: () => "The year can't be less than 1991",
+    };
+
+    const errorHandler = error.errors.find(
+      (err) => errorMessages[err.type] || errorMessages[err.validatorKey]
     );
 
-    if (notNullError) {
-      return response
-        .status(400)
-        .send({ error: `${capitalize(notNullError.path)} is required.` });
-    }
+    if (errorHandler) {
+      const errorMessage = (
+        errorMessages[errorHandler.type] ||
+        errorMessages[errorHandler.validatorKey]
+      )(errorHandler);
 
-    const isEmailError = error.errors.find(
-      (err) => err.type === "Validation error" && err.validatorKey === "isEmail"
-    );
-
-    if (isEmailError) {
-      return response
-        .status(400)
-        .send({ error: "Validation isEmail on username failed" });
+      return response.status(400).send({ error: errorMessage });
     }
   }
 
