@@ -6,10 +6,17 @@ const { User } = require("../models");
 const fieldChecker = require("../middleware/fieldChecker");
 const tokenExtractor = require("../middleware/tokenExtractor");
 
-router.get("/", async (_, res) => {
-  const blogs = await Blog.findAll();
-  res.json(blogs);
-});
+router.get('/', async (_, res) => {
+  const blogs = await Blog.findAll({
+    attributes: { exclude: ["userId"] },
+    include: {
+      model: User,
+      attributes: ["username"]
+    }
+  })
+
+  res.json(blogs)
+})
 
 router.post("/", tokenExtractor, async (req, res) => {
   const user = await User.findByPk(req.decodedToken.id);
