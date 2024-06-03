@@ -36,17 +36,18 @@ router.put("/:id", fieldChecker, async (req, res) => {
 
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", tokenExtractor, async (req, res) => {
   const blog = await Blog.destroy({
     where: {
       id: req.params.id,
+      userId: req.decodedToken.id,
     },
   });
 
   if (blog) {
     res.json(blog);
   } else {
-    res.status(404).end();
+    res.status(401).end();
   }
 
 });
