@@ -1,8 +1,7 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
 
-const { Blog } = require("../models");
-const { User } = require("../models");
+const { Blog, User } = require("../models");
 
 const fieldChecker = require("../middleware/fieldChecker");
 const tokenExtractor = require("../middleware/tokenExtractor");
