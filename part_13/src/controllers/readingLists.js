@@ -18,7 +18,7 @@ router.put("/:id", tokenExtractor, async (req, res) => {
   }
 
   if (readingList.userId !== currentUserId) {
-    return res.status(401).end();
+    return res.status(403).end();
   }
 
   readingList.read = req.body.read;
