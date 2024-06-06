@@ -19,5 +19,4 @@ Fully completed parts:
 - [x] 10 React Native
 - [x] 11 CI/CD
 - [x] 12 Containers
-- [ ] 13 Using relational databases
-
+- [x] 13 Using relational databases
