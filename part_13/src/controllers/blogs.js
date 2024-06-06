@@ -5,6 +5,7 @@ const { Blog, User } = require("../models");
 
 const fieldChecker = require("../middleware/fieldChecker");
 const tokenExtractor = require("../middleware/tokenExtractor");
+const sessionValidator = require("../middleware/sessionValidator");
 
 router.get("/", async (req, res) => {
   const where = {};
@@ -13,13 +14,13 @@ router.get("/", async (req, res) => {
     where[Op.or] = [
       {
         title: {
-          [Op.iLike]: `%${req.query.search}%`
-        }
+          [Op.iLike]: `%${req.query.search}%`,
+        },
       },
       {
         url: {
-          [Op.iLike]: `%${req.query.search}%`
-        }
+          [Op.iLike]: `%${req.query.search}%`,
+        },
       },
     ];
   }
@@ -31,20 +32,18 @@ router.get("/", async (req, res) => {
       attributes: ["username"],
     },
     where,
-    order: [
-      ["likes", "DESC"],
-    ],
+    order: [["likes", "DESC"]],
   });
 
   res.json(blogs);
 });
 
-router.post("/", tokenExtractor, async (req, res) => {
+router.post("/", tokenExtractor, sessionValidator, async (req, res) => {
   const user = await User.findByPk(req.decodedToken.id);
 
   const blog = await Blog.create({
     ...req.body,
-    userId: user.id
+    userId: user.id,
   });
 
   return res.json(blog);
@@ -63,7 +62,7 @@ router.put("/:id", fieldChecker, async (req, res) => {
 
 });
 
-router.delete("/:id", tokenExtractor, async (req, res) => {
+router.delete("/:id", tokenExtractor, sessionValidator, async (req, res) => {
   const blog = await Blog.destroy({
     where: {
       id: req.params.id,
